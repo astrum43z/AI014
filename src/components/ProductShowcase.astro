@@ -1,0 +1,20 @@
+---
+import type { Product } from '../lib/types';
+import { url, typeName, platformName, statusName } from '../lib/content';
+import Media from './Media.astro';
+import Arrow from './Arrow.astro';
+interface Props { product: Product; index: number }
+const { product, index } = Astro.props;
+---
+<article class:list={['product-showcase', { 'product-offset': index % 2 === 1 }]} data-reveal>
+  <a class="product-visual" href={url(`/products/${product.slug}/`)} data-tilt style={`view-transition-name: visual-${product.slug}`}>
+    {product.cover ? <Media src={product.cover} alt={product.name} class="product-cover" /> : <div class="empty-art"><span class="art-registration">AI014 / {typeName(product.type).toUpperCase()}</span><span class="art-glyph" >{product.name}</span><span class="art-baseline"><span>PRODUCT</span><span>{product.platforms.map(platformName).join(' / ')}</span></span><i class="crosshair crosshair-a"></i><i class="crosshair crosshair-b"></i></div>}
+    <span class="visual-arrow"><Arrow diagonal /></span>
+  </a>
+  <div class="product-copy"><div class="eyebrow">{typeName(product.type)}<span class="slash">/</span>{product.platforms.map(platformName).join(' · ')}</div>
+    <h3><a href={url(`/products/${product.slug}/`)}>{product.name}</a></h3>
+    {product.subtitle && <p>{product.subtitle}</p>}
+    {product.status && <span class="status">{statusName(product.status)}</span>}
+    <a class="text-link product-link" href={url(`/products/${product.slug}/`)}>View Product<Arrow /></a>
+  </div>
+</article>

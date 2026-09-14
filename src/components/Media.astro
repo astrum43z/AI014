@@ -1,0 +1,10 @@
+---
+import { existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { url } from '../lib/content';
+interface Props { src: string; alt: string; width?: number; height?: number; class?: string; eager?: boolean }
+const { src, alt, width=1200, height=900, class:cls='', eager=false }=Astro.props;
+const key=createHash('sha256').update(src).digest('hex').slice(0,16);
+const optimized=src.startsWith('/') && existsSync(`public/optimized/${key}.avif`);
+---
+<picture>{optimized && <><source srcset={url(`/optimized/${key}.avif`)} type="image/avif"/><source srcset={url(`/optimized/${key}.webp`)} type="image/webp"/></>}<img src={url(src)} alt={alt} width={width} height={height} loading={eager?'eager':'lazy'} decoding="async" class={cls}/></picture>

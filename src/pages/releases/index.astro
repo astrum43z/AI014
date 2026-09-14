@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';import PageHeading from '../../components/PageHeading.astro';import ReleaseItem from '../../components/ReleaseItem.astro';import Arrow from '../../components/Arrow.astro';
+import {releases,url} from '../../lib/content';import {groupReleases} from '../../lib/model';
+const groups=groupReleases(releases);
+---
+<Layout active="Releases" title="Releases — AI014" description="AI014 的产品发布与更新记录。"><PageHeading label="AI014 / Release history" title="Releases" description="每一次发布，都留下一条记录。"/>
+  <section class="container releases-page" aria-label="发布历史">{groups.length?groups.map(year=><section class="release-year"><h2>{year.year}</h2><div>{year.months.map(month=><section class="release-month"><h3 class="eyebrow">{month.month} 月</h3>{month.releases.map(release=><ReleaseItem release={release}/>)}</section>)}</div></section>):<div class="releases-empty"><span class="empty-plus" aria-hidden="true">＋</span><span class="eyebrow">No releases yet</span><h2>新的发布，<br />会记录在这里。</h2><p>尚无公开发布记录。</p><a class="text-link" href={url('/products/')}>Explore products<Arrow/></a></div>}</section>
+</Layout>

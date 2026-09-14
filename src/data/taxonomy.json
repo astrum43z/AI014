@@ -1,0 +1,37 @@
+{
+  "types": {
+    "APP": "App",
+    "MOBILE_APP": "Mobile App",
+    "WEB": "Web",
+    "AI": "AI",
+    "AGENT": "Agent",
+    "TOOL": "Tool",
+    "EXTENSION": "Extension",
+    "DESKTOP": "Desktop",
+    "API": "API",
+    "OPEN_SOURCE": "Open Source",
+    "EXPERIMENT": "Experiment",
+    "HARDWARE": "Hardware",
+    "OTHER": "Other"
+  },
+  "platforms": {
+    "Android": "Android",
+    "iOS": "iOS",
+    "Web": "Web",
+    "Windows": "Windows",
+    "macOS": "macOS",
+    "Linux": "Linux",
+    "Extension": "Extension",
+    "API": "API",
+    "Mini Program": "Mini Program",
+    "Other": "Other"
+  },
+  "statuses": {
+    "Concept": "Concept",
+    "Prototype": "Prototype",
+    "Building": "Building",
+    "Beta": "Beta",
+    "Live": "Live",
+    "Archived": "Archived"
+  }
+}

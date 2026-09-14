@@ -1,0 +1,6 @@
+---
+interface Props { number: string; label: string; href?: string; action?: string }
+const { number, label, href, action } = Astro.props;
+import Arrow from './Arrow.astro';
+---
+<div class="section-label"><h2><span class="section-number">{number}</span>{label}</h2>{href && <a href={href} class="text-link">{action || 'View all'}<Arrow /></a>}</div>

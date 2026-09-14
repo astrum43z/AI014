@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+import '../styles/pages.css';
+import { url } from '../lib/content';
+interface Props { title?: string; description?: string; active?: string; image?: string; noindex?: boolean }
+const { title = 'AI014 — 有意思的 AI', description = '有意思的 AI，做点有意思的东西。', active = '', image = '/og/home.png', noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const imageUrl = image ? new URL(url(image), Astro.site).href : '';
+const fixedSocial = image.startsWith('/og/');
+const links = [['Home','/'],['Products','/products/'],['Projects','/projects/'],['Lab','/lab/'],['Releases','/releases/'],['About','/about/']];
+---
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#090b0e" /><title>{title}</title><meta name="description" content={description} />
+  <link rel="canonical" href={canonical} /><link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+  {noindex && <meta name="robots" content="noindex" />}
+  <meta property="og:type" content="website" /><meta property="og:site_name" content="AI014" /><meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} />
+  <meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} />
+  {imageUrl && <><meta property="og:image" content={imageUrl} />{fixedSocial && <><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /></>}<meta property="og:image:alt" content={title} /><meta name="twitter:image" content={imageUrl} /></>}
+</head><body>
+  <a href="#main" class="skip-link">跳到正文</a>
+  <header class="site-header"><div class="header-inner"><a class="wordmark" href={url('/')} aria-label="AI014 / 首页">AI014<span class="brand-slash">/</span></a>
+    <nav class="desktop-nav" aria-label="主导航">{links.map(([name,path]) => <a href={url(path)} aria-current={active===name?'page':undefined}>{name}</a>)}</nav>
+    <details class="mobile-nav"><summary><span>Menu</span><span class="menu-symbol" aria-hidden="true">＋</span></summary><nav aria-label="手机导航">{links.map(([name,path]) => <a href={url(path)} aria-current={active===name?'page':undefined}>{name}<span aria-hidden="true">↗</span></a>)}</nav></details>
+  </div></header>
+  <main id="main"><slot /></main>
+  <footer class="site-footer container"><div class="footer-top"><a href={url('/')} class="footer-wordmark">AI014</a><p>有意思的 AI，<br />做点有意思的东西。</p></div><div class="footer-bottom"><span>Ideas / Products / Experiments</span><div><a href="https://ai014.com">ai014.com ↗</a><a href="https://ai014.cn">ai014.cn ↗</a></div><a href="#main" class="back-top">Back to top ↑</a></div></footer>
+  <script>
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!reduced.matches && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.remove('reveal-ready'); observer.unobserve(entry.target); } }); }, { threshold: 0.06 });
+      document.querySelectorAll<HTMLElement>('[data-reveal]').forEach(el => { if (el.getBoundingClientRect().top > innerHeight) { el.classList.add('reveal-ready'); observer.observe(el); } });
+    }
+    if (!reduced.matches && matchMedia('(hover:hover) and (pointer:fine)').matches) {
+      document.querySelectorAll<HTMLElement>('[data-tilt]').forEach(el => {
+        el.addEventListener('pointermove', event => { const r=el.getBoundingClientRect(); el.style.setProperty('--rx', `${-(event.clientY-r.top-r.height/2)/r.height*2}deg`); el.style.setProperty('--ry', `${(event.clientX-r.left-r.width/2)/r.width*2}deg`); });
+        el.addEventListener('pointerleave', () => { el.style.setProperty('--rx','0deg'); el.style.setProperty('--ry','0deg'); });
+      });
+      document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach(el => {
+        el.addEventListener('pointermove', event => { const r=el.getBoundingClientRect(); el.style.transform=`translate(${(event.clientX-r.left-r.width/2)*.1}px,${(event.clientY-r.top-r.height/2)*.1}px)`; });
+        el.addEventListener('pointerleave', () => { el.style.transform=''; });
+      });
+    }
+    const menu=document.querySelector<HTMLDetailsElement>('.mobile-nav');
+    document.addEventListener('keydown', event => { if(event.key==='Escape' && menu?.open){menu.open=false;menu.querySelector('summary')?.focus();} });
+    document.addEventListener('click', event => { if(menu?.open && !menu.contains(event.target as Node))menu.open=false; });
+  </script>
+</body></html>

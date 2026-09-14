@@ -1,0 +1,5 @@
+---
+import Layout from '../../layouts/Layout.astro';import PageHeading from '../../components/PageHeading.astro';import Arrow from '../../components/Arrow.astro';import Media from '../../components/Media.astro';
+import {projects,url,typeName,statusName} from '../../lib/content';
+---
+<Layout active="Projects" title="Projects — AI014" description="AI014 做过、正在做与值得记录的项目。"><PageHeading label="AI014 / Selected work" title="Projects" description="做过的、正在做的，和还在演化的。"/><section class="container projects-list" aria-label="项目列表">{projects.map(project=><article class="project-list-item" data-reveal><div class="project-list-meta"><span>{typeName(project.type)}{project.category&&` / ${project.category}`}</span>{project.year&&<span>{project.year}</span>}{project.status&&<span>{statusName(project.status)}</span>}</div><a href={url(`/projects/${project.slug}/`)} class="project-list-content"><div><h2>{project.name}</h2><p>{project.description}</p></div><Arrow diagonal/></a>{project.cover&&<Media src={project.cover} alt={project.name}/>}<a href={url(`/projects/${project.slug}/`)} class="text-link">View Project<Arrow/></a></article>)}</section></Layout>

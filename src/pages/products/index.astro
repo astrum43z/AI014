@@ -1,0 +1,7 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHeading from '../../components/PageHeading.astro';
+import ProductShowcase from '../../components/ProductShowcase.astro';
+import { products } from '../../lib/content';
+---
+<Layout active="Products" title="Products — AI014" description="AI014 的产品。先做有意思的东西，再决定它属于什么类别。"><PageHeading label="AI014 / Products" title="Products" description="有意思的想法，慢慢成为可以使用的东西。"/><section class="container page-products" aria-label="全部产品">{products.map((product,index)=><ProductShowcase product={product} index={index}/>)}</section></Layout>

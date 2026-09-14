@@ -1,0 +1,13 @@
+---
+import type { Release } from '../lib/types';
+import { products, url, dateText, platformName, typeName } from '../lib/content';
+import Arrow from './Arrow.astro';
+interface Props { release: Release; showProduct?: boolean }
+const { release, showProduct=true }=Astro.props;
+const product=products.find(p=>p.id===release.productId)!;
+---
+<article class="release-item">
+  <div class="release-item-heading"><div>{showProduct && <a class="release-product" href={url(`/products/${product.slug}/`)}>{product.name}</a>}<h3>{release.version || 'Release'}</h3><span class="eyebrow">{typeName(product.type)} / {release.platforms.map(platformName).join(' · ')}</span></div><time datetime={release.date}>{dateText(release.date)}</time></div>
+  {release.changelog.length > 0 ? <ul class="changelog">{release.changelog.map(item=><li>{item}</li>)}</ul> : <p class="muted">本次更新暂无说明。</p>}
+  <div class="release-actions">{release.files.map(file=><a class="file-link" href={url(file.url)} download={file.url.startsWith('/')?true:undefined}><span>{file.label || 'Download'} <span class="file-format">{file.format}</span><small>{platformName(file.platform)}{file.size && ` · ${file.size}`}{file.minimumSystem && ` · ${file.minimumSystem}`}</small></span><span aria-hidden="true">↓</span></a>)}{release.visitUrl && <a class="text-link" href={url(release.visitUrl)}>Visit<Arrow diagonal /></a>}</div>
+</article>
