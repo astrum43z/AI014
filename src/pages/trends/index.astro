@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { categories, provinces } from '../../lib/trends/model';
+import { instruments, retrievedAt } from '../../lib/trends/catalog';
+import '../../styles/trends.css';
+---
+<Layout title="Trends 趋势观察 — AI014" description="房价、租金、股票、商品、贵金属与外汇的趋势观察。真实来源、明确日期、透明覆盖范围。" active="Trends">
+<div class="trends container">
+ <header class="trends-heading"><div><p class="eyebrow">AI014 / MARKET OBSERVATORY</p><h1>趋势观察<span>Trends</span></h1><p class="intro">看见变化，先看清数据。</p></div><a href="#coverage" class="source-shortcut">数据与覆盖说明 ↗</a></header>
+ <div class="trends-note"><span class="status-dot"></span>历史参考数据 · 非实时行情 <span>数据获取日期：{retrievedAt || '尚未导入'}</span></div>
+ <nav class="category-tabs" aria-label="市场分类">{categories.map(([id,label])=><button type="button" data-category={id} aria-pressed={id==='all'}>{label}</button>)}</nav>
+ <div class="trend-toolbar"><label class="search-field"><span aria-hidden="true">⌕</span><input id="trend-search" type="search" placeholder="搜索品种、代码或数据来源" aria-label="搜索品种、代码或数据来源" /></label><button id="region-open" type="button">全国 / 地区筛选 ⌄</button><button id="favorites-only" type="button" aria-pressed="false">☆ 我的收藏</button></div>
+ <section class="chart-panel" aria-labelledby="instrument-title">
+  <div class="instrument-top"><div><p class="eyebrow" id="instrument-symbol"></p><h2 id="instrument-title">选择观察品种</h2><p id="instrument-source" class="muted"></p></div><button id="detail-favorite" type="button" aria-label="收藏当前品种">☆ 收藏</button></div>
+  <div class="metrics"><div><p class="metric-label" id="value-label">最新参考值</p><strong id="last-value">—</strong><span id="instrument-unit"></span></div><div><p class="metric-label">所选区间变化</p><strong id="period-change">—</strong><span id="period-dates"></span></div><div class="metric-vintage"><p class="metric-label">数据截至</p><strong id="last-date">—</strong><span id="frequency"></span></div></div>
+  <div id="chart-area"><svg id="trend-chart" viewBox="0 0 1000 310" role="img" aria-label="所选品种历史参考值折线图"><defs><linearGradient id="gold-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d9c57d" stop-opacity=".16"/><stop offset="100%" stop-color="#d9c57d" stop-opacity="0"/></linearGradient></defs><g id="chart-grid"></g><path id="chart-fill" fill="url(#gold-fill)"/><path id="chart-line" fill="none" stroke="#e5cc7d" stroke-width="2.5" vector-effect="non-scaling-stroke"/><g id="chart-labels"></g></svg><div id="chart-empty" hidden><span>暂无已核实序列</span><p>覆盖说明见下方。不用模拟曲线替代真实行情。</p></div></div>
+  <label id="chart-inspector" class="chart-inspector">逐日查看 <input id="point-slider" type="range" min="0" max="1" value="1" aria-label="选择图表日期" /><output id="point-readout"></output></label><div class="chart-bottom"><p id="chart-caption" class="muted"></p><div class="range-tabs" aria-label="历史区间">{[[3,'近3月'],[6,'近6月'],[12,'近1年'],[36,'近3年'],[72,'近6年'],[0,'全部']].map(([months,label])=><button type="button" data-months={months} aria-pressed={months===12}>{label}</button>)}</div></div>
+  <p id="instrument-coverage" class="coverage-note"></p>
+ </section>
+ <section class="market-panel" aria-labelledby="market-title"><div class="market-heading"><div><p class="eyebrow">WATCH / COMPARE / EXPLORE</p><h2 id="market-title">市场一览</h2></div><span id="result-count" role="status" aria-live="polite"></span></div><p class="table-note">不同计价单位不作绝对价格排名；区间涨跌仅对有数据品种计算。</p><div class="table-scroll"><table><thead><tr><th><button data-sort="name" type="button">品种 ↕</button></th><th>最新参考值</th><th><button data-sort="change" type="button">区间变化 ↕</button></th><th>数据截至</th><th>状态</th><th>收藏</th></tr></thead><tbody id="market-rows"></tbody></table></div><p id="no-results" hidden>没有符合条件的品种。试试清除搜索或收藏筛选。</p></section>
+ <section id="coverage" class="coverage-panel"><div><p class="eyebrow">DATA, WITH CONTEXT</p><h2>每一条曲线，都应该有来处。</h2></div><div><p>已导入：ECB 外汇历史参考汇率，以及世界银行黄金、白银与部分大宗商品的月度归档数据（截至 2024-12，非现价）。所有值按来源原始计价单位展示，涨跌由所选区间首尾值计算，不代表投资回报。</p><p>房价与租金分开展示。国家统计局 70 城住宅价格指数不能代表全国所有省市区县，也不能等同于每平方米成交价。区县级房价、租金、股票及消费商品仍需可验证且许可范围明确的数据源。</p><p>当前为随站点发布的数据快照，不会自动实时更新。收藏仅保存在此浏览器。数据用于观察研究，不构成投资建议。</p><a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noopener noreferrer">查看 ECB 数据说明 ↗</a></div></section>
+ <noscript><p class="trends-note">请启用 JavaScript 使用筛选与图表。数据来源及覆盖说明仍可在本页阅读。</p></noscript>
+</div>
+<dialog id="region-dialog" class="region-dialog"><form method="dialog"><div class="dialog-heading"><h2>地区筛选</h2><button value="cancel" aria-label="关闭地区筛选">✕</button></div><p>用于房价与租金。地区名称可直接输入；未接入区域会明确显示缺少数据。</p><label>省 / 自治区 / 直辖市<select id="region-province"><option value="">全国</option>{provinces.map(p=><option>{p}</option>)}</select></label><label>城市<input id="region-city" placeholder="例如：武汉" maxlength="40" /></label><label>区 / 县<input id="region-district" placeholder="例如：武昌区" maxlength="40" /></label><p class="muted">选择地区不代表已有该地区数据。不会用上级地区数据替代区县数据。</p><div class="dialog-actions"><button value="cancel">取消</button><button id="region-reset" type="button">重置</button><button id="region-apply" value="apply">应用地区</button></div></form></dialog>
+<script is:inline type="application/json" id="trend-data" set:html={JSON.stringify(instruments).replace(/</g,'\\u003c')}></script>
+<script>import '../../lib/trends/dashboard';</script>
+</Layout>
