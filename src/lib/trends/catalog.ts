@@ -14,3 +14,10 @@ export const instruments:Instrument[] = [
  ...(!snapshot.instruments.some((x:Instrument)=>x.category==='fx') ? [pending('eur-usd','欧元 / 美元','fx','EUR/USD','USD / EUR','欧洲中央银行','https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html','每日参考汇率，非可成交报价。等待历史数据导入。')] : [])
 ];
 export const retrievedAt = snapshot.retrievedAt;
+
+const refreshStatus = (snapshot as { refreshStatus?: Record<string, {status: string}> }).refreshStatus;
+for (const instrument of instruments) {
+ instrument.refreshFailed = refreshStatus?.[instrument.category==='fx'?'ecb':'worldbank']?.status==='error';
+}
+export const worldBankVintage = snapshot.instruments.find(i=>i.category==='metal')?.points.at(-1)?.date.slice(0,7);
+export const worldBankPublished = (snapshot.instruments.find(i=>i.category==='metal') as Instrument | undefined)?.sourceUpdatedAt;

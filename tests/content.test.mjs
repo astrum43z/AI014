@@ -12,7 +12,7 @@ const initial = Object.fromEntries(
 const copy = () => structuredClone(initial);
 const release = (date, id = "test-release") => ({
   id,
-  productId: "interesting-weather",
+  productId: "xiaoyi",
   version: "",
   date,
   platforms: ["Android"],
@@ -22,7 +22,7 @@ const release = (date, id = "test-release") => ({
 });
 test("真实初始内容、未知状态、空发布记录有效", () => {
   assert.deepEqual(validateData(initial), []);
-  assert.equal(initial.products.length, 2);
+  assert.equal(initial.products.length, 1);
   assert.equal(initial.releases.length, 0);
   assert.equal(initial.labs.length, 0);
   assert.ok(initial.products.every((p) => p.status === null));
@@ -82,7 +82,7 @@ test("年月分组、最新发布和同日顺序稳定", () => {
     release("2026-02-01", "second"),
   ];
   assert.deepEqual(
-    releasesFor(records, "interesting-weather").map((r) => r.id),
+    releasesFor(records, "xiaoyi").map((r) => r.id),
     ["first", "second", "middle", "old"],
   );
   const groups = groupReleases(records);
@@ -128,4 +128,12 @@ test("图片拒绝 mailto，登记表拒绝继承属性", () => {
   const errors = validateData(d);
   assert.ok(errors.some((e) => e.includes("不接受邮件地址")));
   assert.ok(errors.some((e) => e.includes("type 未")));
+});
+test('weather product is removed and shared footer includes requested copy control',()=>{
+ assert.ok(initial.products.every(p=>p.id!=='interesting-weather'));
+ const layout=fs.readFileSync(new URL('../src/layouts/Layout.astro',import.meta.url),'utf8');
+ assert.match(layout,/联系微信：/);
+ assert.match(layout,/goodmorning2you/);
+ assert.match(layout,/id="copy-wechat"/);
+ assert.match(layout,/aria-live="polite"/);
 });
