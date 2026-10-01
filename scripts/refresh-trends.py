@@ -5,6 +5,8 @@ import datetime, hashlib, html, importlib.util, json, pathlib, re, tempfile, url
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('trends_import', ROOT/'scripts/import-trends.py')
 parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
+mainland_spec=importlib.util.spec_from_file_location('mainland',ROOT/'scripts/mainland-trends.py')
+mainland=importlib.util.module_from_spec(mainland_spec);mainland_spec.loader.exec_module(mainland)
 LANDING='https://www.worldbank.org/en/research/commodity-markets'
 
 def fetch(url):
@@ -36,7 +38,7 @@ def refresh(snapshot,checksums,asof,download=fetch,archive=None):
  snapshot=json.loads(json.dumps(snapshot));checksums=dict(checksums)
  statuses=snapshot.setdefault('refreshStatus',{})
  for source in ['ecb','worldbank']:
-  old=[i for i in snapshot['instruments'] if (i['category']=='fx')==(source=='ecb')]
+  old=[i for i in snapshot['instruments'] if i['category']==('fx' if source=='ecb' else 'metal')]
   # Pink Sheet is monthly. Once this month's release is present, do not redownload it daily.
   if source=='worldbank' and old and all(i.get('sourceUpdatedAt','').startswith(asof[:7]) for i in old):
    continue
@@ -59,6 +61,18 @@ def refresh(snapshot,checksums,asof,download=fetch,archive=None):
   except Exception as error:
    previous=statuses.get(source,{})
    statuses[source]={'checkedAt':asof,'lastSuccessAt':previous.get('lastSuccessAt',old[0].get('retrievedAt',snapshot['retrievedAt']) if old else None),'status':'error'}
+   print(f'::warning::{source} refresh failed ({type(error).__name__}); retained last good data')
+ for source in ['nbs','mara']:
+  old=[i for i in snapshot['instruments'] if i.get('sourceKey')==source]
+  if not old:continue
+  try:
+   new=mainland.refresh_source(old,source,asof,download,archive)
+   no_regression(old,new)
+   replacement={i['id']:i for i in new}
+   snapshot['instruments']=[replacement.get(i['id'],i) for i in snapshot['instruments']]
+   statuses[source]={'checkedAt':asof,'lastSuccessAt':asof,'status':'ok'}
+  except Exception as error:
+   statuses[source]={'checkedAt':asof,'lastSuccessAt':statuses.get(source,{}).get('lastSuccessAt',old[0].get('retrievedAt')),'status':'error'}
    print(f'::warning::{source} refresh failed ({type(error).__name__}); retained last good data')
  snapshot['retrievedAt']=max(i.get('retrievedAt',snapshot['retrievedAt']) for i in snapshot['instruments'])
  return snapshot,checksums

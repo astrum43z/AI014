@@ -1,0 +1,26 @@
+{
+  "retrievedAt": "2026-10-01",
+  "sources": [
+    {
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260914_1965293.html",
+      "date": "2026-09-10"
+    },
+    {
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260923_1965403.html",
+      "date": "2026-09-20"
+    },
+    {
+      "url": "https://scs.moa.gov.cn/jcyj/202609/t20260928_6488161.htm",
+      "date": "2026-09-28"
+    },
+    {
+      "url": "https://scs.moa.gov.cn/jcyj/202609/t20260929_6488223.htm",
+      "date": "2026-09-29"
+    },
+    {
+      "url": "https://scs.moa.gov.cn/jcyj/202609/t20260930_6488321.htm",
+      "date": "2026-09-30"
+    }
+  ],
+  "note": "2026-09-30 MARA numerical facts verified from official primary page via indexed text; direct HTML retrieval returned an error page. Earlier MARA and NBS bulletins parsed from downloaded HTML. No missing observations inferred."
+}

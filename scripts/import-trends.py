@@ -34,7 +34,7 @@ def import_wb(path, asof, wb_url=WB_URL):
    points.append(dict(date=date,value=row[col]))
   assert points and all(a['date']<b['date'] for a,b in zip(points,points[1:])), 'Missing or unsorted monthly observations'
   instruments.append(dict(id=symbol.lower(),name=name,category=category,symbol=symbol,unit=unit,source='世界银行 Pink Sheet',sourceUrl=wb_url,sourceUpdatedAt=updated,coverage=f'世界银行月度名义美元参考价。工作簿更新于 {updated}，序列截至 {points[-1]["date"][:7]}；不是今日现价或实时行情。每个点代表整月均价，日期中的 01 仅标识月份。',frequency='月度 · 历史均价',points=points))
- return validate(instruments, asof)
+ return validate([i for i in instruments if i['category']=='metal'], asof)
 
 def validate(instruments, asof):
  for item in instruments:

@@ -38,3 +38,14 @@ Run `python -m unittest discover -s tests -p 'test_*.py'` in addition to the JS 
 ## Next housing source candidate (not integrated)
 
 Verified on 2026-09-30: https://www.stats.gov.cn/sj/zxfb/202609/t20260915_1965304.html provides August 2026 NBS new-home and second-hand-home city-level indices (month-on-month, year-on-year and year-to-date comparative indices), released September 15. Its HTML tables are downloadable. They do not supply county-level prices, rent, or currency-per-square-metre values. A future integration must preserve those scopes and denominators rather than passing these rolling indices into price-return calculations unchanged.
+
+
+## 2026-10-01：大陆商品与手机布局
+
+商品入口改用人民币原生统计资料：国家统计局的50种流通领域重要生产资料（9类，规格写入名称）以及农业农村部的11项食品批发均价（包含28种蔬菜、6种水果监测篮子）。旧国际原油、铜、铝、美国小麦序列已移除，不作汇率换算冒充国内价格。黄金白银继续明确标注国际来源，外汇维持原有ECB口径。
+
+初始大陆数据范围有限：NBS 2026年9月上旬、中旬；MARA 9月28–30日。未导入的多年历史、节假日和缺失日不补点、不插值。NBS的日期取旬末日，不是当天现价；MARA为公告当日14:00批发均价，不是品牌SKU或零售价。来源链接保留到每个观测值。原始公告网页由官方发布，本站仅整理事实数据并注明出处，不镜像全文、图片或声称取得第三方数据库授权。
+
+`mainland-trends.py` 分别校验两类公告的日期、50/11项固定覆盖和原始单位；通过官方列表页发现最新公告，每次最多读取6份。任何来源获取或解析失败保留该来源整组最后成功值并显示失败状态，不影响其他来源。重新构建不等于来源刷新成功。来源清单见 `mainland-source-manifest.json`；9/30 MARA由官方网页已索引文本核对，直接HTML当次返回错误页面，因此没有将错误HTML作为成功证据。
+
+手机布局：原市场横向导航换为原生选择器；价格表以信息卡呈现；名称、单位、价格、日期和状态无需横滑；图表采用窄屏坐标与更大文字；按钮和滑块触区至少44px；手机有独立排序选择器。选择品种后定位图表，搜索无结果隐藏旧图表。桌面仍保留横向标签和表格。
