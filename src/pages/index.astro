@@ -8,12 +8,12 @@ import { products, releases, labs, url, dateText } from '../lib/content';
 <Layout active="Home">
   <section class="hero container"><div class="hero-grid" aria-hidden="true"></div><div class="hero-topline eyebrow"><span>Independent products & data</span><span class="hero-coordinate">AI / 014</span></div>
     <h1 class="hero-title">AI014<span class="hero-period">.</span></h1>
-    <div class="hero-bottom"><h2>有意思的 AI，<br /><span>做点有意思的东西。</span></h2><div class="hero-aside"><p>Products / Data / Experiments</p><a class="explore" href="#products" data-magnetic><span>Explore</span><span class="circle-arrow">↓</span></a></div></div>
+    <div class="hero-bottom"><h2>有意思的 AI，<br /><span>做点有意思的东西。</span></h2><div class="hero-aside"><p>Products / Data / Experiments</p><a class="explore" href={products.length ? "#products" : "#trends"} data-magnetic><span>Explore</span><span class="circle-arrow">↓</span></a></div></div>
     <div class="hero-foot"><span>先做有意思的东西，再决定它属于什么类别。</span><span aria-hidden="true">SCROLL TO EXPLORE <span class="scroll-line"></span></span></div>
   </section>
-  <section class="container section" id="products"><SectionLabel number="01" label="Featured Products" href={url('/products/')} action="All products" />{products.filter(p=>p.featured).map((product,index)=><ProductShowcase product={product} index={index} />)}</section>
+  {products.length > 0 && <section class="container section" id="products"><SectionLabel number="01" label="Featured Products" href={url('/products/')} action="All products" />{products.filter(p=>p.featured).map((product,index)=><ProductShowcase product={product} index={index} />)}</section>}
   <section class="container section" id="trends">
-    <SectionLabel number="02" label="Trends Observatory" href={url('/trends/')} action="进入趋势观察" />
+    <SectionLabel number={products.length ? "02" : "01"} label="Trends Observatory" href={url('/trends/')} action="进入趋势观察" />
     <div class="home-observatory" data-reveal>
       <div class="observatory-copy"><span class="eyebrow">Data, with context</span><h3>看见变化，<br /><span>先看清数据。</span></h3><p>从日常蔬果到市场行情，把真实来源、日期和覆盖范围放在每一条曲线旁边。</p><a class="text-link" href={url('/trends/')}>打开趋势观察<Arrow /></a></div>
       <div class="observatory-index" aria-label="趋势观察分类">
@@ -26,7 +26,7 @@ import { products, releases, labs, url, dateText } from '../lib/content';
       <p class="observatory-note">历史参考数据，非实时行情。不同品种的覆盖范围以详情页说明为准。</p>
     </div>
   </section>
-  <section class="container section lab-home" data-reveal><SectionLabel number="03" label="The Lab" href={url('/lab/')} action="Enter Lab" /><div class="lab-panel"><div><span class="eyebrow">A space for what comes next</span><h3>留一点空间，<br /><span>给还没成形的想法。</span></h3></div><div class="lab-aside"><span class="lab-symbol" aria-hidden="true">[ &nbsp; ]</span><p>{labs.length ? `${labs.length} experiments` : 'Nothing here yet.'}</p></div></div></section>
-  <section class="container section"><SectionLabel number="04" label="Latest Releases" href={url('/releases/')} action="Release history" />{releases.length ? releases.slice(0,3).map(release=><a class="release-preview" href={url(`/products/${products.find(p=>p.id===release.productId)?.slug}/`)}><span>{products.find(p=>p.id===release.productId)?.name}</span><span>{release.version}</span><time>{dateText(release.date)}</time><Arrow /></a>) : <div class="empty-release"><span class="empty-mark" aria-hidden="true">—</span><p>新的发布，会记录在这里。</p><span class="eyebrow">No releases yet</span></div>}</section>
+  <section class="container section lab-home" data-reveal><SectionLabel number={products.length ? "03" : "02"} label="The Lab" href={url('/lab/')} action="Enter Lab" /><div class="lab-panel"><div><span class="eyebrow">A space for what comes next</span><h3>留一点空间，<br /><span>给还没成形的想法。</span></h3></div><div class="lab-aside"><span class="lab-symbol" aria-hidden="true">[ &nbsp; ]</span><p>{labs.length ? `${labs.length} experiments` : 'Nothing here yet.'}</p></div></div></section>
+  <section class="container section"><SectionLabel number={products.length ? "04" : "03"} label="Latest Releases" href={url('/releases/')} action="Release history" />{releases.length ? releases.slice(0,3).map(release=><a class="release-preview" href={url(`/products/${products.find(p=>p.id===release.productId)?.slug}/`)}><span>{products.find(p=>p.id===release.productId)?.name}</span><span>{release.version}</span><time>{dateText(release.date)}</time><Arrow /></a>) : <div class="empty-release"><span class="empty-mark" aria-hidden="true">—</span><p>新的发布，会记录在这里。</p><span class="eyebrow">No releases yet</span></div>}</section>
   <section class="container home-about" data-reveal><span class="eyebrow">About AI014</span><div><h2>方向可以改变。<br />有意思，就值得一试。</h2><p>从独立产品到趋势观察，<br class="desktop-break" />把有意思的想法做成可以打开、可以探索的东西。</p><a class="text-link" href={url('/about/')}>More about AI014<Arrow /></a></div></section>
 </Layout>

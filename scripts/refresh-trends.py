@@ -7,8 +7,6 @@ spec=importlib.util.spec_from_file_location('trends_import', ROOT/'scripts/impor
 parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
 mainland_spec=importlib.util.spec_from_file_location('mainland',ROOT/'scripts/mainland-trends.py')
 mainland=importlib.util.module_from_spec(mainland_spec);mainland_spec.loader.exec_module(mainland)
-produce_spec=importlib.util.spec_from_file_location('produce',ROOT/'scripts/produce-trends.py')
-produce=importlib.util.module_from_spec(produce_spec);produce_spec.loader.exec_module(produce)
 mofcom_spec=importlib.util.spec_from_file_location('mofcom',ROOT/'scripts/mofcom-produce-trends.py')
 mofcom=importlib.util.module_from_spec(mofcom_spec);mofcom_spec.loader.exec_module(mofcom)
 LANDING='https://www.worldbank.org/en/research/commodity-markets'
@@ -40,7 +38,11 @@ def no_regression(old,new):
 
 def refresh(snapshot,checksums,asof,download=fetch,archive=None,download_post=None,bootstrap=None):
  snapshot=json.loads(json.dumps(snapshot));checksums=dict(checksums)
+ # Drop retired local-market records before cache merge or any refresh.
+ snapshot['instruments']=[i for i in snapshot['instruments'] if i.get('sourceKey')!='chaoyang' and not i.get('id','').startswith('cn-chaoyang-')]
+ checksums={k:v for k,v in checksums.items() if 'chaoyang' not in k}
  statuses=snapshot.setdefault('refreshStatus',{})
+ statuses.pop('chaoyang',None)
  if bootstrap is not None:
   existing={i['id'] for i in snapshot['instruments']}
   additions=[i for i in mofcom.load_bootstrap(bootstrap) if i['id'] not in existing]
@@ -84,17 +86,6 @@ def refresh(snapshot,checksums,asof,download=fetch,archive=None,download_post=No
   except Exception as error:
    statuses[source]={'checkedAt':asof,'lastSuccessAt':statuses.get(source,{}).get('lastSuccessAt',old[0].get('retrievedAt')),'status':'error'}
    print(f'::warning::{source} refresh failed ({type(error).__name__}); retained last good data')
- old=[i for i in snapshot['instruments'] if i.get('sourceKey')=='chaoyang']
- if old:
-  try:
-   new=produce.refresh_source(old,asof,download,archive)
-   no_regression(old,new)
-   replacement={i['id']:i for i in new}
-   snapshot['instruments']=[replacement.get(i['id'],i) for i in snapshot['instruments']]
-   statuses['chaoyang']={'checkedAt':asof,'lastSuccessAt':asof,'status':'ok'}
-  except Exception as error:
-   statuses['chaoyang']={'checkedAt':asof,'lastSuccessAt':statuses.get('chaoyang',{}).get('lastSuccessAt',old[0].get('retrievedAt')),'status':'error'}
-   print(f'::warning::chaoyang refresh failed ({type(error).__name__}); retained last good data')
  old=[i for i in snapshot['instruments'] if i.get('sourceKey')=='mofcom']
  if old:
   previous=statuses.get('mofcom',{})
@@ -119,7 +110,7 @@ def refresh(snapshot,checksums,asof,download=fetch,archive=None,download_post=No
    except Exception as error:
     statuses['mofcom']={'checkedAt':asof,'lastSuccessAt':last_success or old[0].get('retrievedAt'),'status':'error'}
     print(f'::warning::mofcom refresh failed ({type(error).__name__}); retained last good data')
- snapshot['retrievedAt']=max(i.get('retrievedAt',snapshot['retrievedAt']) for i in snapshot['instruments'])
+ snapshot['retrievedAt']=max((i.get('retrievedAt',snapshot['retrievedAt']) for i in snapshot['instruments']),default=snapshot['retrievedAt'])
  return snapshot,checksums
 
 if __name__=='__main__':

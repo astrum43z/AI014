@@ -16,15 +16,7 @@
       ],
       "prompt": "Use case: ads-marketing.\nAsset type: premium social sharing preview card, landscape 1200 x 630 pixels or the same 1.90476:1 aspect ratio.\nStyle: ultra-restrained graphic typography for AI014, an independent creative technology lab. Flat nearly black #090b0e background, crisp silver-white sans-serif typography, a very subtle ice blue #a6d8f5 hairline grid at extremely low contrast, generous negative space. Editorial Swiss-grid precision with refined Chinese sans-serif typography. All content within generous 65px safe margins. No objects, robots, brains, chips, sci-fi cities, photography, icons, fake app interfaces, gradients or additional copy. Text must be flawlessly legible with correct Chinese glyphs. Keep the graphic flat and immaculate.\nComposition: small white \"AI014\" at top left. Large silver-white Chinese \"有意思天气\" center-left. Smaller restrained \"Android\" immediately below. Tiny \"ai014.com\" at bottom left. Right half largely empty, only barely perceptible hairline grid. Typography-led high-end identity. Exact visible text only: AI014 / 有意思天气 / Android / ai014.com. No extra labels or implied features.",
       "file": "public/og/interesting-weather.png"
-    },
-    {
-      "finalDimensions": [
-        1200,
-        630
-      ],
-      "prompt": "Use case: ads-marketing.\nAsset type: premium social sharing preview card, landscape 1200 x 630 pixels or the same 1.90476:1 aspect ratio.\nStyle: ultra-restrained graphic typography for AI014, an independent creative technology lab. Flat nearly black #090b0e background, crisp silver-white sans-serif typography, a very subtle ice blue #a6d8f5 hairline grid at extremely low contrast, generous negative space. Editorial Swiss-grid precision with refined Chinese sans-serif typography. All content within generous 65px safe margins. No objects, robots, brains, chips, sci-fi cities, photography, icons, fake app interfaces, gradients or additional copy. Text must be flawlessly legible with correct Chinese glyphs. Keep the graphic flat and immaculate.\nComposition: small white \"AI014\" at top left. Large silver-white Chinese \"小意月记\" center-left. Smaller restrained \"Android\" immediately below. Tiny \"ai014.com\" at bottom left. Right half largely empty, only barely perceptible hairline grid. Typography-led high-end identity. Exact visible text only: AI014 / 小意月记 / Android / ai014.com. No extra labels or implied features.",
-      "file": "public/og/xiaoyi.png"
     }
   ],
-  "qa": "All 3 selected images visually inspected for correct exact Chinese and allowed text. Homepage regenerated once to remove glow/noise. Final processing is simple resizing only."
+  "qa": "Retained published image prompts; removed product card is excluded."
 }

@@ -1,7 +1,7 @@
 import snapshot from '../../data/trends.json';
 import type { Instrument } from './model';
 import { nationalProduceBootstrap } from './national-produce';
-const stored=snapshot.instruments as Instrument[];
+const stored=(snapshot.instruments as Instrument[]).filter(i=>i.sourceKey!=='chaoyang'&&!i.id.startsWith('cn-chaoyang-')); 
 const storedIds=new Set(stored.map(i=>i.id));
 const resolvedSnapshot=[...stored,...nationalProduceBootstrap.filter(i=>!storedIds.has(i.id))];
 const pending = (id:string,name:string,category:string,symbol:string,unit:string,source:string,sourceUrl:string,coverage:string):Instrument=>({id,name,category,symbol,unit,source,sourceUrl,coverage,points:[],frequency:'尚未接入'});
@@ -25,7 +25,6 @@ for (const instrument of instruments) {
 export const worldBankVintage = snapshot.instruments.find(i=>i.category==='metal')?.points.at(-1)?.date.slice(0,7);
 export const worldBankPublished = (snapshot.instruments.find(i=>i.category==='metal') as Instrument | undefined)?.sourceUpdatedAt;
 
-export const produceRefreshPending = refreshStatus?.chaoyang?.status==='verified-snapshot';
 
 export const nationalProduceRefreshPending = refreshStatus?.mofcom?.status==='verified-snapshot';
 

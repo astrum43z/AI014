@@ -1,13 +1,13 @@
 ---
 import '../styles/global.css';
 import '../styles/pages.css';
-import { projects, url } from '../lib/content';
+import { products, projects, url } from '../lib/content';
 interface Props { title?: string; description?: string; active?: string; image?: string; noindex?: boolean }
 const { title = 'AI014 — 有意思的 AI', description = 'AI014：独立产品与趋势观察。做有意思的工具，用可追溯的数据看见变化。', active = '', image = '/og/home.png', noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const imageUrl = image ? new URL(url(image), Astro.site).href : '';
 const fixedSocial = image.startsWith('/og/');
-const links = [['Home','/'],['Products','/products/'],...(projects.length ? [['Projects','/projects/']] : []),['Trends','/trends/'],['Lab','/lab/'],['Releases','/releases/'],['About','/about/']];
+const links = [['Home','/'],...(products.length ? [['Products','/products/']] : []),...(projects.length ? [['Projects','/projects/']] : []),['Trends','/trends/'],['Lab','/lab/'],['Releases','/releases/'],['About','/about/']];
 ---
 <!doctype html>
 <html lang="zh-CN"><head>

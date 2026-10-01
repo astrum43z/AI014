@@ -57,30 +57,9 @@ Verified on 2026-09-30: https://www.stats.gov.cn/sj/zxfb/202609/t20260915_196530
 - 时间区间增加近2期、近7天、近1月；保留3月、1年、3年、6年和全部。区间锚定该品种最新观测日期；日期说明明确展示所选区间及实际收录跨度。较长选择超出历史覆盖时说明不会增加观测值，不插值或制造历史。只有1点时显示明确状态，仍可查看该点及来源；没有数据时禁用区间。
 - 图表横轴按真实日历间隔，而不是给稀疏数据等距排列。点提示和滑块可以查看每次公告；切换单位、收藏或调整窗口大小保留正在查看的日期。
 
-单品蔬果初始接入20项、75个已核验观测（无锡朝阳蔬菜市场12项，锡澄果品市场8项），来自无锡朝阳集团公开价格表。个别蔬菜可追溯到2026-08-21；水果可核验2026-09-12、09-27、10-01，部分品种只有2期。不是完整每日或多年数据库。源表产地/规格为空时明确说明，不将不同品种、规格混并。极端最高/最低值按源表保留，不修饰成零售可购区间；主值直接取源表单品均价，不自行取最高最低中点。
-
-来源网页会更新，同一URL不保证仍展示导入日期；初始事实从公开来源的索引页面文本核验，证据记录与哈希见produce-source-manifest.json。没有声称第三方开放数据库许可，仅引用有限公开事实并注明原站。produce-trends.py在既有工作日更新流程中读取公开列表及其实际分页链接，未接入私有API或新凭据。日期、单位、价格区间、同日冲突、来源域名及历史退步均做检查；获取失败时整组保留旧值并显示失败状态。
-
-
-### Same-day source-refresh verification
-
-On 2026-10-01 the HTTPS ingestion path was exercised against the provider's actual HTML. The initial parser failed because cells were split across lines. It now uses HTML table cell boundaries, deduplicates page-one aliases, prioritizes only currently discovered pages referenced by existing observations, and stops once all selected items are found. The verified request set was vegetable pages 1, 2 and 4 plus fruit page 1. Twenty individual items were parsed; nine genuine October 1 observations were appended, bringing the verified produce snapshot to 84 points. No historical prices were changed. Direct-source hashes and factual row extracts are retained in produce-http-verification.json.
-
-The source status is now successful because that ingestion completed; this does not guarantee every future scheduled run or source connection. A source timeout or parse failure still preserves the whole previous source snapshot and displays its failure marker. Snapshot regression tests check known prices at their actual dates instead of freezing the latest price, allowing later valid updates.
-
-
-### Verified 31-day individual-produce history
-
-The provider's public table item controls reveal PriceShow.aspx routes for the same item, market and specification. The page embeds dated mean values in its chart XML; no Flash code is executed. On 2026-10-01 all 20 selected public graph pages were read. Fifteen have one unambiguous mean for each date from 2026-09-01 through 2026-10-01 (31 genuine dates). Repeated object/embed representations are verified equal and deduplicated. Five graphs (包菜、扁豆、黄瓜、韭菜、菠萝) expose multiple distinct prices on the same date without identifying the subseries; they are rejected instead of taking a first/last value or averaging them.
-
-One-time backfill adds 414 new observations to the previous84, for498 total across20 items. All overlapping means agree; pre-existing low/high/source links remain unchanged. Historical graph points have no invented low/high. Per-item historyNote explains whether the verified history was accepted or held back. Fifteen items now have31–33 total observations; the other five retain3–7 explicitly verified table dates. The manifest records first-party URLs, source hashes, accepted date counts, and limited ambiguity examples.
-
-produce-history.py provides strict route discovery, graph validation and atomic history merging for this one-time bootstrap. It is deliberately excluded from daily refresh: the small current-table collector appends future genuine dates while preserving imported history and notes. Both monthly-window and full-history choices therefore operate on real dated observations.
-
-
 ## 2026-10-01：全国36种蔬果单品周价
 
-新增商务部商务预报直接发布的全国单品批发价格：30种蔬菜、6种水果，每品91期，共3276个实际观测，2025-01-03至2026-09-25。默认展示全国黄瓜；20项无锡地方记录与其498点完全保留，仍显著标注地方市场。国家统计局、农业农村部、外汇、贵金属、A股组件及独立品牌内容不变。
+新增商务部商务预报直接发布的全国单品批发价格：30种蔬菜、6种水果，每品91期，共3276个实际观测，2025-01-03至2026-09-25。默认展示全国黄瓜。蔬菜与水果仅保留全国单品记录。国家统计局、农业农村部、外汇、贵金属、A股组件及独立品牌内容不变。
 
 信息来源：商务预报。官方入口 https://cif.mofcom.gov.cn/cif/html/dataCenter/ 的农副产品→周度监测数据。官方前端公开使用 POST https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml，参数 indexIds（最多3品）、startDate、endDate；返回title明确标注“全国某品批发价格走势”，UNIT为元/公斤。品种编码来自同站公开zhouduData.js。蔬菜篮子18055947明确排除，没有从篮子推算单品、用地方价冒充全国或填造历史。原始元/公斤不变，按斤展示仍除以2。
 
@@ -93,3 +72,9 @@ DATADATE原样保留为周度观测标签，不改成周末、不声称是具体
 运行python -m unittest discover -s tests -p 'test_*.py'、npm run check、npm test和npm run build。新增测试覆盖36品真实周度事实、全国/地方分离、默认选择、按斤换算、七天缓存边界、首次刷新、失败后重试、无效来源拒绝及完整旧值/哈希保留。
 
 全国周价初始快照以src/data/mofcom-produce.json单独紧凑存储，共用91个真实周度日期轴与36列原始价格，避免重写其他来源的快照。构建时展开为同一Instrument结构；已缓存的源记录优先。首次自动刷新会把缺少的全国记录加到工作流缓存的trends.json，随后仍使用原有缓存与整源失败保留规则；其他源原始文件不变。
+
+## Retired sources and empty product catalogue
+
+Retired local-market data, adapters and evidence files are removed from the current source tree; repository history remains unchanged. The active catalogue rejects retired source IDs even when reading a stale snapshot. The refresh worker strips them and their status/checksum entries before loading the national bootstrap, and cannot request their former endpoint. The existing cache key hashes the changed committed snapshot, so old source snapshots no longer match; no workflow permissions, triggers or schedules are changed. All 36 national weekly series and 3276 observations remain unchanged, as do other national food, industrial, FX, precious-metal and A-share sources.
+
+No public product remains. Product cards/navigation and static detail routes disappear, the product index uses an honest empty state, and the removed social image is no longer published.

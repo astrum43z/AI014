@@ -12,8 +12,8 @@ const data=JSON.parse(await page.locator('#trend-data').textContent()),radish=da
 assert.equal(await page.locator('h1').count(),1);assert.ok(await page.locator('#market-rows tr').count()>=9);assert.doesNotMatch(await page.locator('#market-rows').textContent(),/28种蔬菜|6种水果/);
 assert.equal(await page.locator('#instrument-title').textContent(),'黄瓜');assert.match(await page.locator('#instrument-symbol').textContent(),/全国/);assert.match(await page.locator('#frequency').textContent(),/周度/);assert.equal(await page.locator('#last-value').textContent(),format(data.find(i=>i.id==='cn-mofcom-224068').points.at(-1).value/2));
 const category=async value=>viewport.width<=760?await page.locator('#category-select').selectOption(value):await page.locator(`[data-category="${value}"]`).click();
-await page.locator('#market-rows tr').filter({hasText:'无锡'}).locator('.instrument-link').filter({hasText:/^白萝卜$/}).click();
-assert.equal(await page.locator('#last-value').textContent(),format(radishLast.value/2));assert.equal(await page.locator('#quote-range').textContent(),`最低 ${format(radishLast.low/2)} / 最高 ${format(radishLast.high/2)} 元/斤`);
+await page.locator('#market-rows tr').filter({hasText:'全国'}).locator('.instrument-link').filter({hasText:/^白萝卜$/}).click();
+assert.equal(await page.locator('#last-value').textContent(),format(radishLast.value/2));assert.equal(await page.locator('#quote-range').isVisible(),false);assert.ok(data.every(i=>i.sourceKey!=='chaoyang'));
 await page.locator('[data-range="all"]').click();assert.ok((await page.locator('#chart-caption').textContent()).startsWith(`${radish.points.length} 个观测值`));
 await page.locator('[data-range="7d"]').click();assert.ok((await page.locator('#chart-caption').textContent()).startsWith(`${rangePoints(radish.points,'7d').length} 个观测值`));
 await page.locator('[data-range="2p"]').click();assert.match(await page.locator('#chart-caption').textContent(),/2 个观测值/);

@@ -10,7 +10,7 @@ const files = fs
   .readdirSync(root, { recursive: true })
   .filter((f) => f.endsWith(".html"));
 const errors = [];
-const retiredIdentity = /yi[.-]wang/i;
+const retiredIdentity = /yi[.-]wang|xiaoyi|小意月记|chinachaoyang|无锡朝阳|锡澄果品/i;
 for (const file of fs.readdirSync(root, { recursive: true })) {
   if (retiredIdentity.test(file)) errors.push(`${file}: 已移除项目仍有生成文件`);
   if (/\.(?:html|xml|json|txt|js|css)$/.test(file) && retiredIdentity.test(fs.readFileSync(path.join(root, file), "utf8")))
@@ -61,7 +61,6 @@ for (const required of [
   "favicon.svg",
   "og/home.png",
   "og/interesting-weather.png",
-  "og/xiaoyi.png",
 ])
   if (!fs.existsSync(path.join(root, required)))
     errors.push(`缺少 ${required}`);

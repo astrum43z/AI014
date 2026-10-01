@@ -41,12 +41,16 @@ class RefreshTests(unittest.TestCase):
   updated,_=r.refresh(snapshot,{},'2026-09-30',fail)
   self.assertEqual(calls,[r.parser.ECB_URL])
   self.assertNotIn('worldbank',updated['refreshStatus'])
- def test_produce_network_failure_preserves_all_values_and_sets_failure_marker(self):
-  original={'retrievedAt':'2026-10-01','refreshStatus':{'chaoyang':{'lastSuccessAt':'2026-10-01','status':'verified-snapshot'}},'instruments':[{'id':'cn-chaoyang-test','category':'consumer','sourceKey':'chaoyang','retrievedAt':'2026-10-01','points':[{'date':'2026-09-30','value':1.31,'low':1,'high':5.5}]}]}
-  def fail(url):raise TimeoutError('Source timed out')
-  updated,_=r.refresh(original,{},'2026-10-01',fail)
-  self.assertEqual(updated['instruments'],original['instruments'])
-  self.assertEqual(updated['refreshStatus']['chaoyang']['status'],'error')
-  self.assertEqual(updated['refreshStatus']['chaoyang']['lastSuccessAt'],'2026-10-01')
-  self.assertEqual(original['refreshStatus']['chaoyang']['status'],'verified-snapshot')
+ def test_retired_source_cannot_return_from_old_cache_or_network(self):
+  original={'retrievedAt':'2026-10-01','refreshStatus':{'chaoyang':{'lastSuccessAt':'2026-10-01','status':'ok'}},'instruments':[{'id':'cn-chaoyang-test','category':'consumer','sourceKey':'chaoyang','points':[{'date':'2026-09-30','value':1.31}]}]}
+  calls=[]
+  def fail(url):calls.append(url);raise TimeoutError('Other official source offline')
+  updated,hashes=r.refresh(original,{'chaoyang/old.html':'old','keep':'same'},'2026-10-01',fail,bootstrap=ROOT/'src/data/mofcom-produce.json',download_post=lambda u,b: (_ for _ in ()).throw(TimeoutError('offline')))
+  self.assertTrue(all(i.get('sourceKey')=='mofcom' for i in updated['instruments']))
+  self.assertEqual(len(updated['instruments']),36)
+  self.assertEqual(sum(len(i['points']) for i in updated['instruments']),3276)
+  self.assertNotIn('chaoyang',updated['refreshStatus'])
+  self.assertEqual(hashes,{'keep':'same'})
+  self.assertTrue(all('chinachaoyang' not in url for url in calls))
+  self.assertEqual(len(original['instruments']),1)
 if __name__=='__main__':unittest.main()

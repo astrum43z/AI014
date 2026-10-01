@@ -21,7 +21,7 @@ function cell(value:string,cls='',label=''){const el=document.createElement('td'
 function inspectPoint(index:number){
  const i=selectedItem(),points=rangePoints(i.points,range),p=points[index];if(!p)return;
  inspectedDate=p.date;get<HTMLInputElement>('point-slider').value=String(index);
- const value=`${p.date} · ${i.sourceKey==='mofcom'?'全国周度批发价 ':i.sourceKey==='chaoyang'?'单品均价 ':''}${format(displayValue(p.value,i.unit,unitMode))} ${displayUnit(i.unit,unitMode)}${quoteRange(p,i)?' · '+quoteRange(p,i):''}`;
+ const value=`${p.date} · ${i.sourceKey==='mofcom'?'全国周度批发价 ':''}${format(displayValue(p.value,i.unit,unitMode))} ${displayUnit(i.unit,unitMode)}${quoteRange(p,i)?' · '+quoteRange(p,i):''}`;
  text('point-readout',value);get<HTMLInputElement>('point-slider').setAttribute('aria-valuetext',value);
  get<HTMLAnchorElement>('point-source').href=p.sourceUrl||i.sourceUrl;
  get('chart-point-title').textContent=value;
@@ -64,7 +64,7 @@ function render(){
  get('chart-empty').hidden=points.length>1;get('trend-chart').style.display=points.length>1?'block':'none';
  text('chart-empty-title',points.length===1?'所选区间只有1个观测值':'暂无已核实序列');text('chart-empty-copy',points.length===1?'无法计算涨跌或绘制折线。试试“近2期”或扩大区间；不补造缺失价格。':'覆盖说明见下方。不用模拟曲线替代真实行情。');
  document.querySelectorAll<HTMLButtonElement>('[data-range]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.range===range));b.disabled=!i.points.length;});
- if(points.length>1)renderChart(points,unit,i.sourceKey==='chaoyang');
+ if(points.length>1)renderChart(points,unit,false);
  get('chart-inspector').hidden=!points.length;const slider=get<HTMLInputElement>('point-slider');slider.max=String(Math.max(0,points.length-1));slider.disabled=points.length<2;
  const prior=points.findIndex(p=>p.date===inspectedDate);if(points.length)inspectPoint(prior>=0?prior:points.length-1);
  text('chart-caption',points.length?`${points.length} 个观测值 · ${unit} · 非实时${i.sourceKey==='mofcom'?' · 周度观测，缺失期不补点':i.sourceKey?' · 仅已核实公告，缺失日不补点':''}`:'暂无数据时不计算趋势与涨跌');

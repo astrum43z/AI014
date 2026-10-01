@@ -9,10 +9,11 @@ const initial = Object.fromEntries(
     JSON.parse(fs.readFileSync(`src/data/${name}.json`, "utf8")),
   ]),
 );
-const copy = () => structuredClone(initial);
+const fixtureProduct = {"id": "test-product", "slug": "test-product", "name": "Test product", "subtitle": "", "type": "MOBILE_APP", "platforms": ["Android"], "status": null, "icon": "", "cover": "", "socialImage": "", "description": "", "updatedAt": null, "downloadUrl": "", "visitUrl": "", "repositoryUrl": "", "privacyUrl": "", "privacyText": "", "feedbackUrl": "", "screenshots": [], "tags": [], "featured": true, "order": 2};
+const copy = () => ({...structuredClone(initial), products: [structuredClone(fixtureProduct)]});
 const release = (date, id = "test-release") => ({
   id,
-  productId: "xiaoyi",
+  productId: "test-product",
   version: "",
   date,
   platforms: ["Android"],
@@ -22,7 +23,7 @@ const release = (date, id = "test-release") => ({
 });
 test("真实初始内容、未知状态、空发布记录有效", () => {
   assert.deepEqual(validateData(initial), []);
-  assert.equal(initial.products.length, 1);
+  assert.equal(initial.products.length, 0);
   assert.equal(initial.releases.length, 0);
   assert.equal(initial.labs.length, 0);
   assert.ok(initial.products.every((p) => p.status === null));
@@ -82,7 +83,7 @@ test("年月分组、最新发布和同日顺序稳定", () => {
     release("2026-02-01", "second"),
   ];
   assert.deepEqual(
-    releasesFor(records, "xiaoyi").map((r) => r.id),
+    releasesFor(records, "test-product").map((r) => r.id),
     ["first", "second", "middle", "old"],
   );
   const groups = groupReleases(records);
@@ -97,8 +98,8 @@ test("年月分组、最新发布和同日顺序稳定", () => {
 });
 test("基础路径处理不改变外部下载和锚点", () => {
   assert.equal(
-    localUrl("/products/xiaoyi/", "/ai014/"),
-    "/ai014/products/xiaoyi/",
+    localUrl("/products/test-product/", "/ai014/"),
+    "/ai014/products/test-product/",
   );
   assert.equal(
     localUrl("/downloads/test/file.tar.gz", "/ai014/"),
@@ -151,4 +152,11 @@ test('public project data is independent and the footer is a single shared contr
  assert.match(home,/id="trends"/);
  assert.doesNotMatch(home,/id="projects"/);
  assert.match(fs.readFileSync('src/pages/projects/index.astro','utf8'),/!projects\.length/);
+});
+
+test("removed product has no public data, social card or navigation entry",()=>{
+ assert.deepEqual(initial.products,[]);
+ assert.equal(fs.existsSync("public/og/xiaoyi.png"),false);
+ assert.match(fs.readFileSync("src/layouts/Layout.astro","utf8"),/products\.length/);
+ assert.match(fs.readFileSync("src/pages/index.astro","utf8"),/products\.length > 0/);
 });
