@@ -1,7 +1,7 @@
 import { rangePoints, rangeSummary, displayUnit, displayValue, displayPoints, change, chartPath, freshness, type Instrument, type Range, type UnitMode } from './model';
 const data:Instrument[]=JSON.parse(document.querySelector('#trend-data')!.textContent!);
 const get=<T extends HTMLElement>(id:string)=>document.getElementById(id) as T;
-let category='consumer',query='',favoritesOnly=false,range:Range='1m',selected=data.find(i=>i.category==='consumer'&&i.points.some(p=>p.low!==undefined))?.id||data.find(i=>i.category==='consumer'&&i.points.length)?.id||data[0].id,sort='name',direction=1,region='';
+let category=new URLSearchParams(location.search).get('market')==='a'?'a':'consumer',query='',favoritesOnly=false,range:Range='1m',selected=data.find(i=>i.category==='consumer'&&i.points.some(p=>p.low!==undefined))?.id||data.find(i=>i.category==='consumer'&&i.points.length)?.id||data[0].id,sort='name',direction=1,region='';
 let unitMode:UnitMode='jin',inspectedDate='',favorites=new Set<string>();
 try {
  const saved=JSON.parse(localStorage.getItem('ai014.trends.favorites')||'[]');
@@ -30,6 +30,11 @@ function render(){
  document.querySelectorAll<HTMLButtonElement>('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===category)));
  document.querySelectorAll<HTMLButtonElement>('[data-unit]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.unit===unitMode)));
  get('favorites-only').setAttribute('aria-pressed',String(favoritesOnly));get<HTMLSelectElement>('category-select').value=category;
+ const isAShare=category==='a';
+ get<HTMLAnchorElement>('market-jump').href=isAShare?'#a-share-panel':'#market-title';
+ document.querySelectorAll<HTMLElement>('[data-a-share-hidden]').forEach(el=>el.hidden=isAShare);
+ document.dispatchEvent(new CustomEvent('trends:category-change',{detail:category}));
+ if(isAShare){get('selected-instrument').hidden=true;return;}
  const list=matches().sort((a,b)=>sort==='name'?direction*a.name.localeCompare(b.name,'zh-CN'):((change(rangePoints(a.points,range))??-Infinity)-(change(rangePoints(b.points,range))??-Infinity))*direction);
  if(list.length&&!list.some(i=>i.id===selected)){selected=list[0].id;inspectedDate='';}
  const rows=get('market-rows');rows.replaceChildren();

@@ -1,0 +1,21 @@
+---
+import { aSharePresets } from '../lib/trends/a-share';
+import '../styles/a-share.css';
+---
+<section id="a-share-panel" class="a-share-panel" hidden aria-labelledby="a-share-title">
+  <div class="a-share-heading"><div><p class="eyebrow">CHINA A-SHARES / DAILY HISTORY</p><h2 id="a-share-title">A股 · 指数与个股</h2></div><span class="a-share-badge">日线历史 / EOD覆盖</span></div>
+  <p class="a-share-intro">查看上交所、深交所的历史日线、周线和月线。官方组件覆盖以 EOD（收盘数据）为主；具体更新频率、最新数值及日期以图内标注为准。休市、节假日显示最近交易记录，本页不作为盘中实时行情服务。</p>
+  <div class="a-share-presets" role="group" aria-label="常用A股品种">{aSharePresets.map(p=><button type="button" data-a-share-symbol={p.symbol} aria-pressed={p.symbol==='SSE:000001'}><span>{p.name}</span><small>{p.symbol} · {p.type}</small></button>)}</div>
+  <form id="a-share-search" class="a-share-search">
+    <label>交易所<select id="a-share-exchange" name="exchange"><option value="SSE">上海 SSE</option><option value="SZSE">深圳 SZSE</option></select></label>
+    <label class="a-share-code-label">股票 / 指数代码<input id="a-share-code" name="code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" value="000001" placeholder="例如 600519" required aria-describedby="a-share-search-help" /></label>
+    <button type="submit">查看日线</button>
+  </form>
+  <p id="a-share-search-help" class="a-share-help">输入6位代码并选择交易所。上证指数为上海 000001；平安银行为深圳 000001。具体品种与历史长度以供应方可提供范围为准，暂不含北交所。</p>
+  <div class="a-share-chart-heading"><h3 id="a-share-current">上证指数 · SSE:000001</h3><button type="button" id="a-share-retry">重新加载</button></div>
+  <p id="a-share-status" class="a-share-status" role="status" aria-live="polite">选择A股分类后加载图表。价格、数据日期及休市状态以图表内标注为准。</p>
+  <div id="a-share-widget" class="a-share-widget" aria-label="A股历史收盘图表"></div>
+  <p class="a-share-fallback">图表未显示或品种不可用？<a id="a-share-source" href="https://www.tradingview.com/symbols/SSE-000001/" target="_blank" rel="noopener noreferrer">在 TradingView 查看此品种 ↗</a>，也可切换品种或重新加载。</p>
+  <details class="a-share-disclosure"><summary>数据来源、使用范围与第三方加载说明</summary><p>图表由 TradingView 官方嵌入组件直接提供，并保留其署名。AI014 不抓取、存储或导出组件中的行情，不把组件价格混入本站其他数据的涨跌排名。若某个品种受限，组件会提示不可用；本页不会用模拟曲线替代。</p><p>打开A股分类后，浏览器会连接 TradingView 及其组件服务，供应方可接收页面地址、显示品种和连接所需的 IP 地址。<a href="https://www.tradingview.com/widget-docs/faq/general/" target="_blank" rel="noopener noreferrer">第三方加载说明 ↗</a> · <a href="https://www.tradingview.com/widget-docs/markets/asia-pacific/" target="_blank" rel="noopener noreferrer">交易所覆盖与 EOD 说明 ↗</a> · <a href="https://www.tradingview.com/policies/" target="_blank" rel="noopener noreferrer">TradingView 使用条款 ↗</a></p></details>
+</section>
+<script>import {initASharePanel} from '../lib/trends/a-share-panel'; initASharePanel();</script>
