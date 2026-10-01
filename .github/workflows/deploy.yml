@@ -27,8 +27,8 @@ jobs:
           path: |
             src/data/trends.json
             docs/trends-source-checksums.json
-          key: reference-v1-${{ hashFiles('scripts/import-trends.py', 'src/data/trends.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: reference-v1-${{ hashFiles('scripts/import-trends.py', 'src/data/trends.json') }}-
+          key: reference-v1-${{ hashFiles('scripts/import-trends.py', 'src/data/trends.json', 'scripts/mofcom-produce-trends.py', 'src/data/mofcom-produce.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: reference-v1-${{ hashFiles('scripts/import-trends.py', 'src/data/trends.json', 'scripts/mofcom-produce-trends.py', 'src/data/mofcom-produce.json') }}-
           fail-on-cache-miss: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
       - uses: actions/setup-node@v6
         with:

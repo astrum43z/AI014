@@ -50,5 +50,5 @@ export function freshness(i:Instrument,now=new Date()):string {
  const age=(now.getTime()-day(i.points.at(-1)!.date))/86400000;
  if(age>(i.sourceKey==='nbs'?25:i.sourceKey==='mara'||i.category==='consumer'?12:i.category==='fx'?7:75))return '数据滞后';
  if(i.refreshPending)return '已核验 · 自动更新待验证';
- return i.sourceKey==='nbs'?'旬度市场均价':i.sourceKey==='mara'?'每日批发均价':i.category==='consumer'?'市场单品均价':i.category==='fx'?'每日参考汇率':'月度历史均价';
+ return i.sourceKey==='mofcom'?'周度全国单品批发价格':i.sourceKey==='nbs'?'旬度市场均价':i.sourceKey==='mara'?'每日批发均价':i.category==='consumer'?'市场单品均价':i.category==='fx'?'每日参考汇率':'月度历史均价';
 }

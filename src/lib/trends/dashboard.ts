@@ -2,7 +2,7 @@ import { categories, rangePoints, rangeSummary, displayUnit, displayValue, displ
 const data:Instrument[]=JSON.parse(document.querySelector('#trend-data')!.textContent!);
 const get=<T extends HTMLElement>(id:string)=>document.getElementById(id) as T;
 const requestedCategory=new URLSearchParams(location.search).get('market');
-let category=categories.some(([id])=>id===requestedCategory)?requestedCategory!:'consumer',query='',favoritesOnly=false,range:Range='1m',selected=data.find(i=>i.category==='consumer'&&i.points.some(p=>p.low!==undefined))?.id||data.find(i=>i.category==='consumer'&&i.points.length)?.id||data[0].id,sort='name',direction=1,region='';
+let category=categories.some(([id])=>id===requestedCategory)?requestedCategory!:'consumer',query='',favoritesOnly=false,range:Range='1m',selected=data.find(i=>i.id==='cn-mofcom-224068'&&i.points.length)?.id||data.find(i=>i.sourceKey==='mofcom'&&i.points.length)?.id||data.find(i=>i.category==='consumer'&&i.points.some(p=>p.low!==undefined))?.id||data.find(i=>i.category==='consumer'&&i.points.length)?.id||data[0].id,sort='name',direction=1,region='';
 let unitMode:UnitMode='jin',inspectedDate='',favorites=new Set<string>();
 try {
  const saved=JSON.parse(localStorage.getItem('ai014.trends.favorites')||'[]');
@@ -21,7 +21,7 @@ function cell(value:string,cls='',label=''){const el=document.createElement('td'
 function inspectPoint(index:number){
  const i=selectedItem(),points=rangePoints(i.points,range),p=points[index];if(!p)return;
  inspectedDate=p.date;get<HTMLInputElement>('point-slider').value=String(index);
- const value=`${p.date} · ${i.sourceKey==='chaoyang'?'单品均价 ':''}${format(displayValue(p.value,i.unit,unitMode))} ${displayUnit(i.unit,unitMode)}${quoteRange(p,i)?' · '+quoteRange(p,i):''}`;
+ const value=`${p.date} · ${i.sourceKey==='mofcom'?'全国周度批发价 ':i.sourceKey==='chaoyang'?'单品均价 ':''}${format(displayValue(p.value,i.unit,unitMode))} ${displayUnit(i.unit,unitMode)}${quoteRange(p,i)?' · '+quoteRange(p,i):''}`;
  text('point-readout',value);get<HTMLInputElement>('point-slider').setAttribute('aria-valuetext',value);
  get<HTMLAnchorElement>('point-source').href=p.sourceUrl||i.sourceUrl;
  get('chart-point-title').textContent=value;
@@ -36,8 +36,8 @@ function render(){
  document.querySelectorAll<HTMLElement>('[data-a-share-hidden]').forEach(el=>el.hidden=isAShare);
  document.dispatchEvent(new CustomEvent('trends:category-change',{detail:category}));
  if(isAShare){get('selected-instrument').hidden=true;return;}
- const list=matches().sort((a,b)=>sort==='name'?direction*a.name.localeCompare(b.name,'zh-CN'):((change(rangePoints(a.points,range))??-Infinity)-(change(rangePoints(b.points,range))??-Infinity))*direction);
- if(list.length&&!list.some(i=>i.id===selected)){selected=list[0].id;inspectedDate='';}
+ const list=matches().sort((a,b)=>sort==='name'?(direction*a.name.localeCompare(b.name,'zh-CN')||(a.sourceKey==='mofcom'?-1:0)-(b.sourceKey==='mofcom'?-1:0)):((change(rangePoints(a.points,range))??-Infinity)-(change(rangePoints(b.points,range))??-Infinity))*direction);
+ if(list.length&&!list.some(i=>i.id===selected)){selected=(list.find(i=>i.sourceKey==='mofcom')||list[0]).id;inspectedDate='';}
  const rows=get('market-rows');rows.replaceChildren();
  for(const i of list){
   const tr=document.createElement('tr');tr.classList.toggle('selected',i.id===selected);
@@ -52,11 +52,11 @@ function render(){
  text('result-count',`${list.length} 个品种`);get('no-results').hidden=list.length>0;get('selected-instrument').hidden=!list.length;if(!list.length)return;
  const i=selectedItem(),regional=region&&(i.category==='housing'||i.category==='rent'),unit=displayUnit(i.unit,unitMode);
  text('instrument-title',(regional?region+' · ':'')+i.name);text('instrument-symbol',i.symbol);get('instrument-source').replaceChildren();
- const source=document.createElement('a');source.href=i.sourceUrl;source.target='_blank';source.rel='noopener noreferrer';source.textContent=`来源：${i.source} ↗`;get('instrument-source').append(source);
+ const source=document.createElement('a');source.href=i.sourceUrl;source.target='_blank';source.rel='noopener noreferrer';source.textContent=`${i.sourceKey==='mofcom'?'':'来源：'}${i.source} ↗`;get('instrument-source').append(source);
  const raw=rangePoints(i.points,range),points=displayPoints(raw,i.unit,unitMode),latest=i.points.at(-1),delta=change(raw);
- text('value-label',latest?.low!==undefined?'最新单品均价':'最新参考值');text('quote-range',latest?quoteRange(latest,i):'');get('quote-range').hidden=!latest||!quoteRange(latest,i);
+ text('value-label',i.sourceKey==='mofcom'?'最新全国单品周价':latest?.low!==undefined?'最新单品均价':'最新参考值');text('quote-range',latest?quoteRange(latest,i):'');get('quote-range').hidden=!latest||!quoteRange(latest,i);
  text('last-value',latest?format(displayValue(latest.value,i.unit,unitMode)):'—');text('instrument-unit',unit);text('last-date',latest?.date||'暂无数据');
- text('frequency',`${i.frequency}${i.sourceUpdatedAt?' · 发布于 '+i.sourceUpdatedAt:''} · ${freshness(i)}${i.retrievedAt?' · 获取于 '+i.retrievedAt:''}`);
+ text('frequency',`${i.frequency}${i.sourceUpdatedAt?' · '+(i.sourceKey==='mofcom'?'观测标签 ':'发布于 ')+i.sourceUpdatedAt:''} · ${freshness(i)}${i.retrievedAt?' · 获取于 '+i.retrievedAt:''}`);
  text('period-change',pct(delta));get('period-change').className=tone(delta);text('period-dates',raw.length?`${raw[0].date} → ${raw.at(-1)!.date}`:'待接入可核实序列');
  text('range-status',rangeSummary(i.points,range));text('instrument-coverage',(regional?`所选地区：${region}。目前没有该地区已核实的数据。 `:'')+i.coverage+(i.historyNote?' '+i.historyNote:''));
  text('unit-detail',unit!==i.unit?`原始单位 ${i.unit} · 显示值按 1斤 = 0.5公斤换算，涨跌幅不变`:i.unit==='元/斤'?'来源原始单位为元/斤，无需换算':/^元\/(公斤|千克|kg)$/i.test(i.unit)?'当前显示来源原始单位；可切换为元/斤':`此品种保持原始单位 ${i.unit}`);
@@ -67,7 +67,7 @@ function render(){
  if(points.length>1)renderChart(points,unit,i.sourceKey==='chaoyang');
  get('chart-inspector').hidden=!points.length;const slider=get<HTMLInputElement>('point-slider');slider.max=String(Math.max(0,points.length-1));slider.disabled=points.length<2;
  const prior=points.findIndex(p=>p.date===inspectedDate);if(points.length)inspectPoint(prior>=0?prior:points.length-1);
- text('chart-caption',points.length?`${points.length} 个观测值 · ${unit} · 非实时${i.sourceKey?' · 仅已核实公告，缺失日不补点':''}`:'暂无数据时不计算趋势与涨跌');
+ text('chart-caption',points.length?`${points.length} 个观测值 · ${unit} · 非实时${i.sourceKey==='mofcom'?' · 周度观测，缺失期不补点':i.sourceKey?' · 仅已核实公告，缺失日不补点':''}`:'暂无数据时不计算趋势与涨跌');
 }
 function renderChart(points:ReturnType<typeof displayPoints>,unit:string,produce:boolean){
  const small=matchMedia('(max-width:760px)').matches,w=small?300:900,h=small?190:250;

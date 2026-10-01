@@ -76,3 +76,20 @@ The provider's public table item controls reveal PriceShow.aspx routes for the s
 One-time backfill adds 414 new observations to the previous84, for498 total across20 items. All overlapping means agree; pre-existing low/high/source links remain unchanged. Historical graph points have no invented low/high. Per-item historyNote explains whether the verified history was accepted or held back. Fifteen items now have31–33 total observations; the other five retain3–7 explicitly verified table dates. The manifest records first-party URLs, source hashes, accepted date counts, and limited ambiguity examples.
 
 produce-history.py provides strict route discovery, graph validation and atomic history merging for this one-time bootstrap. It is deliberately excluded from daily refresh: the small current-table collector appends future genuine dates while preserving imported history and notes. Both monthly-window and full-history choices therefore operate on real dated observations.
+
+
+## 2026-10-01：全国36种蔬果单品周价
+
+新增商务部商务预报直接发布的全国单品批发价格：30种蔬菜、6种水果，每品91期，共3276个实际观测，2025-01-03至2026-09-25。默认展示全国黄瓜；20项无锡地方记录与其498点完全保留，仍显著标注地方市场。国家统计局、农业农村部、外汇、贵金属、A股组件及独立品牌内容不变。
+
+信息来源：商务预报。官方入口 https://cif.mofcom.gov.cn/cif/html/dataCenter/ 的农副产品→周度监测数据。官方前端公开使用 POST https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml，参数 indexIds（最多3品）、startDate、endDate；返回title明确标注“全国某品批发价格走势”，UNIT为元/公斤。品种编码来自同站公开zhouduData.js。蔬菜篮子18055947明确排除，没有从篮子推算单品、用地方价冒充全国或填造历史。原始元/公斤不变，按斤展示仍除以2。
+
+DATADATE原样保留为周度观测标签，不改成周末、不声称是具体发布日期或当日现货。单品权重、每期样本数量、品级产地没有在该接口披露，不虚构口径。全国参考批发周价并非政府统一定价、零售价或品牌SKU报价。不推算最高/最低价，不插值补每日点。
+
+网站级版权与免责声明 https://cif.mofcom.gov.cn/cif/html/indexCenter2024/index.html 要求原创官方作品转载保持原意并注明“信息来源：商务预报”；页面和每个单品保留此署名及官方链接。这里是官方公开事实价格的整理，不声称获得通用开放数据库许可或有保证的API服务。来源清单、请求参数、逐品数量和原始响应SHA256见mofcom-source-manifest.json。
+
+新增mofcom-produce-trends.py严格验证全国标题、品名、单位、日期、数值及重复/丢失日期。每次最多3品，串行请求，批次间隔1秒。现有工作日自动流程中仅在上次成功刷新满7天时再次请求；新适配器首次运行及失败后下次运行会重试。任何批次失败保留整组最后核验值、日期和校验哈希，并标记来源失败；成功后更新源状态和获取日期。始终沿用最新观测标签判断是否滞后。没有发布数字限流或服务保证，采用低频缓存。首次生产自动流程尚未执行时UI明确显示待验证。
+
+运行python -m unittest discover -s tests -p 'test_*.py'、npm run check、npm test和npm run build。新增测试覆盖36品真实周度事实、全国/地方分离、默认选择、按斤换算、七天缓存边界、首次刷新、失败后重试、无效来源拒绝及完整旧值/哈希保留。
+
+全国周价初始快照以src/data/mofcom-produce.json单独紧凑存储，共用91个真实周度日期轴与36列原始价格，避免重写其他来源的快照。构建时展开为同一Instrument结构；已缓存的源记录优先。首次自动刷新会把缺少的全国记录加到工作流缓存的trends.json，随后仍使用原有缓存与整源失败保留规则；其他源原始文件不变。

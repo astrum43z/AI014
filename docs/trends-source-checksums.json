@@ -1,4 +1,16 @@
 {
   "ecb.xml": "684f22325b80a05da42ca1de044e07ca5515c00a35386335f573c7cc08d6ab0f",
-  "wb.xlsx": "9fdcfa8a2aed9a1bb545a10c1a5ce036c6a0acd4766f450424ca800b4b5a0225"
+  "wb.xlsx": "9fdcfa8a2aed9a1bb545a10c1a5ce036c6a0acd4766f450424ca800b4b5a0225",
+  "mofcom/batch-01.json": "2aae15db9317e0f8dc79eb947db04cefb7ed911c01d9860612826026c79f64e9",
+  "mofcom/batch-02.json": "528d7d70467a8de466ecec10f4faa30dd68a9f0162d54f1fdeb197bda2dc2bcd",
+  "mofcom/batch-03.json": "3e9271ca34192cbfa6f2b54b88cf07fe05eabcede67a1c40832f9a9b8f5aedc3",
+  "mofcom/batch-04.json": "e2bb12aed022ebee2a6fa63bb963f893f6196333613bfdb67d6512d6b91164f0",
+  "mofcom/batch-05.json": "d3868f57fefb890d8562b05bd1f33289916ff27f3cf9bd74755ab11118b51177",
+  "mofcom/batch-06.json": "19d6e094741240bead1834476ffe15e0c5a302f6e481fb04237fb665dc73a4fa",
+  "mofcom/batch-07.json": "42123083e29918fd64fd31cc353655f7bd6eab05272bae52025a7ee1b5d78b63",
+  "mofcom/batch-08.json": "162638e93714f8b0cbad7a6dab912d55d0628a49e7f6535298b49419defece90",
+  "mofcom/batch-09.json": "f2b548c60637bbba8e465955fab78826a295150aee6272bdeca2340a82b6e007",
+  "mofcom/batch-10.json": "25751d40f279bf7771d2687f9f00892b6c32c32461e99920a73f1e3aa568be5c",
+  "mofcom/batch-11.json": "89706e802fa73573228bfe0ae57ed2bc9f2bfc4da5469ccc2b5c339082b0b76d",
+  "mofcom/batch-12.json": "c2896159266beb00e5063268b1127e5f5e65458f15317690c685beabb0b3cffd"
 }

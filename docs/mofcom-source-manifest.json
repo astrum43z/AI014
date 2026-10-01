@@ -1,0 +1,498 @@
+{
+  "retrievedAt": "2026-10-01T06:14:19.362648+00:00",
+  "source": "商务预报 / 商务部市场运行监测系统",
+  "sourceUrl": "https://cif.mofcom.gov.cn/cif/html/dataCenter/",
+  "frequency": "weekly",
+  "currency": "CNY",
+  "unit": "kg",
+  "requestedStartDate": "2025-01-01",
+  "requestedEndDate": "2026-10-01",
+  "dateMeaning": "Source DATADATE preserved verbatim; weekly observation label, not daily spot quote or asserted calendar-week endpoint.",
+  "copyrightStatementUrl": "https://cif.mofcom.gov.cn/cif/html/indexCenter2024/index.html",
+  "requiredAttribution": "信息来源：商务预报",
+  "methodologyLimits": "Official national single-item wholesale weekly price; item-specific weighting, period-specific sample count, grade/origin mix not disclosed by this endpoint. Not a government price standard or a retail SKU quote.",
+  "series": [
+    {
+      "sourceId": "224058",
+      "name": "油菜",
+      "category": "shucai",
+      "title": "全国油菜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 3.45
+    },
+    {
+      "sourceId": "224059",
+      "name": "芹菜",
+      "category": "shucai",
+      "title": "全国芹菜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 3.45
+    },
+    {
+      "sourceId": "224060",
+      "name": "生菜",
+      "category": "shucai",
+      "title": "全国生菜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 4.82
+    },
+    {
+      "sourceId": "224061",
+      "name": "大白菜",
+      "category": "shucai",
+      "title": "全国大白菜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 1.77
+    },
+    {
+      "sourceId": "16305946",
+      "name": "菠菜",
+      "category": "shucai",
+      "title": "全国菠菜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 6.71
+    },
+    {
+      "sourceId": "224057",
+      "name": "圆白菜",
+      "category": "shucai",
+      "title": "全国圆白菜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 1.89
+    },
+    {
+      "sourceId": "16305959",
+      "name": "西兰花",
+      "category": "shucai",
+      "title": "全国西兰花批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 5.52
+    },
+    {
+      "sourceId": "16305971",
+      "name": "菜花",
+      "category": "shucai",
+      "title": "全国菜花批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 3.87
+    },
+    {
+      "sourceId": "224062",
+      "name": "白萝卜",
+      "category": "shucai",
+      "title": "全国白萝卜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 2.01
+    },
+    {
+      "sourceId": "224063",
+      "name": "土豆",
+      "category": "shucai",
+      "title": "全国土豆批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 2.59
+    },
+    {
+      "sourceId": "224066",
+      "name": "生姜",
+      "category": "shucai",
+      "title": "全国生姜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 7.99
+    },
+    {
+      "sourceId": "16305978",
+      "name": "胡萝卜",
+      "category": "shucai",
+      "title": "全国胡萝卜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 2.69
+    },
+    {
+      "sourceId": "16305983",
+      "name": "莲藕",
+      "category": "shucai",
+      "title": "全国莲藕批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 7.1
+    },
+    {
+      "sourceId": "16306008",
+      "name": "莴笋",
+      "category": "shucai",
+      "title": "全国莴笋批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 4.54
+    },
+    {
+      "sourceId": "16306013",
+      "name": "山药",
+      "category": "shucai",
+      "title": "全国山药批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 8.15
+    },
+    {
+      "sourceId": "224068",
+      "name": "黄瓜",
+      "category": "shucai",
+      "title": "全国黄瓜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 4.21
+    },
+    {
+      "sourceId": "224073",
+      "name": "冬瓜",
+      "category": "shucai",
+      "title": "全国冬瓜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 2.17
+    },
+    {
+      "sourceId": "224074",
+      "name": "苦瓜",
+      "category": "shucai",
+      "title": "全国苦瓜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 5.89
+    },
+    {
+      "sourceId": "16306016",
+      "name": "西葫芦",
+      "category": "shucai",
+      "title": "全国西葫芦批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 3.4
+    },
+    {
+      "sourceId": "16306028",
+      "name": "南瓜",
+      "category": "shucai",
+      "title": "全国南瓜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 2.5
+    },
+    {
+      "sourceId": "224072",
+      "name": "豆角",
+      "category": "shucai",
+      "title": "全国豆角批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 6.53
+    },
+    {
+      "sourceId": "16306033",
+      "name": "豆芽",
+      "category": "shucai",
+      "title": "全国豆芽批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 2.49
+    },
+    {
+      "sourceId": "224067",
+      "name": "西红柿",
+      "category": "shucai",
+      "title": "全国西红柿批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 3.83
+    },
+    {
+      "sourceId": "224069",
+      "name": "茄子",
+      "category": "shucai",
+      "title": "全国茄子批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 3.47
+    },
+    {
+      "sourceId": "224070",
+      "name": "辣椒",
+      "category": "shucai",
+      "title": "全国辣椒批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 5.03
+    },
+    {
+      "sourceId": "224071",
+      "name": "青椒",
+      "category": "shucai",
+      "title": "全国青椒批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 4.84
+    },
+    {
+      "sourceId": "224064",
+      "name": "洋葱",
+      "category": "shucai",
+      "title": "全国洋葱批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 2.58
+    },
+    {
+      "sourceId": "224065",
+      "name": "蒜头",
+      "category": "shucai",
+      "title": "全国蒜头批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 8.67
+    },
+    {
+      "sourceId": "16306035",
+      "name": "韭菜",
+      "category": "shucai",
+      "title": "全国韭菜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 4.68
+    },
+    {
+      "sourceId": "16306037",
+      "name": "大葱",
+      "category": "shucai",
+      "title": "全国大葱批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 3.45
+    },
+    {
+      "sourceId": "224089",
+      "name": "苹果",
+      "category": "shuiguo",
+      "title": "全国苹果批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 9.25
+    },
+    {
+      "sourceId": "224090",
+      "name": "香蕉",
+      "category": "shuiguo",
+      "title": "全国香蕉批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 5.33
+    },
+    {
+      "sourceId": "224091",
+      "name": "葡萄",
+      "category": "shuiguo",
+      "title": "全国葡萄批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 10.33
+    },
+    {
+      "sourceId": "224093",
+      "name": "梨",
+      "category": "shuiguo",
+      "title": "全国梨批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 5.96
+    },
+    {
+      "sourceId": "224094",
+      "name": "西瓜",
+      "category": "shuiguo",
+      "title": "全国西瓜批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 3.98
+    },
+    {
+      "sourceId": "23543271",
+      "name": "柑橘",
+      "category": "shuiguo",
+      "title": "全国柑橘批发价格走势",
+      "count": 91,
+      "firstDate": "2025-01-03",
+      "lastDate": "2026-09-25",
+      "lastValue": 5.58
+    }
+  ],
+  "requests": [
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "224058,224059,224060",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "2aae15db9317e0f8dc79eb947db04cefb7ed911c01d9860612826026c79f64e9"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "224061,16305946,224057",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "528d7d70467a8de466ecec10f4faa30dd68a9f0162d54f1fdeb197bda2dc2bcd"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "16305959,16305971,224062",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "3e9271ca34192cbfa6f2b54b88cf07fe05eabcede67a1c40832f9a9b8f5aedc3"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "224063,224066,16305978",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "e2bb12aed022ebee2a6fa63bb963f893f6196333613bfdb67d6512d6b91164f0"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "16305983,16306008,16306013",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "d3868f57fefb890d8562b05bd1f33289916ff27f3cf9bd74755ab11118b51177"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "224068,224073,224074",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "19d6e094741240bead1834476ffe15e0c5a302f6e481fb04237fb665dc73a4fa"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "16306016,16306028,224072",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "42123083e29918fd64fd31cc353655f7bd6eab05272bae52025a7ee1b5d78b63"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "16306033,224067,224069",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "162638e93714f8b0cbad7a6dab912d55d0628a49e7f6535298b49419defece90"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "224070,224071,224064",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "f2b548c60637bbba8e465955fab78826a295150aee6272bdeca2340a82b6e007"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "224065,16306035,16306037",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "25751d40f279bf7771d2687f9f00892b6c32c32461e99920a73f1e3aa568be5c"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "224089,224090,224091",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "89706e802fa73573228bfe0ae57ed2bc9f2bfc4da5469ccc2b5c339082b0b76d"
+    },
+    {
+      "endpoint": "https://cif.mofcom.gov.cn/cif/getWeekLineChart2021.fhtml",
+      "method": "POST",
+      "parameters": {
+        "indexIds": "224093,224094,23543271",
+        "startDate": "2025-01-01",
+        "endDate": "2026-10-01"
+      },
+      "sha256": "c2896159266beb00e5063268b1127e5f5e65458f15317690c685beabb0b3cffd"
+    }
+  ]
+}

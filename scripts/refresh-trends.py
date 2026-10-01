@@ -9,6 +9,8 @@ mainland_spec=importlib.util.spec_from_file_location('mainland',ROOT/'scripts/ma
 mainland=importlib.util.module_from_spec(mainland_spec);mainland_spec.loader.exec_module(mainland)
 produce_spec=importlib.util.spec_from_file_location('produce',ROOT/'scripts/produce-trends.py')
 produce=importlib.util.module_from_spec(produce_spec);produce_spec.loader.exec_module(produce)
+mofcom_spec=importlib.util.spec_from_file_location('mofcom',ROOT/'scripts/mofcom-produce-trends.py')
+mofcom=importlib.util.module_from_spec(mofcom_spec);mofcom_spec.loader.exec_module(mofcom)
 LANDING='https://www.worldbank.org/en/research/commodity-markets'
 
 def fetch(url):
@@ -36,9 +38,15 @@ def no_regression(old,new):
   assert len(item['points'])>=len(before['points']), 'Source history shrank'
   assert item['points'][-1]['date']>=before['points'][-1]['date'], 'Source vintage regressed'
 
-def refresh(snapshot,checksums,asof,download=fetch,archive=None):
+def refresh(snapshot,checksums,asof,download=fetch,archive=None,download_post=None,bootstrap=None):
  snapshot=json.loads(json.dumps(snapshot));checksums=dict(checksums)
  statuses=snapshot.setdefault('refreshStatus',{})
+ if bootstrap is not None:
+  existing={i['id'] for i in snapshot['instruments']}
+  additions=[i for i in mofcom.load_bootstrap(bootstrap) if i['id'] not in existing]
+  if additions:
+   snapshot['instruments'].extend(additions)
+   statuses['mofcom']={'checkedAt':additions[0]['retrievedAt'],'lastSuccessAt':additions[0]['retrievedAt'],'status':'verified-snapshot'}
  for source in ['ecb','worldbank']:
   old=[i for i in snapshot['instruments'] if i['category']==('fx' if source=='ecb' else 'metal')]
   # Pink Sheet is monthly. Once this month's release is present, do not redownload it daily.
@@ -87,13 +95,37 @@ def refresh(snapshot,checksums,asof,download=fetch,archive=None):
   except Exception as error:
    statuses['chaoyang']={'checkedAt':asof,'lastSuccessAt':statuses.get('chaoyang',{}).get('lastSuccessAt',old[0].get('retrievedAt')),'status':'error'}
    print(f'::warning::chaoyang refresh failed ({type(error).__name__}); retained last good data')
+ old=[i for i in snapshot['instruments'] if i.get('sourceKey')=='mofcom']
+ if old:
+  previous=statuses.get('mofcom',{})
+  last_success=previous.get('lastSuccessAt')
+  # Public weekly series: at most one successful request cycle every seven days.
+  # A failed cycle remains eligible on the next scheduled run; no values are lost.
+  cached=previous.get('status')=='ok' and last_success and 0<=(datetime.date.fromisoformat(asof)-datetime.date.fromisoformat(last_success)).days<7
+  if not cached:
+   source_hashes={}
+   def post(url,body):
+    raw=(download_post or mofcom.fetch_post)(url,body)
+    ids=urllib.parse.parse_qs(body.decode('ascii'))['indexIds'][0]
+    source_hashes['mofcom/'+ids+'.json']=hashlib.sha256(raw).hexdigest()
+    return raw
+   try:
+    new=mofcom.refresh_source(old,asof,post,archive)
+    no_regression(old,new)
+    replacement={i['id']:i for i in new}
+    snapshot['instruments']=[replacement.get(i['id'],i) for i in snapshot['instruments']]
+    checksums.update(source_hashes)
+    statuses['mofcom']={'checkedAt':asof,'lastSuccessAt':asof,'status':'ok'}
+   except Exception as error:
+    statuses['mofcom']={'checkedAt':asof,'lastSuccessAt':last_success or old[0].get('retrievedAt'),'status':'error'}
+    print(f'::warning::mofcom refresh failed ({type(error).__name__}); retained last good data')
  snapshot['retrievedAt']=max(i.get('retrievedAt',snapshot['retrievedAt']) for i in snapshot['instruments'])
  return snapshot,checksums
 
 if __name__=='__main__':
  asof=datetime.datetime.now(datetime.timezone.utc).date().isoformat()
  path=ROOT/'src/data/trends.json';manifest=ROOT/'docs/trends-source-checksums.json'
- snapshot,checksums=refresh(json.loads(path.read_text()),json.loads(manifest.read_text()),asof,archive=ROOT/'.trends-sources')
+ snapshot,checksums=refresh(json.loads(path.read_text()),json.loads(manifest.read_text()),asof,archive=ROOT/'.trends-sources',bootstrap=ROOT/'src/data/mofcom-produce.json')
  path.write_text(json.dumps(snapshot,ensure_ascii=False,separators=(',',':'))+'\n')
  manifest.write_text(json.dumps(checksums,indent=2)+'\n')
  print(json.dumps(snapshot.get('refreshStatus',{})))
