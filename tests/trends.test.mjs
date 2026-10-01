@@ -20,7 +20,7 @@ test('freshness distinguishes missing, lagging, failed and monthly data',()=>{
 });
 
 
-test('mainland goods retain native units and official short histories',()=>{const goods=data.instruments.filter(i=>['consumer','commodity'].includes(i.category));assert.equal(goods.length,81);for(const i of goods){assert.match(i.unit,/^元\//);assert.match(i.sourceKey,/^(nbs|mara|chaoyang)$/);assert.ok(i.points.every(p=>p.sourceUrl?.startsWith('https://')));assert.match(i.coverage,/不.*插值/);}assert.equal(goods.find(i=>i.name==='猪肉').points.at(-1).value,16.42);assert.equal(goods.find(i=>i.name==='电解铜（1#）').points.at(-1).value,108770);assert.ok(!data.instruments.some(i=>['brent','copper','aluminum','wheat'].includes(i.id)));});
+test('mainland goods retain native units and official short histories',()=>{const goods=data.instruments.filter(i=>['consumer','commodity'].includes(i.category));assert.equal(goods.length,81);for(const i of goods){assert.match(i.unit,/^元\//);assert.match(i.sourceKey,/^(nbs|mara|chaoyang)$/);assert.ok(i.points.every(p=>p.sourceUrl?.startsWith('https://')));assert.match(i.coverage,/不.*插值/);}assert.equal(goods.find(i=>i.name==='猪肉').points.find(p=>p.date==='2026-09-30').value,16.42);assert.equal(goods.find(i=>i.name==='电解铜（1#）').points.find(p=>p.date==='2026-09-20').value,108770);assert.ok(!data.instruments.some(i=>['brent','copper','aluminum','wheat'].includes(i.id)));});
 
 test('斤 display halves only native yuan per kilogram and never mutates data',async()=>{
  const {displayUnit,displayValue,displayPoints}=await import('../src/lib/trends/model.ts');
@@ -44,6 +44,6 @@ test('chart uses actual calendar spacing instead of equal intervals',()=>{
 test('produce quotes identify specific markets, source means, original ranges, and genuine sparse dates',()=>{
  const produce=data.instruments.filter(i=>i.sourceKey==='chaoyang');assert.equal(produce.length,20);
  for(const i of produce){assert.doesNotMatch(i.name,/种蔬菜|种水果/);assert.match(i.symbol,/无锡/);assert.match(i.frequency,/单品均价/);assert.match(i.coverage,/不代表全国价格/);assert.match(i.coverage,/产地\/规格为空/);for(const p of i.points){assert.ok(p.low<=p.value&&p.value<=p.high);assert.match(p.sourceUrl,/^https:\/\/www\.chinachaoyang\.com\//);}}
- const radish=produce.find(i=>i.name==='白萝卜');assert.equal(radish.points[0].date,'2026-08-21');assert.equal(radish.points.at(-1).date,'2026-09-30');assert.equal(radish.points.length,6);assert.equal(radish.points.at(-1).value,1.31);
- const pineapple=produce.find(i=>i.name==='菠萝');assert.equal(pineapple.points.at(-1).date,'2026-10-01');assert.equal(pineapple.points.at(-1).value,4.7);
+ const radish=produce.find(i=>i.name==='白萝卜');assert.equal(radish.points[0].date,'2026-08-21');assert.ok(radish.points.at(-1).date>='2026-09-30');assert.ok(radish.points.length>=6);assert.equal(radish.points.find(p=>p.date==='2026-09-30').value,1.31);
+ const pineapple=produce.find(i=>i.name==='菠萝');assert.ok(pineapple.points.at(-1).date>='2026-10-01');assert.equal(pineapple.points.find(p=>p.date==='2026-10-01').value,4.7);
 });

@@ -41,4 +41,12 @@ class RefreshTests(unittest.TestCase):
   updated,_=r.refresh(snapshot,{},'2026-09-30',fail)
   self.assertEqual(calls,[r.parser.ECB_URL])
   self.assertNotIn('worldbank',updated['refreshStatus'])
+ def test_produce_network_failure_preserves_all_values_and_sets_failure_marker(self):
+  original={'retrievedAt':'2026-10-01','refreshStatus':{'chaoyang':{'lastSuccessAt':'2026-10-01','status':'verified-snapshot'}},'instruments':[{'id':'cn-chaoyang-test','category':'consumer','sourceKey':'chaoyang','retrievedAt':'2026-10-01','points':[{'date':'2026-09-30','value':1.31,'low':1,'high':5.5}]}]}
+  def fail(url):raise TimeoutError('Source timed out')
+  updated,_=r.refresh(original,{},'2026-10-01',fail)
+  self.assertEqual(updated['instruments'],original['instruments'])
+  self.assertEqual(updated['refreshStatus']['chaoyang']['status'],'error')
+  self.assertEqual(updated['refreshStatus']['chaoyang']['lastSuccessAt'],'2026-10-01')
+  self.assertEqual(original['refreshStatus']['chaoyang']['status'],'verified-snapshot')
 if __name__=='__main__':unittest.main()

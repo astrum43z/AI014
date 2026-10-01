@@ -60,3 +60,10 @@ Verified on 2026-09-30: https://www.stats.gov.cn/sj/zxfb/202609/t20260915_196530
 单品蔬果初始接入20项、75个已核验观测（无锡朝阳蔬菜市场12项，锡澄果品市场8项），来自无锡朝阳集团公开价格表。个别蔬菜可追溯到2026-08-21；水果可核验2026-09-12、09-27、10-01，部分品种只有2期。不是完整每日或多年数据库。源表产地/规格为空时明确说明，不将不同品种、规格混并。极端最高/最低值按源表保留，不修饰成零售可购区间；主值直接取源表单品均价，不自行取最高最低中点。
 
 来源网页会更新，同一URL不保证仍展示导入日期；初始事实从公开来源的索引页面文本核验，证据记录与哈希见produce-source-manifest.json。没有声称第三方开放数据库许可，仅引用有限公开事实并注明原站。produce-trends.py在既有工作日更新流程中读取公开列表及其实际分页链接，未接入私有API或新凭据。日期、单位、价格区间、同日冲突、来源域名及历史退步均做检查；获取失败时整组保留旧值并显示失败状态。
+
+
+### Same-day source-refresh verification
+
+On 2026-10-01 the HTTPS ingestion path was exercised against the provider's actual HTML. The initial parser failed because cells were split across lines. It now uses HTML table cell boundaries, deduplicates page-one aliases, prioritizes only currently discovered pages referenced by existing observations, and stops once all selected items are found. The verified request set was vegetable pages 1, 2 and 4 plus fruit page 1. Twenty individual items were parsed; nine genuine October 1 observations were appended, bringing the verified produce snapshot to 84 points. No historical prices were changed. Direct-source hashes and factual row extracts are retained in produce-http-verification.json.
+
+The source status is now successful because that ingestion completed; this does not guarantee every future scheduled run or source connection. A source timeout or parse failure still preserves the whole previous source snapshot and displays its failure marker. Snapshot regression tests check known prices at their actual dates instead of freezing the latest price, allowing later valid updates.

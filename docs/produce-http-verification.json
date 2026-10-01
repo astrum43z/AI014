@@ -1,0 +1,260 @@
+{
+  "verifiedAt": "2026-10-01",
+  "result": "success",
+  "instruments": 20,
+  "observationsAfterMerge": 84,
+  "sources": [
+    {
+      "url": "https://www.chinachaoyang.com/Price.aspx?Type=1",
+      "retrievedAt": "2026-10-01",
+      "method": "direct HTTPS source page; parsed by table cell boundaries",
+      "rawSha256": "3350575d6655cdbbff71ecb7299888c3cfd035feeb26e7305f4a7500409d4fa0",
+      "quotes": [
+        {
+          "name": "白萝卜",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 1.33,
+          "low": 1.0,
+          "high": 25.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=1"
+        },
+        {
+          "name": "包菜",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 1.31,
+          "low": 1.0,
+          "high": 5.17,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=1"
+        },
+        {
+          "name": "贝贝南瓜",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 2.87,
+          "low": 1.43,
+          "high": 6.52,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=1"
+        },
+        {
+          "name": "扁豆",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 5.65,
+          "low": 1.0,
+          "high": 17.14,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=1"
+        },
+        {
+          "name": "菠菜",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 6.43,
+          "low": 1.0,
+          "high": 16.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=1"
+        },
+        {
+          "name": "菜心",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 2.46,
+          "low": 1.0,
+          "high": 10.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=1"
+        }
+      ]
+    },
+    {
+      "url": "https://www.chinachaoyang.com/Price.aspx?PageNo=2&Type=1",
+      "retrievedAt": "2026-10-01",
+      "method": "direct HTTPS source page; parsed by table cell boundaries",
+      "rawSha256": "4ac9a25f4edd0b70d6176beb5fe4eac02c269de46c398922c5c4723cd7617230",
+      "quotes": [
+        {
+          "name": "长豆",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 4.05,
+          "low": 1.0,
+          "high": 24.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?PageNo=2&Type=1"
+        },
+        {
+          "name": "大白菜",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 1.48,
+          "low": 1.0,
+          "high": 12.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?PageNo=2&Type=1"
+        },
+        {
+          "name": "冬瓜",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 0.84,
+          "low": 0.8,
+          "high": 3.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?PageNo=2&Type=1"
+        }
+      ]
+    },
+    {
+      "url": "https://www.chinachaoyang.com/Price.aspx?PageNo=4&Type=1",
+      "retrievedAt": "2026-10-01",
+      "method": "direct HTTPS source page; parsed by table cell boundaries",
+      "rawSha256": "de59df27e1d85140ecc48c7828bd078c8bf97d56554c6a83a756eb687d78f30a",
+      "quotes": [
+        {
+          "name": "黄瓜",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 2.1,
+          "low": 1.0,
+          "high": 45.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?PageNo=4&Type=1"
+        },
+        {
+          "name": "韭菜",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 1.7,
+          "low": 1.0,
+          "high": 10.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?PageNo=4&Type=1"
+        },
+        {
+          "name": "莲藕",
+          "unit": "元/公斤",
+          "market": "无锡朝阳蔬菜市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 2.76,
+          "low": 1.0,
+          "high": 10.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?PageNo=4&Type=1"
+        }
+      ]
+    },
+    {
+      "url": "https://www.chinachaoyang.com/Price.aspx?Type=2",
+      "retrievedAt": "2026-10-01",
+      "method": "direct HTTPS source page; parsed by table cell boundaries",
+      "rawSha256": "7f893640457c8320b9c7d99b922c580e184edd1a21074a5b16456d2020945cd5",
+      "quotes": [
+        {
+          "name": "菠萝",
+          "unit": "元/公斤",
+          "market": "无锡锡澄果品市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 4.7,
+          "low": 4.4,
+          "high": 5.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=2"
+        },
+        {
+          "name": "草莓",
+          "unit": "元/公斤",
+          "market": "无锡锡澄果品市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 15.98,
+          "low": 5.0,
+          "high": 24.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=2"
+        },
+        {
+          "name": "翠冠梨",
+          "unit": "元/公斤",
+          "market": "无锡锡澄果品市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 2.79,
+          "low": 2.1,
+          "high": 18.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=2"
+        },
+        {
+          "name": "砀山梨",
+          "unit": "元/公斤",
+          "market": "无锡锡澄果品市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 2.11,
+          "low": 1.5,
+          "high": 55.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=2"
+        },
+        {
+          "name": "冬枣",
+          "unit": "元/公斤",
+          "market": "无锡锡澄果品市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 5.47,
+          "low": 1.0,
+          "high": 25.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=2"
+        },
+        {
+          "name": "嘎啦苹果",
+          "unit": "元/公斤",
+          "market": "无锡锡澄果品市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 4.69,
+          "low": 2.2,
+          "high": 16.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=2"
+        },
+        {
+          "name": "国产火龙果",
+          "unit": "元/公斤",
+          "market": "无锡锡澄果品市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 4.57,
+          "low": 1.92,
+          "high": 10.71,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=2"
+        },
+        {
+          "name": "哈密瓜",
+          "unit": "元/公斤",
+          "market": "无锡锡澄果品市场 · 单品批发",
+          "specification": "not provided by source",
+          "date": "2026-10-01",
+          "value": 3.77,
+          "low": 1.0,
+          "high": 20.0,
+          "sourceUrl": "https://www.chinachaoyang.com/Price.aspx?Type=2"
+        }
+      ]
+    }
+  ]
+}
