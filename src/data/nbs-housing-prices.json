@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "retrievedAt": "2026-10-01",
+  "sourceName": "国家统计局网站",
+  "termsUrl": "https://www.stats.gov.cn/wzgl/202302/t20230217_1912857.html",
+  "methodUrl": "https://www.stats.gov.cn/hd/lyzx/zxgk/202406/t20240619_1955078.html",
+  "annual": [
+    {
+      "period": "2014",
+      "periodType": "annual",
+      "publishedAt": "2015-01-20",
+      "areaWanSqm": 105182.0,
+      "amountYiYuan": 62396.0,
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202302/t20230203_1898678.html",
+      "sha256": "39f33ae445214c85df4fd12dcfa4e9b6faa609531af434197b1f6debbbb20190"
+    },
+    {
+      "period": "2015",
+      "periodType": "annual",
+      "publishedAt": "2016-01-19",
+      "areaWanSqm": 112406.0,
+      "amountYiYuan": 72753.0,
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/201708/t20170815_1768342.html",
+      "sha256": "2ff702f51052c71aa9db6257b2245420d4414e11bde93cebd6e47ecff5855e65"
+    },
+    {
+      "period": "2016",
+      "periodType": "annual",
+      "publishedAt": "2017-01-20",
+      "areaWanSqm": 137540.0,
+      "amountYiYuan": 99064.0,
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202302/t20230203_1899399.html",
+      "sha256": "6316790bce77d035ac1cca8cf9f2cf4f278e4eb8cded96fdd11f0b32ea22cb33"
+    },
+    {
+      "period": "2017",
+      "periodType": "annual",
+      "publishedAt": "2018-01-18",
+      "areaWanSqm": 144789.0,
+      "amountYiYuan": 110240.0,
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/201801/t20180119_1768009.html",
+      "sha256": "824b5054580f58069634806856327bf24b9b79821bfd875c9a2d2413d8a75787"
+    },
+    {
+      "period": "2018",
+      "periodType": "annual",
+      "publishedAt": "2019-01-21",
+      "areaWanSqm": 147929.0,
+      "amountYiYuan": 126393.0,
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/201901/t20190122_1768273.html",
+      "sha256": "11ae39e6283b1accb4af980410ff460eb786f5cbde7d7684b499ebd8504f3d22"
+    },
+    {
+      "period": "2019",
+      "periodType": "annual",
+      "publishedAt": "2020-01-17",
+      "areaWanSqm": 150144.0,
+      "amountYiYuan": 139440.0,
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202302/t20230203_1900597.html",
+      "sha256": "65215eaa0784bf261ec6078fc43313d06a6fc84332c37836733ed114a5bb1279"
+    },
+    {
+      "period": "2020",
+      "periodType": "annual",
+      "publishedAt": "2021-01-18",
+      "areaWanSqm": 154878.0,
+      "amountYiYuan": 154567.0,
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202302/t20230203_1900967.html",
+      "sha256": "855fd8290ab09a3709739d6e68da35483f64f36389e9d82dbbbd940fc6715117"
+    },
+    {
+      "period": "2021",
+      "periodType": "annual",
+      "publishedAt": "2022-01-17",
+      "areaWanSqm": 156532.0,
+      "amountYiYuan": 162730.0,
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202201/t20220117_1826440.html",
+      "sha256": "c246508b53b57048728a57754799535c99c991a922356877bebfa69c399660bd"
+    },
+    {
+      "period": "2022",
+      "periodType": "annual",
+      "publishedAt": "2023-01-17",
+      "areaWanSqm": 114631.0,
+      "amountYiYuan": 116747.0,
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202301/t20230117_1892126.html",
+      "sha256": "01c6e4eec56b4bf288208321a17927ef4e020b8edd891c0326944ef8245f4e54"
+    },
+    {
+      "period": "2023",
+      "periodType": "annual",
+      "publishedAt": "2024-01-17",
+      "areaWanSqm": 94796.0,
+      "amountYiYuan": 102990.0,
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202401/t20240117_1946633.html",
+      "sha256": "f77fff87666c80682cfcc796309119c29ebcfafd44342fb9ea7c15d89d7df255"
+    },
+    {
+      "period": "2024",
+      "periodType": "annual",
+      "publishedAt": "2025-01-17",
+      "areaWanSqm": 81450.0,
+      "amountYiYuan": 84864.0,
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202501/t20250117_1958328.html",
+      "sha256": "599029011cf71daa39afa9b407ba9a147e329d4326810338f60dc46a7b96f453"
+    },
+    {
+      "period": "2025",
+      "periodType": "annual",
+      "publishedAt": "2026-01-19",
+      "areaWanSqm": 73299.0,
+      "amountYiYuan": 73335.0,
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202601/t20260119_1962324.html",
+      "sha256": "499b6789109329e74997b5d79e4ce76bdfa112479f0f98fd544f46f7498f0b09"
+    }
+  ],
+  "latestYtd": {
+    "period": "2026-01/2026-08",
+    "periodType": "year-to-date",
+    "publishedAt": "2026-09-15",
+    "areaWanSqm": 41503,
+    "amountYiYuan": 41776,
+    "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202609/t20260915_1965310.html",
+    "sha256": "0345aa69391d4b0bb8beebf23d29915bbc41eb95fc070eaf9e760ded96548127"
+  }
+}

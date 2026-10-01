@@ -33,6 +33,7 @@ function render(){
  get('favorites-only').setAttribute('aria-pressed',String(favoritesOnly));get<HTMLSelectElement>('category-select').value=category;
  const isAShare=category==='a',isIndex=category==='housing'||category==='rent';
  get<HTMLAnchorElement>('market-jump').href=isAShare?'#a-share-panel':isIndex?'#housing-panel':'#market-title';
+ text('market-jump',category==='housing'?'查看房价 ↓':category==='rent'?'查看租金 ↓':isAShare?'查看股票 ↓':'选品种 ↓');
  document.querySelectorAll<HTMLElement>('[data-a-share-hidden]').forEach(el=>el.hidden=isAShare||isIndex);
  document.dispatchEvent(new CustomEvent('trends:category-change',{detail:category}));
  if(isAShare||isIndex){get('selected-instrument').hidden=true;return;}
@@ -102,3 +103,5 @@ get('region-reset').addEventListener('click',()=>{for(const id of ['region-provi
 document.addEventListener('trends:region-reset',()=>{appliedRegion=['','',''];region='';text('region-open','全国 / 地区筛选 ⌄');});
 dialog.addEventListener('close',()=>{if(dialog.returnValue!=='apply')return;appliedRegion=['region-province','region-city','region-district'].map(id=>get<HTMLInputElement>(id).value.trim());region=appliedRegion.filter(Boolean).join(' / ');text('region-open',(region||'全国')+' / 地区筛选 ⌄');category=category==='rent'?'rent':'housing';document.dispatchEvent(new CustomEvent('trends:region-change',{detail:{province:appliedRegion[0],city:appliedRegion[1],district:appliedRegion[2]}}));render();});
 render();
+
+document.querySelector<HTMLAnchorElement>('.source-shortcut')?.addEventListener('click',()=>{get<HTMLDetailsElement>('coverage').open=true;});

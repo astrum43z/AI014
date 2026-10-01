@@ -1,0 +1,25 @@
+---
+import snapshot from '../data/nbs-housing-prices.json';
+import {validateHousingPrices,priceGeometry,priceText,meanPrice,type HousingPrices} from '../lib/trends/housing-prices';
+import '../styles/housing-prices.css';
+const data=validateHousingPrices(snapshot as HousingPrices),latest=data.annual.at(-1)!,chart=priceGeometry(data.annual),ytd=data.latestYtd;
+---
+<div id="housing-price-primary" class="housing-price-primary">
+ <div id="housing-price-results">
+  <p class="price-caption">全国新建商品住宅 · 年度成交均价</p>
+  <div class="price-hero"><div><strong id="housing-price-value">{priceText(latest)}</strong><span>元/㎡</span></div><span id="housing-price-year">{latest.period}年</span></div>
+  <div class="price-chart-wrap"><svg id="housing-price-chart" viewBox="0 0 740 255" role="img" aria-labelledby="housing-price-chart-title"><title id="housing-price-chart-title">全国新建商品住宅年度成交均价，2014至2025年，元每平方米</title>
+   {[0,1,2].map(i=><g><line x1="54" x2="694" y1={20+i*95} y2={20+i*95}/><text x="44" y={24+i*95} text-anchor="end">{Math.round(chart.max-(chart.max-chart.min)*i/2).toLocaleString('zh-CN')}</text></g>)}
+   <path d={chart.path} transform="translate(54 20)"/>
+   {data.annual.map((point,i)=><circle data-price-point={i} cx={chart.dots[i].x+54} cy={chart.dots[i].y+20} r={i===11?5:3.5} class:list={{active:i===11}}><title>{point.period}年 · {priceText(point)}元/㎡</title></circle>)}
+   {[0,5,11].map(i=><text x={chart.dots[i].x+54} y="243" text-anchor={i===0?'start':i===11?'end':'middle'}>{data.annual[i].period}</text>)}
+  </svg></div>
+  <div class="price-timeline"><label for="housing-price-slider">年份</label><input id="housing-price-slider" type="range" min="0" max="11" value="11" aria-valuetext={`${latest.period}年，${priceText(latest)}元每平方米`} /><a id="housing-price-source" href={latest.sourceUrl} target="_blank" rel="noopener noreferrer">本年来源 ↗</a></div>
+  <div class="price-ytd"><span>2026年1–8月累计</span><strong>{priceText(ytd)} <small>元/㎡</small></strong><a href={ytd.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label="2026年1至8月累计均价来源">来源 ↗</a></div>
+  <details class="price-provenance"><summary>数据来源与口径</summary><p>引自<a href="https://www.stats.gov.cn/" target="_blank" rel="noopener noreferrer">国家统计局网站</a>。均价＝新建商品住宅合同销售额÷合同建筑面积；覆盖全国房地产开发企业销售的新建住宅，不含二手房。<a href={data.methodUrl} target="_blank" rel="noopener noreferrer">计算依据 ↗</a></p><p>曲线使用各年度首次发布的数据，后续修订未回填。受销售结构、统计范围和修订影响，不代表同一套房子的涨跌；不计算跨年涨幅。2026年累计数据单独展示，不接入全年曲线。</p><p>按整元显示；{data.retrievedAt}核验，暂未自动更新。<a href={data.termsUrl} target="_blank" rel="noopener noreferrer">数据使用说明 ↗</a></p><div class="price-table-scroll"><table><thead><tr><th>年度</th><th>均价（元/㎡）</th><th>住宅销售额（亿元）</th><th>住宅面积（万㎡）</th><th>公告</th></tr></thead><tbody>{data.annual.map(point=><tr><td>{point.period}</td><td>{meanPrice(point).toFixed(2)}</td><td>{point.amountYiYuan}</td><td>{point.areaWanSqm}</td><td><a href={point.sourceUrl} target="_blank" rel="noopener noreferrer">{point.publishedAt} ↗</a></td></tr>)}</tbody></table></div></details>
+ </div>
+ <div id="housing-price-unavailable" class="price-empty" hidden><h2>这个地区的平均房价暂未接入</h2><button id="housing-price-clear" type="button">查看全国均价</button></div>
+</div>
+<div id="rent-price-primary" class="price-empty" hidden><h2>平均租金</h2><p>真实租金价格暂未接入</p></div>
+<script id="housing-price-data" type="application/json" is:inline set:html={JSON.stringify(data).replace(/</g,'\\u003c')}></script>
+<script>import '../lib/trends/housing-prices-panel';</script>

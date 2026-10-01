@@ -61,4 +61,5 @@ el('index-slider').addEventListener('input',event=>inspect(Number((event.target 
 el('index-region-clear').addEventListener('click',()=>{region={province:'',city:'',district:''};document.dispatchEvent(new CustomEvent('trends:region-reset'));render();});
 document.addEventListener('trends:category-change',((event:CustomEvent<string>)=>{active=event.detail==='housing'||event.detail==='rent';if(active)mode=event.detail as IndexMode;render();}) as EventListener);
 document.addEventListener('trends:region-change',((event:CustomEvent<Region>)=>{region=event.detail;render();}) as EventListener);
+document.addEventListener('trends:region-reset',()=>{region={province:'',city:'',district:''};render();});
 window.addEventListener('resize',render);render();

@@ -1,8 +1,11 @@
 ---
 import snapshot from '../data/nbs-housing.json';
+import HousingPrices from './HousingPrices.astro';
 import '../styles/housing.css';
 ---
-<section id="housing-panel" class="index-panel" hidden aria-labelledby="index-title">
+<section id="housing-panel" class="index-panel" hidden aria-label="房价与租金">
+ <HousingPrices />
+ <details id="index-optional"><summary>可选趋势指标 · 房价指数 / 房租涨跌幅</summary>
  <header class="index-heading"><div><p class="eyebrow">NBS / MONTHLY OBSERVATIONS</p><h2 id="index-title">70城住宅价格指数</h2><p id="index-scope" class="index-scope"></p></div><a href="https://www.stats.gov.cn/wzgl/202302/t20230217_1912857.html" target="_blank" rel="noopener noreferrer">引自国家统计局网站 ↗</a></header>
  <p class="index-snapshot">已核验历史快照 · 2025年9月—2026年8月 · 2026-10-01 获取 · 暂未接入自动更新</p>
  <div class="index-controls">
@@ -23,6 +26,7 @@ import '../styles/housing.css';
   <details class="index-history"><summary>查看逐月原始数据与来源</summary><div class="index-table-scroll"><table><thead><tr><th>统计期</th><th id="index-table-mom">环比指数</th><th id="index-table-yoy">同比指数</th><th>统计基期</th><th>发布及来源</th></tr></thead><tbody id="index-table"></tbody></table></div></details>
  </div>
  <details class="index-explanation"><summary>覆盖范围与统计口径</summary><p>房价：70个大中城市的市辖区整体，不包括县，亦不是各区单列。新建商品住宅采用当地房地产管理部门网签数据；二手住宅采用重点调查与典型调查。指数表示相对变化，不能解读为元/平方米成交价。</p><p>租金：全国 CPI“租赁房房租”分项的官方环比、同比涨跌幅。它不是每月支付的平均租金，不提供城市或区县租金水平，也不是挂牌租金或每平方米成交租金。</p><p>统计基期与指标的对比期不同：房价环比的上月=100、同比的上年同月=100。页面保留2020与2025两轮统计基期的标识；2026年同比原值由国家统计局按新口径发布，本站没有拿2025年旧公告自行重算。</p><a href={snapshot.baseMethodUrls[0]} target="_blank" rel="noopener noreferrer">2020基期说明 ↗</a><a href={snapshot.baseMethodUrls[1]} target="_blank" rel="noopener noreferrer">2025基期说明 ↗</a></details>
+ </details>
 </section>
 <script type="application/json" id="housing-data" is:inline set:html={JSON.stringify(snapshot).replace(/</g,'\\u003c')}></script>
 <script>import '../lib/trends/housing-panel';</script>
