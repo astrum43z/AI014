@@ -72,11 +72,21 @@ class ProduceTests(unittest.TestCase):
    with self.subTest(url=url),self.assertRaises(ValueError):m.parse_page(TEXT,url,'2026-10-01')
  def test_merge_sparse_dates_preserves_history_and_missing_items(self):
   old=m.parse_page(TEXT,URL,'2026-10-01')
+  old[0]['historyNote']='Historical source validated separately'
   new=m.parse_page(TEXT.replace('2026/9/30','2026/10/1').replace('1.31','1.32').replace('菠菜 18.00 1.00 7.02 详情',''),URL,'2026-10-01')
   out=m.merge(old,new)
+  self.assertEqual(out[0]['historyNote'],'Historical source validated separately')
   self.assertEqual(len(out),2);self.assertEqual([p['date'] for p in out[0]['points']],['2026-09-30','2026-10-01'])
   self.assertEqual(len(out[1]['points']),1)
   self.assertEqual(len(old[0]['points']),1)
+  with self.assertRaises(ValueError):m.merge(old,m.parse_page(TEXT.replace('1.31','1.32'),URL,'2026-10-01'))
+ def test_daily_quote_can_enrich_a_verified_mean_without_inventing_or_erasing_ranges(self):
+  old=m.parse_page(TEXT,URL,'2026-10-01');old[0]['points'][0].pop('low');old[0]['points'][0].pop('high')
+  out=m.merge(old,m.parse_page(TEXT,URL,'2026-10-01'))
+  self.assertEqual(out[0]['points'][0]['value'],1.31)
+  self.assertEqual(out[0]['points'][0]['low'],1)
+  self.assertEqual(out[0]['points'][0]['high'],5.5)
+  self.assertNotIn('low',old[0]['points'][0])
   with self.assertRaises(ValueError):m.merge(old,m.parse_page(TEXT.replace('1.31','1.32'),URL,'2026-10-01'))
  def test_discover_only_same_market_links(self):
   raw='<a href="?PageNo=2&amp;Type=1">2</a><a href="?Type=2">水果</a><a href="https://evil.example/Price.aspx?Type=1">x</a><a href="?PageNo=999&Type=1">x</a>'

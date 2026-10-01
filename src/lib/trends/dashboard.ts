@@ -20,7 +20,7 @@ function cell(value:string,cls='',label=''){const el=document.createElement('td'
 function inspectPoint(index:number){
  const i=selectedItem(),points=rangePoints(i.points,range),p=points[index];if(!p)return;
  inspectedDate=p.date;get<HTMLInputElement>('point-slider').value=String(index);
- const value=`${p.date} · ${p.low!==undefined?'单品均价 ':''}${format(displayValue(p.value,i.unit,unitMode))} ${displayUnit(i.unit,unitMode)}${quoteRange(p,i)?' · '+quoteRange(p,i):''}`;
+ const value=`${p.date} · ${i.sourceKey==='chaoyang'?'单品均价 ':''}${format(displayValue(p.value,i.unit,unitMode))} ${displayUnit(i.unit,unitMode)}${quoteRange(p,i)?' · '+quoteRange(p,i):''}`;
  text('point-readout',value);get<HTMLInputElement>('point-slider').setAttribute('aria-valuetext',value);
  get<HTMLAnchorElement>('point-source').href=p.sourceUrl||i.sourceUrl;
  get('chart-point-title').textContent=value;
@@ -52,18 +52,18 @@ function render(){
  text('last-value',latest?format(displayValue(latest.value,i.unit,unitMode)):'—');text('instrument-unit',unit);text('last-date',latest?.date||'暂无数据');
  text('frequency',`${i.frequency}${i.sourceUpdatedAt?' · 发布于 '+i.sourceUpdatedAt:''} · ${freshness(i)}${i.retrievedAt?' · 获取于 '+i.retrievedAt:''}`);
  text('period-change',pct(delta));get('period-change').className=tone(delta);text('period-dates',raw.length?`${raw[0].date} → ${raw.at(-1)!.date}`:'待接入可核实序列');
- text('range-status',rangeSummary(i.points,range));text('instrument-coverage',(regional?`所选地区：${region}。目前没有该地区已核实的数据。 `:'')+i.coverage);
+ text('range-status',rangeSummary(i.points,range));text('instrument-coverage',(regional?`所选地区：${region}。目前没有该地区已核实的数据。 `:'')+i.coverage+(i.historyNote?' '+i.historyNote:''));
  text('unit-detail',unit!==i.unit?`原始单位 ${i.unit} · 显示值按 1斤 = 0.5公斤换算，涨跌幅不变`:i.unit==='元/斤'?'来源原始单位为元/斤，无需换算':/^元\/(公斤|千克|kg)$/i.test(i.unit)?'当前显示来源原始单位；可切换为元/斤':`此品种保持原始单位 ${i.unit}`);
  const fav=get<HTMLButtonElement>('detail-favorite');fav.textContent=favorites.has(i.id)?'★ 已收藏':'☆ 收藏';fav.setAttribute('aria-pressed',String(favorites.has(i.id)));
  get('chart-empty').hidden=points.length>1;get('trend-chart').style.display=points.length>1?'block':'none';
  text('chart-empty-title',points.length===1?'所选区间只有1个观测值':'暂无已核实序列');text('chart-empty-copy',points.length===1?'无法计算涨跌或绘制折线。试试“近2期”或扩大区间；不补造缺失价格。':'覆盖说明见下方。不用模拟曲线替代真实行情。');
  document.querySelectorAll<HTMLButtonElement>('[data-range]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.range===range));b.disabled=!i.points.length;});
- if(points.length>1)renderChart(points,unit);
+ if(points.length>1)renderChart(points,unit,i.sourceKey==='chaoyang');
  get('chart-inspector').hidden=!points.length;const slider=get<HTMLInputElement>('point-slider');slider.max=String(Math.max(0,points.length-1));slider.disabled=points.length<2;
  const prior=points.findIndex(p=>p.date===inspectedDate);if(points.length)inspectPoint(prior>=0?prior:points.length-1);
  text('chart-caption',points.length?`${points.length} 个观测值 · ${unit} · 非实时${i.sourceKey?' · 仅已核实公告，缺失日不补点':''}`:'暂无数据时不计算趋势与涨跌');
 }
-function renderChart(points:ReturnType<typeof displayPoints>,unit:string){
+function renderChart(points:ReturnType<typeof displayPoints>,unit:string,produce:boolean){
  const small=matchMedia('(max-width:760px)').matches,w=small?300:900,h=small?190:250;
  get('trend-chart').setAttribute('viewBox',small?'0 0 400 250':'0 0 1000 310');
  const d=chartPath(points,w,h);get('chart-line').setAttribute('d',d);get('chart-line').setAttribute('transform','translate(10,10)');
@@ -77,7 +77,7 @@ function renderChart(points:ReturnType<typeof displayPoints>,unit:string){
  for(const [x,date]of [[10,points[0].date],[w-140,points.at(-1)!.date]]){const label=document.createElementNS(svgNS,'text');label.setAttribute('x',String(x));label.setAttribute('y',String(h+48));label.textContent=String(date);labels.append(label);}
  if(points.length<=60){
   const coords=[...d.matchAll(/[ML]([\d.]+),([\d.]+)/g)];
-  points.forEach((p,index)=>{const circle=document.createElementNS(svgNS,'circle'),title=document.createElementNS(svgNS,'title');circle.setAttribute('cx',String(Number(coords[index][1])+10));circle.setAttribute('cy',String(Number(coords[index][2])+10));circle.setAttribute('r','4');circle.dataset.point=String(index);title.textContent=`${p.date} · ${p.low!==undefined?'单品均价 ':''}${format(p.value)} ${unit}${p.low!==undefined&&p.high!==undefined?` · 最低 ${format(p.low)} / 最高 ${format(p.high)} ${unit}`:''}`;circle.append(title);circle.addEventListener('click',()=>inspectPoint(index));circle.addEventListener('pointerenter',()=>inspectPoint(index));markers.append(circle);});
+  points.forEach((p,index)=>{const circle=document.createElementNS(svgNS,'circle'),title=document.createElementNS(svgNS,'title');circle.setAttribute('cx',String(Number(coords[index][1])+10));circle.setAttribute('cy',String(Number(coords[index][2])+10));circle.setAttribute('r','4');circle.dataset.point=String(index);title.textContent=`${p.date} · ${produce?'单品均价 ':''}${format(p.value)} ${unit}${p.low!==undefined&&p.high!==undefined?` · 最低 ${format(p.low)} / 最高 ${format(p.high)} ${unit}`:''}`;circle.append(title);circle.addEventListener('click',()=>inspectPoint(index));circle.addEventListener('pointerenter',()=>inspectPoint(index));markers.append(circle);});
  }
 }
 get<HTMLSelectElement>('category-select').addEventListener('change',e=>{category=(e.target as HTMLSelectElement).value;render();});

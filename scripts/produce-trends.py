@@ -153,11 +153,11 @@ def merge(old, new):
                 raise ValueError('Produce series identity or unit changed')
             points = {p['date']:p for p in before['points']}
             for p in item['points']:
-                if p['date'] in points and any(points[p['date']].get(k) != p.get(k) for k in ('value','low','high')):
+                if p['date'] in points and any(points[p['date']].get(k) is not None and p.get(k) is not None and points[p['date']][k] != p[k] for k in ('value','low','high')):
                     raise ValueError('Conflicting published quotation for same date')
-                points[p['date']] = p
+                points[p['date']] = {**points.get(p['date'], {}), **p}
             latest = item if item['sourceUpdatedAt'] >= before['sourceUpdatedAt'] else before
-            combined = {**latest, 'points': sorted(points.values(),key=lambda p:p['date'])}
+            combined = {**before, **latest, 'points': sorted(points.values(),key=lambda p:p['date'])}
             combined['retrievedAt'] = max(item.get('retrievedAt',''),before.get('retrievedAt',''))
             result[item['id']] = combined
         else:

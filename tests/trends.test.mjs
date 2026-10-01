@@ -43,7 +43,14 @@ test('chart uses actual calendar spacing instead of equal intervals',()=>{
 
 test('produce quotes identify specific markets, source means, original ranges, and genuine sparse dates',()=>{
  const produce=data.instruments.filter(i=>i.sourceKey==='chaoyang');assert.equal(produce.length,20);
- for(const i of produce){assert.doesNotMatch(i.name,/种蔬菜|种水果/);assert.match(i.symbol,/无锡/);assert.match(i.frequency,/单品均价/);assert.match(i.coverage,/不代表全国价格/);assert.match(i.coverage,/产地\/规格为空/);for(const p of i.points){assert.ok(p.low<=p.value&&p.value<=p.high);assert.match(p.sourceUrl,/^https:\/\/www\.chinachaoyang\.com\//);}}
+ for(const i of produce){assert.doesNotMatch(i.name,/种蔬菜|种水果/);assert.match(i.symbol,/无锡/);assert.match(i.frequency,/单品均价/);assert.match(i.coverage,/不代表全国价格/);assert.match(i.coverage,/产地\/规格为空/);for(const p of i.points){if(p.low!==undefined||p.high!==undefined){assert.ok(p.low<=p.value&&p.value<=p.high);}else{assert.match(p.sourceUrl,/\/PriceShow\.aspx\?/);}assert.match(p.sourceUrl,/^https:\/\/www\.chinachaoyang\.com\//);}}
  const radish=produce.find(i=>i.name==='白萝卜');assert.equal(radish.points[0].date,'2026-08-21');assert.ok(radish.points.at(-1).date>='2026-09-30');assert.ok(radish.points.length>=6);assert.equal(radish.points.find(p=>p.date==='2026-09-30').value,1.31);
  const pineapple=produce.find(i=>i.name==='菠萝');assert.ok(pineapple.points.at(-1).date>='2026-10-01');assert.equal(pineapple.points.find(p=>p.date==='2026-10-01').value,4.7);
+});
+
+test('verified individual produce backfill includes every real day, with ambiguous series left separate',()=>{
+ const names=['白萝卜','菠菜','贝贝南瓜','菜心','长豆','大白菜','冬瓜','莲藕','嘎啦苹果','草莓','翠冠梨','砀山梨','冬枣','国产火龙果','哈密瓜'];
+ for(const name of names){const i=data.instruments.find(i=>i.name===name);const points=i.points.filter(p=>p.date>='2026-09-01'&&p.date<='2026-10-01');assert.equal(points.length,31,name);for(let n=0;n<31;n++)assert.equal(points[n].date,new Date(Date.UTC(2026,8,1+n)).toISOString().slice(0,10));assert.match(i.historyNote,/历史曲线未公布最低\/最高价/);}
+ for(const name of ['包菜','扁豆','黄瓜','韭菜','菠萝']){const i=data.instruments.find(i=>i.name===name);assert.match(i.historyNote,/同一日期出现多个不同价格/);assert.ok(i.points.every(p=>p.low!==undefined&&p.high!==undefined));}
+ assert.ok(data.instruments.filter(i=>i.sourceKey==='chaoyang').reduce((n,i)=>n+i.points.length,0)>=498);
 });
