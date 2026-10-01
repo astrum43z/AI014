@@ -2,7 +2,7 @@ import snapshot from '../../data/trends.json';
 import type { Instrument } from './model';
 const pending = (id:string,name:string,category:string,symbol:string,unit:string,source:string,sourceUrl:string,coverage:string):Instrument=>({id,name,category,symbol,unit,source,sourceUrl,coverage,points:[],frequency:'尚未接入'});
 export const instruments:Instrument[] = [
- ...snapshot.instruments as Instrument[],
+ ...(snapshot.instruments as Instrument[]).filter(i=>!['cn-mara-6','cn-mara-7'].includes(i.id)),
  pending('housing','全国住宅价格','housing','HOUSING','指数','国家统计局','https://www.stats.gov.cn/sj/','国家统计局公开住宅价格指数覆盖 70 个大中城市，不是全国均价。尚未导入历史序列；省级汇总及区县需额外来源。'),
  pending('rent','全国住宅租金','rent','RENT','元/月','待确定授权数据源','https://www.stats.gov.cn/sj/','尚无已接入的全国省、市、区县统一租金序列。不能把住宅价格指数或租赁挂牌价当作实际成交租金。'),
  pending('csi300','沪深 300','a','000300','指数点','中证指数','https://www.csindex.com.cn/','A 股入口已建立；待接入许可范围明确的指数与个股历史行情。'),
@@ -15,7 +15,10 @@ export const retrievedAt = snapshot.retrievedAt;
 
 const refreshStatus = (snapshot as { refreshStatus?: Record<string, {status: string}> }).refreshStatus;
 for (const instrument of instruments) {
+ instrument.refreshPending = refreshStatus?.[instrument.sourceKey || '']?.status==='verified-snapshot';
  instrument.refreshFailed = refreshStatus?.[instrument.sourceKey || (instrument.category==='fx'?'ecb':'worldbank')]?.status==='error';
 }
 export const worldBankVintage = snapshot.instruments.find(i=>i.category==='metal')?.points.at(-1)?.date.slice(0,7);
 export const worldBankPublished = (snapshot.instruments.find(i=>i.category==='metal') as Instrument | undefined)?.sourceUpdatedAt;
+
+export const produceRefreshPending = refreshStatus?.chaoyang?.status==='verified-snapshot';

@@ -1,0 +1,114 @@
+[
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx?Type=1",
+    "date": "2026-09-11",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "朝阳蔬菜市场批发价格\n发布时间：2026/9/11\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n白萝卜     4.33   1.00   1.15  详情\n包菜     2.80   1.39   1.70  详情\n贝贝南瓜     6.00   1.15   3.03  详情\n扁豆     8.00   2.00   5.54  详情\n菠菜     21.88   1.30   8.24  详情\n菜心     13.00   1.00   2.76  详情\n长豆     18.00   1.00   6.17  详情\n",
+    "sha256": "8ecc551a5204a8c48a33f35aeb09e04bdc0589ad3098248aa642a3b8a8ad2bf5"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx?Type=2",
+    "date": "2026-09-27",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "锡澄果品市场批发价格\n发布时间：2026/9/27\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n菠萝     9.60   4.80   6.12  详情\n草莓     18.00   5.00   12.82  详情\n翠冠梨     8.00   2.90   4.66  详情\n砀山梨     14.00   0.75   2.26  详情\n冬枣     65.00   1.00   6.24  详情\n嘎啦苹果     15.00   1.00   6.14  详情\n国产火龙果     30.67   2.00   4.82  详情\n哈密瓜     30.00   0.70   4.33  详情\n",
+    "sha256": "9a859991c3ae5cdb843729df802924eac6226f57defb6fbdc0da43e36e078449"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Agri/Price.aspx",
+    "date": "2026-08-21",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "朝阳蔬菜市场批发价格\n发布时间：2026/8/21\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n白萝卜  |     |  3.93   |  0.20   |  1.08   | 详情\n包菜  |     |  4.00   |  1.20   |  1.48   | 详情\n贝贝南瓜  |     |  8.50   |  1.30   |  3.59   | 详情\n扁豆  |     |  15.00   |  5.71   |  7.75   | 详情\n菠菜  |     |  30.00   |  4.40   |  11.06   | 详情\n菜心  |     |  13.00   |  0.50   |  7.28   | 详情\n长豆  |     |  17.00   |  0.53   |  3.90   | 详情\n",
+    "sha256": "4235c3f93c32523f56624733081bb573b42e391998b5d0868e3eda7bca649f5d"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Agri/Price.aspx?Type=2",
+    "date": "2026-09-12",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "锡澄果品市场批发价格\n发布时间：2026/9/12\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n菠萝  |     |  10.00   |  5.00   |  7.32   | 详情\n草莓  |     |  16.00   |  6.00   |  10.75   | 详情\n翠冠梨  |     |  14.50   |  1.00   |  4.49   | 详情\n砀山梨  |     |  10.00   |  1.39   |  2.71   | 详情\n冬枣  |     |  115.00   |  0.63   |  6.49   | 详情\n嘎啦苹果  |     |  16.00   |  1.84   |  5.89   | 详情\n国产火龙果  |     |  13.00   |  1.70   |  5.07   | 详情\n哈密瓜  |     |  20.00   |  1.00   |  3.58   | 详情\n",
+    "sha256": "50b5bb5bcddb8dcae309d4c222041129b833a6084db58875205c6e9dd861dfcc"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx?PageNo=1&Type=2",
+    "date": "2026-09-27",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "锡澄果品市场批发价格\n发布时间：2026/9/27\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n菠萝     9.60   4.80   6.12  详情\n草莓     18.00   5.00   12.82  详情\n翠冠梨     8.00   2.90   4.66  详情\n砀山梨     14.00   0.75   2.26  详情\n冬枣     65.00   1.00   6.24  详情\n嘎啦苹果     15.00   1.00   6.14  详情\n国产火龙果     30.67   2.00   4.82  详情\n哈密瓜     30.00   0.70   4.33  详情\n",
+    "sha256": "9a859991c3ae5cdb843729df802924eac6226f57defb6fbdc0da43e36e078449"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx?PageNo=1&Type=1",
+    "date": "2026-08-26",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "朝阳蔬菜市场批发价格\n发布时间：2026/8/26\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n白萝卜     20.00   0.50   0.92  详情\n包菜     4.00   1.00   1.56  详情\n贝贝南瓜     5.50   1.30   3.47  详情\n扁豆     11.43   6.00   7.28  详情\n菠菜     26.00   3.60   10.41  详情\n菜心     10.00   1.00   2.64  详情\n长豆     16.00   1.00   3.28  详情\n",
+    "sha256": "bbfef2284fd618497eefa133dbae193efed7ca09c924cd82bb48f73b3dcf23ea"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx",
+    "date": "2026-09-29",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "朝阳蔬菜市场批发价格\n发布时间：2026/9/29\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n白萝卜     24.00   1.00   1.18  详情\n包菜     8.00   1.00   1.31  详情\n贝贝南瓜     7.78   1.00   2.90  详情\n扁豆     17.50   1.00   5.54  详情\n菠菜     21.25   1.55   7.43  详情\n菜心     10.59   1.00   2.71  详情\n",
+    "sha256": "0a9d8c67e610e78478c35531cc3d05dcfb2b1ae45cd16b8845a8ce75988fae0d"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx?Type=1",
+    "date": "2026-09-30",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "朝阳蔬菜市场批发价格\n发布时间：2026/9/30\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n白萝卜     5.50   1.00   1.31  详情\n包菜     4.50   1.00   1.57  详情\n贝贝南瓜     6.43   1.80   3.19  详情\n扁豆     12.86   1.00   5.48  详情\n菠菜     18.00   1.00   7.02  详情\n菜心     10.00   1.00   2.33  详情\n",
+    "sha256": "c8a3b5d0d6862f166f79bfd489282fd9a54b0c38198b7ff2e01989f124b7a61b"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx?Type=2",
+    "date": "2026-10-01",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "锡澄果品市场批发价格\n发布时间：2026/10/1\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n菠萝     5.00   4.40   4.70  详情\n草莓     24.00   5.00   15.98  详情\n翠冠梨     18.00   2.10   2.79  详情\n砀山梨     55.00   1.50   2.11  详情\n冬枣     25.00   1.00   5.47  详情\n嘎啦苹果     16.00   2.20   4.69  详情\n国产火龙果     10.71   1.92   4.57  详情\n哈密瓜     20.00   1.00   3.77  详情\n",
+    "sha256": "7a607f8973aaabbaad20d013da49042a6e1c1a611804db4253d3a0335d97d166"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx",
+    "date": "2026-09-27",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "朝阳蔬菜市场批发价格\n发布时间：2026/9/27\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n白萝卜     7.00   0.32   1.29  详情\n包菜     4.41   1.00   1.58  详情\n贝贝南瓜     7.60   1.60   3.00  详情\n扁豆     16.67   1.50   6.52  详情\n菠菜     20.00   1.80   8.42  详情\n菜心     23.00   0.60   2.82  详情\n",
+    "sha256": "677cab4afd86b7644012fbc2d079244fb5d7c9d7166be0a697ab227df298d90b"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx?PageNo=2&Type=1",
+    "date": "2026-09-29",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "朝阳蔬菜市场批发价格\n发布时间：2026/9/29\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n长豆     12.00   1.00   3.45  详情\n大白菜     3.00   1.00   1.39  详情\n冬瓜     7.00   0.80   0.89  详情\n",
+    "sha256": "37e6d0047f5afaa57a1a8c30da56d2d7395dc971cdbdadf5c1ede517b5b4c9dd"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx?PageNo=4&Type=1",
+    "date": "2026-09-28",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "朝阳蔬菜市场批发价格\n发布时间：2026/9/28\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n黄瓜     10.00   1.00   2.09  详情\n韭菜     6.00   1.00   1.72  详情\n莲藕     10.00   1.00   2.54  详情\n",
+    "sha256": "94eb1db25ab6befe53e05550e6fdf3dbc679a5c908270ca2fa34a938b8550bcc"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx?PageNo=2&Type=1",
+    "date": "2026-10-01",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "朝阳蔬菜市场批发价格\n发布时间：2026/10/1\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n长豆 24.00 1.00 4.05 详情\n大白菜 12.00 1.00 1.48 详情\n冬瓜 3.00 0.80 0.84 详情\n",
+    "sha256": "0805773e8e34856781bc5ea39f964cb66a82909702fd2495b89c25bbb2aa7150"
+  },
+  {
+    "url": "https://www.chinachaoyang.com/Price.aspx?PageNo=4&Type=1",
+    "date": "2026-09-29",
+    "retrievedAt": "2026-10-01",
+    "method": "first-party public table via indexed page text",
+    "excerpt": "朝阳蔬菜市场批发价格\n发布时间：2026/9/29\n单位：元/公斤\n品名 产地/规格 最高价 最低价 均价 曲线图\n黄瓜 22.50 1.00 2.20 详情\n韭菜 10.00 1.00 1.74 详情\n莲藕 10.00 1.00 2.67 详情\n",
+    "sha256": "b9e7cedccddcd60f5795db1b643f68783f57ade53465c7ab3c8a235c137f59a5"
+  }
+]
