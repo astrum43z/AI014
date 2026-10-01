@@ -137,3 +137,18 @@ test('weather product is removed and shared footer includes requested copy contr
  assert.match(layout,/id="copy-wechat"/);
  assert.match(layout,/aria-live="polite"/);
 });
+
+test('public project data is independent and the footer is a single shared control',()=>{
+ assert.deepEqual(initial.projects,[]);
+ for(const filename of ['src/data/projects.json','src/layouts/Layout.astro','src/pages/index.astro','src/pages/about/index.astro']){
+  const source=fs.readFileSync(filename,'utf8');
+  assert.doesNotMatch(source,/yi[.-]wang/i);
+ }
+ const layout=fs.readFileSync('src/layouts/Layout.astro','utf8');
+ for(const id of ['wechat-contact','copy-wechat','copy-wechat-status'])assert.equal(layout.split(`id="${id}"`).length,2);
+ assert.match(layout,/projects\.length/);
+ const home=fs.readFileSync('src/pages/index.astro','utf8');
+ assert.match(home,/id="trends"/);
+ assert.doesNotMatch(home,/id="projects"/);
+ assert.match(fs.readFileSync('src/pages/projects/index.astro','utf8'),/!projects\.length/);
+});

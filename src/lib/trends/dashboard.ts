@@ -1,7 +1,8 @@
-import { rangePoints, rangeSummary, displayUnit, displayValue, displayPoints, change, chartPath, freshness, type Instrument, type Range, type UnitMode } from './model';
+import { categories, rangePoints, rangeSummary, displayUnit, displayValue, displayPoints, change, chartPath, freshness, type Instrument, type Range, type UnitMode } from './model';
 const data:Instrument[]=JSON.parse(document.querySelector('#trend-data')!.textContent!);
 const get=<T extends HTMLElement>(id:string)=>document.getElementById(id) as T;
-let category=new URLSearchParams(location.search).get('market')==='a'?'a':'consumer',query='',favoritesOnly=false,range:Range='1m',selected=data.find(i=>i.category==='consumer'&&i.points.some(p=>p.low!==undefined))?.id||data.find(i=>i.category==='consumer'&&i.points.length)?.id||data[0].id,sort='name',direction=1,region='';
+const requestedCategory=new URLSearchParams(location.search).get('market');
+let category=categories.some(([id])=>id===requestedCategory)?requestedCategory!:'consumer',query='',favoritesOnly=false,range:Range='1m',selected=data.find(i=>i.category==='consumer'&&i.points.some(p=>p.low!==undefined))?.id||data.find(i=>i.category==='consumer'&&i.points.length)?.id||data[0].id,sort='name',direction=1,region='';
 let unitMode:UnitMode='jin',inspectedDate='',favorites=new Set<string>();
 try {
  const saved=JSON.parse(localStorage.getItem('ai014.trends.favorites')||'[]');

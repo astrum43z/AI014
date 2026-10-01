@@ -2,7 +2,7 @@
 
 AI014 是使用 Astro、TypeScript 和原生 CSS 制作的静态品牌网站。内容集中保存在 JSON 文件中，修改后重新构建、部署即可更新。网站没有管理后台、数据库或服务端接口。
 
-当前内容包括 Android 产品「小意月记」及项目 YI.WANG。未提供的功能、状态、版本、下载和截图均留空；Lab 与 Releases 也保持为空。请在获得真实资料后补充，不要把本文示例当作真实发布信息。
+当前内容包括 Android 产品「小意月记」及「趋势观察」数据工具。Projects 暂无公开项目，导航和首页不会展示空项目入口。未提供的功能、状态、版本、下载和截图均留空；Lab 与 Releases 也保持为空。请在获得真实资料后补充，不要把本文示例当作真实发布信息。
 
 ## 1. 在电脑上运行
 
@@ -150,7 +150,7 @@ Web 产品可填写发布记录的 `visitUrl`，没有文件时使用 `"files": 
 
 `taxonomy.json` 的 `types`、`platforms`、`statuses` 是「稳定键：页面显示文字」的登记表。产品类型例如 `"MOBILE_APP": "Mobile App"`，数据使用 `MOBILE_APP`。需要新类别时先加入登记项，再在内容中引用对应键；不要删除仍被内容使用的键。
 
-添加项目时，复制 `projects.json` 中现有对象，再替换 `id`、`slug`、名称与真实内容。字段包括 `type`、可选 `category`、`status`、`year`、`description`、`cover`、`images`、`visitUrl`、`repositoryUrl`、`technicalNotes`、`developmentNotes`、`tags`、`featured` 和 `order`。`images` 与产品截图使用相同结构；`developmentNotes` 是字符串数组。未知 `year` 使用 `null`，其他空值遵循前述规则。
+添加真实项目时，按下述字段在 `projects.json` 中增加完整对象，再填写 `id`、`slug`、名称与真实内容。字段包括 `type`、可选 `category`、`status`、`year`、`description`、`cover`、`images`、`visitUrl`、`repositoryUrl`、`technicalNotes`、`developmentNotes`、`tags`、`featured` 和 `order`。`images` 与产品截图使用相同结构；`developmentNotes` 是字符串数组。未知 `year` 使用 `null`，其他空值遵循前述规则。
 
 `labs.json` 中每条实验采用项目结构，并增加 `number` 字段。只有真实实验才创建对象并分配编号，不添加示范实验。实验类型可使用登记的 `EXPERIMENT`。添加后运行检查和构建，确认对应页面与导航符合预期。项目自动生成详情页；Lab 的完整实验内容直接展示在 Lab 页面，地址可使用 /lab/#实验-slug。
 

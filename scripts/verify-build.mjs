@@ -10,10 +10,22 @@ const files = fs
   .readdirSync(root, { recursive: true })
   .filter((f) => f.endsWith(".html"));
 const errors = [];
+const retiredIdentity = /yi[.-]wang/i;
+for (const file of fs.readdirSync(root, { recursive: true })) {
+  if (retiredIdentity.test(file)) errors.push(`${file}: 已移除项目仍有生成文件`);
+  if (/\.(?:html|xml|json|txt|js|css)$/.test(file) && retiredIdentity.test(fs.readFileSync(path.join(root, file), "utf8")))
+    errors.push(`${file}: 公开产物仍含已移除项目的信息`);
+}
 for (const file of files) {
   const html = fs.readFileSync(path.join(root, file), "utf8");
   if ((html.match(/<h1[ >]/g) || []).length !== 1)
     errors.push(`${file}: 必须有一个 h1`);
+  for (const id of ["wechat-contact", "copy-wechat", "copy-wechat-status"]) {
+    if (html.split(`id="${id}"`).length !== 2)
+      errors.push(`${file}: 页脚联系入口必须且只能有一个 ${id}`);
+  }
+  if (!/id="wechat-contact"[^>]*>goodmorning2you<\//.test(html))
+    errors.push(`${file}: 页脚微信号缺失或不一致`);
   for (const match of html.matchAll(/(href|src|srcset)="([^"]*)"/g)) {
     const targets =
       match[1] === "srcset"

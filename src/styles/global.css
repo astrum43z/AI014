@@ -1105,4 +1105,50 @@ button:focus-visible {
   }
 }
 
-.footer-contact{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;padding-top:24px;font-size:14px}.footer-contact button{font:inherit;color:inherit;border:1px solid currentColor;border-radius:6px;background:transparent;padding:6px 12px;cursor:pointer}.footer-contact button:focus-visible{outline:2px solid var(--accent,#a6d8f5);outline-offset:3px}#copy-wechat-status{font-size:12px;color:var(--muted,#9ba4ae)}
+/* Shared contact block: one WeChat identity on every generated page. */
+.footer-contact { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 32px 0; border-top: 1px solid var(--line); }
+.footer-contact-copy .eyebrow { color: var(--blue); }
+.footer-contact-copy p { margin-top: 10px; font-size: 1.05rem; }
+.footer-contact-action { min-width: 0; }
+.wechat-control { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+.wechat-label { display: block; color: var(--muted); font-size: .75rem; margin-bottom: 3px; }
+#wechat-contact { font: 1.1rem/1.5 var(--mono); user-select: all; overflow-wrap: anywhere; }
+.footer-contact button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 48px; font-size: .875rem; color: var(--text); border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 10px 16px; cursor: pointer; transition: border-color .2s, background .2s; }
+.footer-contact button:hover { border-color: var(--blue); background: #18232c; }
+.footer-contact button:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+#copy-wechat-status { display: block; min-height: 1.8em; margin-top: 8px; font-size: .75rem; color: var(--muted); }
+.mobile-contact-break { display: none; }
+.home-observatory { display: grid; grid-template-columns: 1fr 1fr; gap: 36px 64px; padding: 44px; border: 1px solid var(--line); background: linear-gradient(120deg, #121b23, #0b0f14 65%); }
+.observatory-copy h3 { font-size: clamp(1.8rem, 3vw, 2.75rem); line-height: 1.55; margin: 22px 0 18px; }
+.observatory-copy h3 span { color: var(--blue); }
+.observatory-copy > p { max-width: 32em; color: var(--muted); font-size: .9375rem; }
+.observatory-copy .text-link { margin-top: 26px; }
+.observatory-index { display: grid; align-content: center; }
+.observatory-index > a { display: grid; grid-template-columns: 24px 1fr 20px; align-items: center; gap: 16px; min-height: 96px; border-bottom: 1px solid var(--line); transition: color .2s; }
+.observatory-index > a:first-child { border-top: 1px solid var(--line); }
+.observatory-index > a:hover { color: var(--blue); }
+.observatory-number { font: .75rem var(--mono); color: var(--dim); }
+.observatory-index small { display: block; margin-top: 5px; font-size: .75rem; color: var(--muted); }
+.observatory-note { grid-column: 1 / -1; font-size: .75rem; color: var(--muted); }
+.empty-projects { padding: 40px 0 120px; }
+.empty-projects h2 { margin: 22px 0 16px; font-size: clamp(1.5rem, 3vw, 2.5rem); }
+.empty-projects p { color: var(--muted); }
+.empty-projects > div { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 28px; }
+.about-trends-link { margin-left: 28px; }
+@media (max-width: 760px) {
+  .footer-contact { align-items: flex-start; flex-direction: column; gap: 24px; padding: 28px 0; }
+  .footer-contact-action { width: 100%; }
+  .wechat-control { justify-content: space-between; gap: 16px 12px; }
+  .footer-contact-copy p { font-size: 1rem; }
+  .home-observatory { grid-template-columns: 1fr; gap: 28px; padding: 26px 22px; }
+  .observatory-copy h3 { margin-top: 18px; }
+  .observatory-index > a { min-height: 90px; gap: 12px; }
+  .observatory-note { line-height: 1.8; }
+}
+@media (max-width: 380px) {
+  .wechat-control { align-items: stretch; flex-direction: column; }
+  .footer-contact button { width: 100%; }
+  .mobile-contact-break { display: initial; }
+  .home-observatory { padding-inline: 18px; }
+  .about-trends-link { margin-left: 0; display: flex; width: fit-content; }
+}

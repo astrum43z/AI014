@@ -1,13 +1,13 @@
 ---
 import '../styles/global.css';
 import '../styles/pages.css';
-import { url } from '../lib/content';
+import { projects, url } from '../lib/content';
 interface Props { title?: string; description?: string; active?: string; image?: string; noindex?: boolean }
-const { title = 'AI014 — 有意思的 AI', description = '有意思的 AI，做点有意思的东西。', active = '', image = '/og/home.png', noindex = false } = Astro.props;
+const { title = 'AI014 — 有意思的 AI', description = 'AI014：独立产品与趋势观察。做有意思的工具，用可追溯的数据看见变化。', active = '', image = '/og/home.png', noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const imageUrl = image ? new URL(url(image), Astro.site).href : '';
 const fixedSocial = image.startsWith('/og/');
-const links = [['Home','/'],['Products','/products/'],['Projects','/projects/'],['Trends','/trends/'],['Lab','/lab/'],['Releases','/releases/'],['About','/about/']];
+const links = [['Home','/'],['Products','/products/'],...(projects.length ? [['Projects','/projects/']] : []),['Trends','/trends/'],['Lab','/lab/'],['Releases','/releases/'],['About','/about/']];
 ---
 <!doctype html>
 <html lang="zh-CN"><head>
@@ -26,7 +26,14 @@ const links = [['Home','/'],['Products','/products/'],['Projects','/projects/'],
     <details class="mobile-nav"><summary><span>Menu</span><span class="menu-symbol" aria-hidden="true">＋</span></summary><nav aria-label="手机导航">{links.map(([name,path]) => <a href={url(path)} aria-current={active===name?'page':undefined}>{name}<span aria-hidden="true">↗</span></a>)}</nav></details>
   </div></header>
   <main id="main"><slot /></main>
-  <footer class="site-footer container"><div class="footer-top"><a href={url('/')} class="footer-wordmark">AI014</a><p>有意思的 AI，<br />做点有意思的东西。</p></div><div class="footer-bottom"><span>Ideas / Products / Experiments</span><div><a href="https://ai014.com">ai014.com ↗</a><a href="https://ai014.cn">ai014.cn ↗</a></div><a href="#main" class="back-top">Back to top ↑</a></div><div class="footer-contact"><span>联系微信：<span id="wechat-contact">goodmorning2you</span></span><button type="button" id="copy-wechat" aria-label="复制微信号 goodmorning2you">复制</button><span id="copy-wechat-status" role="status" aria-live="polite"></span></div></footer>
+  <footer class="site-footer container">
+    <div class="footer-top"><a href={url('/')} class="footer-wordmark">AI014</a><p>有意思的 AI，<br />做点有意思的东西。</p></div>
+    <div class="footer-contact" aria-label="联系 AI014">
+      <div class="footer-contact-copy"><span class="eyebrow">Keep in touch</span><p>关于产品、数据，<br class="mobile-contact-break" />或一个有意思的想法。</p></div>
+      <div class="footer-contact-action"><div class="wechat-control"><span><span class="wechat-label">联系微信：</span><span id="wechat-contact">goodmorning2you</span></span><button type="button" id="copy-wechat" aria-label="复制微信号 goodmorning2you">复制微信号 <span aria-hidden="true">↗</span></button></div><span id="copy-wechat-status" role="status" aria-live="polite"></span></div>
+    </div>
+    <div class="footer-bottom"><span>Products / Data / Experiments</span><div><a href="https://ai014.com">ai014.com ↗</a><a href="https://ai014.cn">ai014.cn ↗</a></div><a href="#main" class="back-top">Back to top ↑</a></div>
+  </footer>
   <script>
     const copyWechat=document.querySelector<HTMLButtonElement>('#copy-wechat');
     copyWechat?.addEventListener('click', async () => {
