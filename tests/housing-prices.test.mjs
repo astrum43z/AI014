@@ -43,3 +43,7 @@ test('default markup is price first, keeps source details collapsed, and separat
  assert.match(html,/全国新建商品住宅 · 年度成交均价/);assert.match(html,/2026年1–8月累计/);assert.match(html,/真实租金价格暂未接入/);assert.match(html,/<details class="price-provenance">/);assert.match(html,/各年度首次发布的数据/);
  assert.equal((html.match(/<svg /g)||[]).length,1);assert.ok(html.includes('data.annual.map'));assert.doesNotMatch(html,/ytd.*circle|latestYtd.*priceGeometry/);
 });
+
+test('market navigation uses neutral price and rent labels, not index-only promises',()=>{
+ const model=fs.readFileSync('src/lib/trends/model.ts','utf8');assert.match(model,/\['housing','房价'\]/);assert.match(model,/\['rent','租金'\]/);assert.doesNotMatch(model,/70城房价指数|全国租金指数/);
+});
