@@ -17,7 +17,8 @@ export const aSharePresets:AShareInstrument[] = [
   {symbol:'SZSE:000858',name:'五粮液',type:'个股',aliases:'wuliangye wly'},
   {symbol:'SZSE:000333',name:'美的集团',type:'个股',aliases:'美的 meidi mdjt'},
 ];
-export const aShareRanges = [['3M','近3月'],['12M','近1年'],['60M','近5年'],['ALL','全部']] as const;
+// The provider maps 3M to intraday bars, which EOD symbols cannot serve.
+export const aShareRanges = [['12M','近1年'],['60M','近5年'],['ALL','全部']] as const;
 export type AShareRange = typeof aShareRanges[number][0];
 export type AShareStyle = '2' | '1';
 export const aShareWidgetScript = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';

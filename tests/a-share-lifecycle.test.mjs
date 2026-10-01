@@ -59,8 +59,8 @@ test('unknown names remain honest, qualified unknown codes remain usable, Escape
   f.search('sh688777');f.submit();assert.equal(JSON.parse(f.script().textContent).symbol,'SSE:688777');assert.equal(f.ids['a-share-current'].textContent,'上海 688777');
 });
 test('range and chart type controls update the same symbol without duplicated embeds',()=>{
-  const f=fixture('a');f.search('宁德');f.submit();f.ranges[2].fire('click');let cfg=JSON.parse(f.script().textContent);assert.equal(cfg.symbol,'SZSE:300750');assert.equal(cfg.range,'60M');
-  const same=f.script();f.ranges[2].fire('click');assert.equal(f.script(),same);
+  const f=fixture('a');f.search('宁德');f.submit();f.ranges[1].fire('click');let cfg=JSON.parse(f.script().textContent);assert.equal(cfg.symbol,'SZSE:300750');assert.equal(cfg.range,'60M');assert.match(f.ids['a-share-current-code'].textContent,/周线/);
+  const same=f.script();f.ranges[1].fire('click');assert.equal(f.script(),same);
   f.ids['a-share-view'].fire('change',{target:{value:'candles'}});cfg=JSON.parse(f.script().textContent);assert.equal(cfg.interval,'D');assert.equal(cfg.style,'1');assert.equal(cfg.hide_top_toolbar,true);assert.equal(f.ids['a-share-widget'].children.length,1);
   f.ids['a-share-expand'].fire('click');assert.equal(f.panel.classList.contains('a-share-expanded'),true);assert.equal(f.ids['a-share-expand'].attributes['aria-pressed'],'true');assert.equal(f.ids['a-share-chart'].scrolled,true);
 });

@@ -8,7 +8,7 @@ The name directory contains 13 manually verified items, not every listed securit
 
 The 大盘指数 / 常用个股 / 最近看过 controls provide touch-sized, horizontally scrollable chips. The last five distinct valid symbols are kept only in this browser under `ai014.trends.a-share-recent`; no names, quotes, account information or analytics are sent to an AI014 service. The last selection restores on return, and unavailable localStorage does not prevent use.
 
-The chart offers 近3月 / 近1年 / 近5年 / 全部 and 收盘走势 / K线图. Changing them remounts one official embed, preserving the selected symbol. These are requested display ranges, not guaranteed historical coverage. TradingView's configurator disables manual interval selection while a default range is selected; accordingly, AI014 does not present a separate conflicting day/week/month selector. The provider chooses the actual bar interval for the range and shows it within the chart. The default `interval: D` follows the official generated contract. Top and bottom trading toolbars are hidden through official options, while the price/date/status legend and attribution stay visible. 放大图表 enlarges the chart in the page without trapping focus or taking browser fullscreen.
+The chart offers 近1年 / 近5年 / 全部 and 收盘走势 / K线图. Changing them remounts one official embed, preserving the selected symbol. These are requested display ranges, not guaranteed historical coverage. TradingView's configurator disables manual interval selection while a default range is selected; accordingly, AI014 does not present a separate conflicting day/week/month selector. Live release QA confirmed that `12M` uses daily bars, `60M` uses weekly bars, and `ALL` uses monthly bars. The short-range `3M` option maps to hourly bars and fails on EOD-only symbols, so short intraday ranges are deliberately not exposed. The provider chooses the actual bar interval for the range and shows it within the chart. The default `interval: D` follows the official generated contract. Top and bottom trading toolbars are hidden through official options, while the price/date/status legend and attribution stay visible. 放大图表 enlarges the chart in the page without trapping focus or taking browser fullscreen.
 
 Search has ordinary keyboard-focusable result buttons, ArrowDown to the first result, Enter for a single match, and Escape to dismiss. A click outside, category change, or selecting a symbol dismisses results. Category transitions tear down the remote embed. Repeated category events and repeated range selections never duplicate it; retry intentionally creates a new request, and stale errors cannot overwrite a newer state.
 
@@ -21,7 +21,7 @@ Documented EOD coverage is described without promising real-time service or guar
 ## Official sources checked 2026-10-01
 
 - Coverage: https://www.tradingview.com/widget-docs/markets/asia-pacific/
-- Published constructor, generated config, range menu (`3M`, `12M`, `60M`, `ALL`) and interval/range behavior: https://www.tradingview.com/widget-docs/widgets/charts/advanced-chart/
+- Published constructor, generated config, range menu (`12M`, `60M`, `ALL`) and interval/range behavior: https://www.tradingview.com/widget-docs/widgets/charts/advanced-chart/
 - Simple chart and hidden-toolbar example: https://www.tradingview.com/widget-docs/widgets/charts/advanced-chart/demos/basic-area-chart/
 - Data limits and unavailable symbols: https://www.tradingview.com/widget-docs/faq/data/
 - Attribution and third-party requests: https://www.tradingview.com/widget-docs/faq/general/

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {aShareSymbol,aShareSourceUrl,aShareWidgetConfig,aSharePresets,aShareWidgetScript,aShareSearch,cleanAShareRecents} from '../src/lib/trends/a-share.ts';
+import {aShareRanges,aShareSymbol,aShareSourceUrl,aShareWidgetConfig,aSharePresets,aShareWidgetScript,aShareSearch,cleanAShareRecents} from '../src/lib/trends/a-share.ts';
 test('exchange-qualified symbols preserve leading zeros and reject unsafe values',()=>{
   assert.equal(aShareSymbol('SSE','000001'),'SSE:000001');assert.equal(aShareSymbol('SZSE',' 000001 '),'SZSE:000001');
   for(const [exchange,code] of [['HKEX','000001'],['SSE','1'],['SSE','<script>'],['SZSE','600519/../'],['BSE','920000']])assert.equal(aShareSymbol(exchange,code),null);
@@ -27,7 +27,8 @@ test('official chart is configured from simple history controls without duplicat
   assert.equal(aShareWidgetScript,'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js');
   const initial=aShareWidgetConfig('SSE:000001');assert.equal(initial.range,'12M');assert.equal(initial.interval,'D');assert.equal(initial.style,'2');
   for(const p of aSharePresets){const c=aShareWidgetConfig(p.symbol,'60M','1');assert.equal(c.symbol,p.symbol);assert.equal(c.range,'60M');assert.equal(c.interval,'D');assert.equal(c.timezone,'Asia/Shanghai');assert.equal(c.withdateranges,false);assert.equal(c.hide_top_toolbar,true);assert.equal(c.allow_symbol_change,false);}
-  assert.throws(()=>aShareWidgetConfig('SSE:000001','100M'));assert.throws(()=>aShareWidgetConfig('SSE:000001','12M','evil')); 
+  assert.deepEqual(aShareRanges.map(([value])=>value),['12M','60M','ALL']);
+  for(const unsupported of ['3M','6M','100M'])assert.throws(()=>aShareWidgetConfig('SSE:000001',unsupported));assert.throws(()=>aShareWidgetConfig('SSE:000001','12M','evil')); 
 });
 test('component discloses bounded directory and provider status, never inspecting quote content',()=>{
   const component=fs.readFileSync(new URL('../src/components/ASharePanel.astro',import.meta.url),'utf8');

@@ -33,7 +33,7 @@ export function initASharePanel(){
   const select=(next:string)=>{
     symbol=next;const item=aShareInstrument(symbol);
     get('a-share-current').textContent=item.name;
-    get('a-share-current-code').textContent=describe(item);
+    get('a-share-current-code').textContent=`${describe(item)} · ${{'12M':'日线','60M':'周线','ALL':'月线'}[range]}`;
     get<HTMLAnchorElement>('a-share-source').href=aShareSourceUrl(symbol);
     panel.querySelectorAll<HTMLButtonElement>('[data-a-share-symbol]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.aShareSymbol===symbol)));
   };
@@ -77,7 +77,7 @@ export function initASharePanel(){
   };
   panel.querySelectorAll<HTMLButtonElement>('[data-a-share-group]').forEach(button=>button.addEventListener('click',()=>{group=button.dataset.aShareGroup!;renderChoices();}));
   panel.querySelectorAll<HTMLButtonElement>('[data-a-share-range]').forEach(button=>button.addEventListener('click',()=>{
-    range=button.dataset.aShareRange as AShareRange;
+    range=button.dataset.aShareRange as AShareRange;select(symbol);
     panel.querySelectorAll<HTMLButtonElement>('[data-a-share-range]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));mount();
   }));
   get<HTMLSelectElement>('a-share-view').addEventListener('change',event=>{
