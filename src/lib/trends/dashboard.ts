@@ -31,11 +31,11 @@ function render(){
  document.querySelectorAll<HTMLButtonElement>('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===category)));
  document.querySelectorAll<HTMLButtonElement>('[data-unit]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.unit===unitMode)));
  get('favorites-only').setAttribute('aria-pressed',String(favoritesOnly));get<HTMLSelectElement>('category-select').value=category;
- const isAShare=category==='a';
- get<HTMLAnchorElement>('market-jump').href=isAShare?'#a-share-panel':'#market-title';
- document.querySelectorAll<HTMLElement>('[data-a-share-hidden]').forEach(el=>el.hidden=isAShare);
+ const isAShare=category==='a',isIndex=category==='housing'||category==='rent';
+ get<HTMLAnchorElement>('market-jump').href=isAShare?'#a-share-panel':isIndex?'#housing-panel':'#market-title';
+ document.querySelectorAll<HTMLElement>('[data-a-share-hidden]').forEach(el=>el.hidden=isAShare||isIndex);
  document.dispatchEvent(new CustomEvent('trends:category-change',{detail:category}));
- if(isAShare){get('selected-instrument').hidden=true;return;}
+ if(isAShare||isIndex){get('selected-instrument').hidden=true;return;}
  const list=matches().sort((a,b)=>sort==='name'?(direction*a.name.localeCompare(b.name,'zh-CN')||(a.sourceKey==='mofcom'?-1:0)-(b.sourceKey==='mofcom'?-1:0)):((change(rangePoints(a.points,range))??-Infinity)-(change(rangePoints(b.points,range))??-Infinity))*direction);
  if(list.length&&!list.some(i=>i.id===selected)){selected=(list.find(i=>i.sourceKey==='mofcom')||list[0]).id;inspectedDate='';}
  const rows=get('market-rows');rows.replaceChildren();
@@ -99,5 +99,6 @@ get('point-slider').addEventListener('input',e=>inspectPoint(Number((e.target as
 let appliedRegion=['','',''];
 const dialog=get<HTMLDialogElement>('region-dialog');get('region-open').addEventListener('click',()=>{['region-province','region-city','region-district'].forEach((id,n)=>get<HTMLInputElement>(id).value=appliedRegion[n]);dialog.returnValue='';dialog.showModal();});
 get('region-reset').addEventListener('click',()=>{for(const id of ['region-province','region-city','region-district'])get<HTMLInputElement>(id).value='';});
-dialog.addEventListener('close',()=>{if(dialog.returnValue!=='apply')return;appliedRegion=['region-province','region-city','region-district'].map(id=>get<HTMLInputElement>(id).value.trim());region=appliedRegion.filter(Boolean).join(' / ');text('region-open',(region||'全国')+' / 地区筛选 ⌄');category=category==='rent'?'rent':'housing';render();});
+document.addEventListener('trends:region-reset',()=>{appliedRegion=['','',''];region='';text('region-open','全国 / 地区筛选 ⌄');});
+dialog.addEventListener('close',()=>{if(dialog.returnValue!=='apply')return;appliedRegion=['region-province','region-city','region-district'].map(id=>get<HTMLInputElement>(id).value.trim());region=appliedRegion.filter(Boolean).join(' / ');text('region-open',(region||'全国')+' / 地区筛选 ⌄');category=category==='rent'?'rent':'housing';document.dispatchEvent(new CustomEvent('trends:region-change',{detail:{province:appliedRegion[0],city:appliedRegion[1],district:appliedRegion[2]}}));render();});
 render();

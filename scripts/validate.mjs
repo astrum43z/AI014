@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { validateHousing } from "../src/lib/trends/housing.ts";
 import { validateData } from "../src/lib/validate.ts";
 const data = Object.fromEntries(
   ["products", "projects", "releases", "labs", "taxonomy"].map((name) => [
@@ -43,3 +44,6 @@ if (errors.length) {
 console.log(
   `Data OK: ${data.products.length} products, ${data.projects.length} projects, ${data.labs.length} labs, ${data.releases.length} releases.`,
 );
+
+validateHousing(JSON.parse(fs.readFileSync("src/data/nbs-housing.json","utf8")));
+console.log("NBS indexes OK: 70 cities, 12 monthly releases, separated base regimes.");

@@ -8,8 +8,8 @@ The dashboard supports category filtering, free-text instrument/source search, s
 
 - ECB official historic XML: five EUR reference pairs plus derived USD/CNY, 2019-01 to 2026-09-30. Daily reference rates, not executable live quotes.
 - World Bank Pink Sheet official September 2026 workbook: gold, silver, Brent oil, copper, aluminum and US HRW wheat, 2019-01 to 2026-08 (92 observations per series). Source workbook states updated 2026-09-02. Identified as monthly historical averages, not live prices, in the UI. The official landing page lists the next release as 2026-10-02; September observations are not yet published. Date day `01` is a month identifier, not a daily quote.
-- Housing, rent, A/HK/US equities and consumer goods have navigable entries with explicit missing-data status. They have no fabricated prices or charts.
-- No nationwide province/city/district/county housing or rent feed is connected. NBS housing data coverage is 70 large/medium cities and is an index, not a nationwide price per square metre.
+- NBS housing and national rental-CPI data use their own index module described below; unavailable city/county monetary prices remain explicit. A-share uses the attributed official embed. HK/US equities still have explicit missing-data entries.
+- No nationwide province/city/district/county monetary housing or rent feed is connected. NBS housing data coverage is 70 large/medium cities and is an index, not a nationwide price per square metre.
 
 `src/data/trends.json` is a build-time static snapshot. The GitHub Pages workflow attempts refresh on weekdays at 18:23 UTC, then validates, caches and deploys the snapshot. No API key is embedded. Source URLs are on every detail view. `docs/trends-source-checksums.json` records hashes of the downloaded source files used for this import. Original sources can change; preserve downloaded originals when performing later imports.
 
@@ -34,11 +34,6 @@ Cache storage is not permanent. Scheduled/manual runs fail closed when the match
 The UI shows per-source failure state and per-instrument retrieval date. Client-side age checks mark FX older than 7 days and monthly observations older than 75 days as stale, even if scheduled refresh stops. Thresholds allow weekends and the monthly release lag, not an assurance of latest availability. There is no intraday price feed. Missing housing/rent/stocks/consumer coverage remains explicit.
 
 Run `python -m unittest discover -s tests -p 'test_*.py'` in addition to the JS checks. The tests cover official-link allowlisting, history regression, last-good preservation and monthly download cadence.
-
-## Next housing source candidate (not integrated)
-
-Verified on 2026-09-30: https://www.stats.gov.cn/sj/zxfb/202609/t20260915_1965304.html provides August 2026 NBS new-home and second-hand-home city-level indices (month-on-month, year-on-year and year-to-date comparative indices), released September 15. Its HTML tables are downloadable. They do not supply county-level prices, rent, or currency-per-square-metre values. A future integration must preserve those scopes and denominators rather than passing these rolling indices into price-return calculations unchanged.
-
 
 ## 2026-10-01：大陆商品与手机布局
 
@@ -78,3 +73,15 @@ DATADATE原样保留为周度观测标签，不改成周末、不声称是具体
 Retired local-market data, adapters and evidence files are removed from the current source tree; repository history remains unchanged. The active catalogue rejects retired source IDs even when reading a stale snapshot. The refresh worker strips them and their status/checksum entries before loading the national bootstrap, and cannot request their former endpoint. The existing cache key hashes the changed committed snapshot, so old source snapshots no longer match; no workflow permissions, triggers or schedules are changed. All 36 national weekly series and 3276 observations remain unchanged, as do other national food, industrial, FX, precious-metal and A-share sources.
 
 No public product remains. Product cards/navigation and static detail routes disappear, the product index uses an honest empty state, and the removed social image is no longer published.
+
+## NBS housing and rental-CPI index snapshot
+
+The dedicated panel contains September 2025–August 2026: 70 cities × two housing types × twelve monthly releases (1,680 city/month/type records), and twelve national rental-CPI records. Official NBS HTML tables are parsed from their headline sections; each record keeps the original MoM, YoY, YTD when published, publication date, source URL and statistical base regime. January has no YTD column and retains null. Compact storage is `src/data/nbs-housing.json`; source-byte SHA-256 checksums are in `docs/nbs-housing-source-manifest.json`.
+
+NBS terms explicitly permit use/download of statistical data and require attribution. This module links that policy and each release. It preserves exact historical publication vintages: 2025 observations use the 2020 statistical base, while 2026 observations use the 2025 base. The graph breaks between these regimes. Original rolling MoM/YoY indexes are not compounded, divided into period returns, rebased or converted to monetary prices. Housing growth displayed beside an index is the source ratio minus 100. Rental rates are already percentages and are displayed unchanged. The comparison denominator (previous month/same month a year earlier) is distinct from the statistical base-year regime.
+
+Housing covers the aggregate urban districts of each published city, excludes counties, and does not provide individual-district values. New-home inputs are administrative online-contract data; resale inputs combine key and typical surveys. National rental CPI is a relative rental-cost statistic, not average paid rent, asking rent, or yuan per square metre. County filters, province aggregates, unsupported cities, province/city mismatches and local-rent requests produce an explicit unavailable state with no chart/values. The city selector operates only on the verified seventy cities.
+
+This initial release is an explicitly dated historical snapshot, not a live feed and not automatically refreshed. Existing source refresh schedules, permissions and caches are unchanged. Backfill is reproducible offline with `python scripts/nbs-housing.py /path/to/official-html-folder`; the folder must contain `source-urls.json` and the 24 verified source files named `housing-YYYY-MM.html` / `rent-YYYY-MM.html`. The parser rejects the wrong host, period, denominator, counts, city changes, future publication dates, inconsistent duplicated mobile tables and invalid values. Raw source files are preserved in the research workspace; they are not mirrored as public site content.
+
+Verification: model tests cover count/provenance, known official values, base-break geometry, non-mutation and unsupported regions. The DOM lifecycle harness covers direct routes, repeated switches, metric/type/city changes, unavailable/clear behavior, slider inspection and narrow-screen geometry. This is separate from full browser QA. Run all existing JS, Python, Astro and build checks before publication.

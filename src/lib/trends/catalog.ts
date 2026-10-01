@@ -7,8 +7,6 @@ const resolvedSnapshot=[...stored,...nationalProduceBootstrap.filter(i=>!storedI
 const pending = (id:string,name:string,category:string,symbol:string,unit:string,source:string,sourceUrl:string,coverage:string):Instrument=>({id,name,category,symbol,unit,source,sourceUrl,coverage,points:[],frequency:'尚未接入'});
 export const instruments:Instrument[] = [
  ...resolvedSnapshot.filter(i=>!['cn-mara-6','cn-mara-7'].includes(i.id)),
- pending('housing','全国住宅价格','housing','HOUSING','指数','国家统计局','https://www.stats.gov.cn/sj/','国家统计局公开住宅价格指数覆盖 70 个大中城市，不是全国均价。尚未导入历史序列；省级汇总及区县需额外来源。'),
- pending('rent','全国住宅租金','rent','RENT','元/月','待确定授权数据源','https://www.stats.gov.cn/sj/','尚无已接入的全国省、市、区县统一租金序列。不能把住宅价格指数或租赁挂牌价当作实际成交租金。'),
  pending('hsi','恒生指数','hk','HSI','指数点','恒生指数','https://www.hsi.com.hk/','港股入口已建立；待接入许可范围明确的指数与个股历史行情。'),
  pending('sp500','标普 500','us','SPX','指数点','S&P Dow Jones Indices','https://www.spglobal.com/spdji/','美股入口已建立；待接入许可范围明确的指数与个股历史行情。'),
  ...(!snapshot.instruments.some((x:Instrument)=>x.category==='metal') ? [pending('gold','黄金','metal','XAU','美元/金衡盎司','世界银行 Pink Sheet','https://www.worldbank.org/en/research/commodity-markets','月度国际参考价，非实时交易报价。等待导入可核实历史数据。'),pending('silver','白银','metal','XAG','美元/金衡盎司','世界银行 Pink Sheet','https://www.worldbank.org/en/research/commodity-markets','月度国际参考价，非实时交易报价。等待导入可核实历史数据。')] : []),

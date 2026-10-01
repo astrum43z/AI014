@@ -17,6 +17,8 @@ import { products, releases, labs, url, dateText } from '../lib/content';
     <div class="home-observatory" data-reveal>
       <div class="observatory-copy"><span class="eyebrow">Data, with context</span><h3>看见变化，<br /><span>先看清数据。</span></h3><p>从日常蔬果到市场行情，把真实来源、日期和覆盖范围放在每一条曲线旁边。</p><a class="text-link" href={url('/trends/')}>打开趋势观察<Arrow /></a></div>
       <div class="observatory-index" aria-label="趋势观察分类">
+        <a href={url('/trends/?market=housing')}><span class="observatory-number">房</span><span>70城房价指数<small>城市整体 · 新房 / 二手房 · 12期历史</small></span><Arrow diagonal /></a>
+        <a href={url('/trends/?market=rent')}><span class="observatory-number">租</span><span>全国租金指数<small>CPI租赁房房租 · 环比 / 同比涨跌幅</small></span><Arrow diagonal /></a>
         <a href={url('/trends/?market=consumer')}><span class="observatory-number">01</span><span>蔬果与食品<small>公开批发报价 · 按斤 / 公斤查看</small></span><Arrow diagonal /></a>
         <a href={url('/trends/?market=commodity')}><span class="observatory-number">02</span><span>工业原料<small>重要生产资料 · 旬度市场均价</small></span><Arrow diagonal /></a>
         <a href={url('/trends/?market=a')}><span class="observatory-number">03</span><span>A 股日线<small>指数与个股 · 来源内查看历史</small></span><Arrow diagonal /></a>

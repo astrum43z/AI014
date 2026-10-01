@@ -1,0 +1,199 @@
+{
+  "retrievedAt": "2026-10-01",
+  "method": "Parsed source HTML tables and publication metadata, with all duplicate mobile tables checked for equality. No interpolation or compounding.",
+  "rightsUrl": "https://www.stats.gov.cn/wzgl/202302/t20230217_1912857.html",
+  "sources": [
+    {
+      "kind": "housing",
+      "month": "2025-09",
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202510/t20251020_1961597.html",
+      "publishedAt": "2025-10-20",
+      "sha256": "d5b6b828633d4261570e91d15f11c837ede7f0e70dd2cf8baa8c07a0d276aff0",
+      "bytes": 668070
+    },
+    {
+      "kind": "housing",
+      "month": "2025-10",
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202511/t20251114_1961850.html",
+      "publishedAt": "2025-11-14",
+      "sha256": "1969d6011645316e694ecbd0a08bde9bf6e2e06fa2536a3c08dfe1563d9b395a",
+      "bytes": 668241
+    },
+    {
+      "kind": "housing",
+      "month": "2025-11",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202512/t20251215_1962069.html",
+      "publishedAt": "2025-12-15",
+      "sha256": "db8ea2fdcf4064f19c951c24ded87dc5ad278a13d817733570da29330d64245d",
+      "bytes": 1384725
+    },
+    {
+      "kind": "housing",
+      "month": "2025-12",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202601/t20260119_1962319.html",
+      "publishedAt": "2026-01-19",
+      "sha256": "aef609e8c9c3d056086afed1d7c78b6d2aaf4607b4a48984d58f72c8ce6075b6",
+      "bytes": 1385217
+    },
+    {
+      "kind": "housing",
+      "month": "2026-01",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260213_1962617.html",
+      "publishedAt": "2026-02-13",
+      "sha256": "be629525730a266070db4b0ba746b64df4d22b6bc1c9c9dd4ae2e45906fa0fe4",
+      "bytes": 1003782
+    },
+    {
+      "kind": "housing",
+      "month": "2026-02",
+      "sourceUrl": "https://www.stats.gov.cn/zwfwck/sjfb/202603/t20260316_1962774.html",
+      "publishedAt": "2026-03-16",
+      "sha256": "b207ee1177be99bea633255202390e20a984d2b9e298e009fb207989304589b0",
+      "bytes": 669367
+    },
+    {
+      "kind": "housing",
+      "month": "2026-03",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202604/t20260416_1963320.html",
+      "publishedAt": "2026-04-16",
+      "sha256": "77056ba71fda1fe4bf1ea3ceecc34ad2e5ea8c6f166406a6077aaa7f4794878f",
+      "bytes": 1387547
+    },
+    {
+      "kind": "housing",
+      "month": "2026-04",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202605/t20260518_1963715.html",
+      "publishedAt": "2026-05-18",
+      "sha256": "5d154db86efd77d77cf7ca8e13500efea1b9a0e8535e8f827f7a1e891fc035bd",
+      "bytes": 1389206
+    },
+    {
+      "kind": "housing",
+      "month": "2026-05",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202606/t20260616_1963946.html",
+      "publishedAt": "2026-06-16",
+      "sha256": "80a7a75ff98ead9baab4d7c10cb8697f619e13711a960a5021ef94595ee07202",
+      "bytes": 1389263
+    },
+    {
+      "kind": "housing",
+      "month": "2026-06",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202607/t20260715_1964115.html",
+      "publishedAt": "2026-07-15",
+      "sha256": "9db343ea8066bb2966432906be4419b49914b047d4aeeffef94db67365590b5a",
+      "bytes": 1389498
+    },
+    {
+      "kind": "housing",
+      "month": "2026-07",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202608/t20260817_1965050.html",
+      "publishedAt": "2026-08-17",
+      "sha256": "4a7a2356f9bf94c19afa104584c60b6e7e421e322acb5298b0a8605f221fa573",
+      "bytes": 1389530
+    },
+    {
+      "kind": "housing",
+      "month": "2026-08",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202609/t20260915_1965304.html",
+      "publishedAt": "2026-09-15",
+      "sha256": "cbb5949b850a33eed1d604170ca8212e9e21c20394eddef9c7fe63f139d9a5fd",
+      "bytes": 1389669
+    },
+    {
+      "kind": "rent",
+      "month": "2025-09",
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202510/t20251015_1961521.html",
+      "publishedAt": "2025-10-15",
+      "sha256": "d74a7bb9ac35d4f9dc6a414ca4655c2e1eae3f597449d6175a2d87890d83cf31",
+      "bytes": 82933
+    },
+    {
+      "kind": "rent",
+      "month": "2025-10",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202511/t20251109_1961826.html",
+      "publishedAt": "2025-11-09",
+      "sha256": "fed797abc1322f87fa2dbc585a8129e1b09961990e8c9d7579627c3b3363cce7",
+      "bytes": 212310
+    },
+    {
+      "kind": "rent",
+      "month": "2025-11",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202512/t20251210_1962015.html",
+      "publishedAt": "2025-12-10",
+      "sha256": "34467011f7532958dc6921d32ed2caf1aa9c3e5869b39d3a67f246a9593c47dd",
+      "bytes": 215016
+    },
+    {
+      "kind": "rent",
+      "month": "2025-12",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfb/202601/t20260109_1962273.html",
+      "publishedAt": "2026-01-09",
+      "sha256": "029d16d76ba6c207b46be0cf4a13ca2c88ae431540aec335778644e97830da7f",
+      "bytes": 220743
+    },
+    {
+      "kind": "rent",
+      "month": "2026-01",
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202602/t20260211_1962588.html",
+      "publishedAt": "2026-02-11",
+      "sha256": "6c9e3d14a0bad085f76a86ab12ddf8f51c847639a13f5a45d7440575e68ba2c9",
+      "bytes": 75457
+    },
+    {
+      "kind": "rent",
+      "month": "2026-02",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202603/t20260309_1962732.html",
+      "publishedAt": "2026-03-09",
+      "sha256": "dd4dc6eae6f3c538e96f14e38c3c84d47cb7752ab6734d24a683d12c3ef00e65",
+      "bytes": 246195
+    },
+    {
+      "kind": "rent",
+      "month": "2026-03",
+      "sourceUrl": "https://www.stats.gov.cn/zwfwck/sjfb/202604/t20260410_1963264.html",
+      "publishedAt": "2026-04-10",
+      "sha256": "91b9b4fd4e623a4224dae4aea1c8a2e3f5ad999eba86b53520ac2c4532d277a4",
+      "bytes": 98495
+    },
+    {
+      "kind": "rent",
+      "month": "2026-04",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202605/t20260511_1963659.html",
+      "publishedAt": "2026-05-11",
+      "sha256": "e599a04de2af62447f3328db7d9ce08e50308138b726eaa3ca9233d7ed46b348",
+      "bytes": 236295
+    },
+    {
+      "kind": "rent",
+      "month": "2026-05",
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202606/t20260610_1963923.html",
+      "publishedAt": "2026-06-10",
+      "sha256": "7650dd27e9a4bb890069f168b832b10f333484638c28d8915e8d9db218bd8d19",
+      "bytes": 93435
+    },
+    {
+      "kind": "rent",
+      "month": "2026-06",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202607/t20260709_1964084.html",
+      "publishedAt": "2026-07-09",
+      "sha256": "695ded6560c6f2a03156fe6e009400ebaf6b9ad491b5669c4afda4304a3b1624",
+      "bytes": 233837
+    },
+    {
+      "kind": "rent",
+      "month": "2026-07",
+      "sourceUrl": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202608/t20260809_1965008.html",
+      "publishedAt": "2026-08-09",
+      "sha256": "70508698d7405307e5daa26307152c87a206ae1f693ea3a677207c4ebda6e54c",
+      "bytes": 92681
+    },
+    {
+      "kind": "rent",
+      "month": "2026-08",
+      "sourceUrl": "https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260909_1965263.html",
+      "publishedAt": "2026-09-09",
+      "sha256": "1766505d490698dc1366745ee16706f4e3060628d533252d48682d2a6719e1a6",
+      "bytes": 245891
+    }
+  ]
+}

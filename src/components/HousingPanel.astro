@@ -1,0 +1,28 @@
+---
+import snapshot from '../data/nbs-housing.json';
+import '../styles/housing.css';
+---
+<section id="housing-panel" class="index-panel" hidden aria-labelledby="index-title">
+ <header class="index-heading"><div><p class="eyebrow">NBS / MONTHLY OBSERVATIONS</p><h2 id="index-title">70城住宅价格指数</h2><p id="index-scope" class="index-scope"></p></div><a href="https://www.stats.gov.cn/wzgl/202302/t20230217_1912857.html" target="_blank" rel="noopener noreferrer">引自国家统计局网站 ↗</a></header>
+ <p class="index-snapshot">已核验历史快照 · 2025年9月—2026年8月 · 2026-10-01 获取 · 暂未接入自动更新</p>
+ <div class="index-controls">
+  <label id="index-city-control">城市<select id="index-city">{snapshot.cities.map(city=><option value={city}>{city}</option>)}</select></label>
+  <label id="index-kind-control">住宅类型<select id="index-kind"><option value="new">新建商品住宅</option><option value="resale">二手住宅</option></select></label>
+  <label>观察指标<select id="index-metric"><option value="mom">环比</option><option value="yoy">同比</option></select></label>
+  <label>历史范围<select id="index-range"><option value="all">全部12期</option><option value="3">最近3期</option><option value="2025">2025年 · 4期</option><option value="2026">2026年 · 8期</option></select></label>
+  <button id="region-open" type="button">全国 / 地区筛选 ⌄</button>
+ </div>
+ <div id="index-unavailable" class="index-unavailable" hidden role="status"><p id="index-unavailable-reason"></p><button id="index-region-clear" type="button">清除地区条件，查看已覆盖序列</button></div>
+ <div id="index-results">
+  <div class="index-metrics"><div><span id="index-value-label">最新环比指数</span><strong id="index-value"></strong><small id="index-unit"></small></div><div><span id="index-rate-label">对应环比涨跌</span><strong id="index-rate"></strong><small id="index-rate-note"></small></div><div><span>最新统计月份</span><strong id="index-latest-month"></strong><small id="index-published"></small></div></div>
+  <p id="index-method" class="index-method"></p>
+  <svg id="index-chart" viewBox="0 0 760 260" role="img" aria-labelledby="index-chart-title"><title id="index-chart-title">月度原始统计指标</title><g id="index-grid"></g><g id="index-paths"></g><g id="index-dots"></g><g id="index-labels"></g></svg>
+  <label class="index-inspector">逐期查看<input id="index-slider" type="range" min="0" max="11" value="11" aria-label="选择月度统计期" /><output id="index-readout"></output><a id="index-point-source" target="_blank" rel="noopener noreferrer">本期官方公告 ↗</a></label>
+  <p id="index-coverage-count" class="muted"></p>
+  <p class="index-base-note">2026年1月起改用2025年统计基期，调查权数有所调整。图中在换基处断开，仅展示各期公告原值；不拼接成定基房价、不连乘推算累计涨跌，也不计算投资回报。</p>
+  <details class="index-history"><summary>查看逐月原始数据与来源</summary><div class="index-table-scroll"><table><thead><tr><th>统计期</th><th id="index-table-mom">环比指数</th><th id="index-table-yoy">同比指数</th><th>统计基期</th><th>发布及来源</th></tr></thead><tbody id="index-table"></tbody></table></div></details>
+ </div>
+ <details class="index-explanation"><summary>覆盖范围与统计口径</summary><p>房价：70个大中城市的市辖区整体，不包括县，亦不是各区单列。新建商品住宅采用当地房地产管理部门网签数据；二手住宅采用重点调查与典型调查。指数表示相对变化，不能解读为元/平方米成交价。</p><p>租金：全国 CPI“租赁房房租”分项的官方环比、同比涨跌幅。它不是每月支付的平均租金，不提供城市或区县租金水平，也不是挂牌租金或每平方米成交租金。</p><p>统计基期与指标的对比期不同：房价环比的上月=100、同比的上年同月=100。页面保留2020与2025两轮统计基期的标识；2026年同比原值由国家统计局按新口径发布，本站没有拿2025年旧公告自行重算。</p><a href={snapshot.baseMethodUrls[0]} target="_blank" rel="noopener noreferrer">2020基期说明 ↗</a><a href={snapshot.baseMethodUrls[1]} target="_blank" rel="noopener noreferrer">2025基期说明 ↗</a></details>
+</section>
+<script type="application/json" id="housing-data" is:inline set:html={JSON.stringify(snapshot).replace(/</g,'\\u003c')}></script>
+<script>import '../lib/trends/housing-panel';</script>
