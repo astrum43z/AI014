@@ -1,4 +1,4 @@
-import socket, ssl, urllib.error
+import contextlib, io, socket, ssl, urllib.error
 from unittest.mock import patch
 import copy, importlib.util, json, pathlib, unittest
 ROOT=pathlib.Path(__file__).resolve().parents[1]
@@ -49,6 +49,39 @@ class MofcomRefreshTests(unittest.TestCase):
   def post(u,b):calls.append(1);raise TimeoutError()
   with self.assertRaises(TimeoutError):r.fetch_weekly_with_retry(post,'url',b'body',lambda _:None)
   self.assertEqual(len(calls),2)
+ def test_tls_reason_whitelist_and_certificate_precedence(self):
+  symbols={
+   'UNEXPECTED_EOF_WHILE_READING':'tls-unexpected-eof',
+   'SSLV3_ALERT_HANDSHAKE_FAILURE':'tls-handshake-alert',
+   'TLSV1_ALERT_PROTOCOL_VERSION':'tls-protocol-alert',
+   'WRONG_VERSION_NUMBER':'tls-wrong-version',
+   'UNSAFE_LEGACY_RENEGOTIATION_DISABLED':'tls-legacy-renegotiation',
+   'NO_SHARED_CIPHER':'tls-no-shared-cipher',
+  }
+  for symbol,code in [*symbols.items(),('private-secret-url','tls'),(None,'tls'),([], 'tls')]:
+   error=ssl.SSLError('private-secret-url');error.reason=symbol
+   for wrapped in [error,urllib.error.URLError(error)]:
+    self.assertEqual(r.failure_code(wrapped),code)
+    calls=[]
+    def post(u,b):calls.append(1);raise wrapped
+    with self.assertRaises(Exception):r.fetch_weekly_with_retry(post,'url',b'body',lambda _:self.fail('must not retry TLS'))
+    self.assertEqual(len(calls),1)
+  certificate=ssl.SSLCertVerificationError('private-secret-url')
+  certificate.reason='SSLV3_ALERT_HANDSHAKE_FAILURE'
+  self.assertEqual(r.failure_code(certificate),'tls-certificate')
+  self.assertEqual(r.failure_code(urllib.error.URLError(certificate)),'tls-certificate')
+ def test_tls_diagnosis_preserves_data_and_never_logs_raw_error(self):
+  old=snapshot();before=copy.deepcopy(old);calls=[]
+  error=ssl.SSLError('private-secret-url');error.reason='UNEXPECTED_EOF_WHILE_READING'
+  def post(u,b):calls.append(1);raise urllib.error.URLError(error)
+  output=io.StringIO()
+  with contextlib.redirect_stdout(output):
+   new,hashes=r.refresh(old,{'mofcom/existing':'same'},'2026-10-08',offline,download_post=post)
+  self.assertEqual(calls,[1]);self.assertEqual(old,before)
+  self.assertEqual(new['instruments'],old['instruments']);self.assertEqual(new['retrievedAt'],old['retrievedAt'])
+  self.assertEqual(hashes,{'mofcom/existing':'same'})
+  self.assertEqual(new['refreshStatus']['mofcom'],{'checkedAt':'2026-10-08','lastSuccessAt':'2026-10-01','status':'error','errorCode':'tls-unexpected-eof','latestObservationAt':'2026-09-25'})
+  self.assertIn('tls-unexpected-eof',output.getvalue());self.assertNotIn('private-secret-url',output.getvalue())
  def test_seventh_day_requests_new_series(self):
   calls=[]
   def post(u,b):calls.append(u);return RAW
