@@ -41,7 +41,18 @@ def failure_code(error):
  if isinstance(error,urllib.error.HTTPError):return 'http-'+str(error.code)
  reason=error.reason if isinstance(error,urllib.error.URLError) else error
  if isinstance(reason,ssl.SSLCertVerificationError):return 'tls-certificate'
- if isinstance(reason,ssl.SSLError):return 'tls'
+ if isinstance(reason,ssl.SSLError):
+  # Fixed OpenSSL reason symbols only; never emit exception text or unknown values.
+  codes={
+   'UNEXPECTED_EOF_WHILE_READING':'tls-unexpected-eof',
+   'SSLV3_ALERT_HANDSHAKE_FAILURE':'tls-handshake-alert',
+   'TLSV1_ALERT_PROTOCOL_VERSION':'tls-protocol-alert',
+   'WRONG_VERSION_NUMBER':'tls-wrong-version',
+   'UNSAFE_LEGACY_RENEGOTIATION_DISABLED':'tls-legacy-renegotiation',
+   'NO_SHARED_CIPHER':'tls-no-shared-cipher',
+  }
+  symbol=getattr(reason,'reason',None)
+  return codes.get(symbol,'tls') if isinstance(symbol,str) else 'tls'
  if isinstance(reason,socket.gaierror):return 'dns-temporary' if reason.errno==socket.EAI_AGAIN else 'dns'
  if isinstance(reason,TimeoutError):return 'timeout'
  if isinstance(reason,ConnectionResetError):return 'connection-reset'
