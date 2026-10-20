@@ -1,7 +1,7 @@
 """Refresh public reference data independently; preserve each source's last good snapshot.
 No credentials. Workbook URLs are discovered only on the official World Bank page.
 """
-import datetime, hashlib, html, importlib.util, json, pathlib, re, tempfile, urllib.request, urllib.parse
+import datetime, hashlib, html, importlib.util, json, pathlib, re, tempfile, urllib.request, urllib.parse, urllib.error, socket, ssl, errno, time
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('trends_import', ROOT/'scripts/import-trends.py')
 parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
@@ -35,6 +35,30 @@ def no_regression(old,new):
   before=next(i for i in old if i['id']==item['id'])
   assert len(item['points'])>=len(before['points']), 'Source history shrank'
   assert item['points'][-1]['date']>=before['points'][-1]['date'], 'Source vintage regressed'
+
+def failure_code(error):
+ # Never print arbitrary exception text, URLs, headers, or response bodies.
+ if isinstance(error,urllib.error.HTTPError):return 'http-'+str(error.code)
+ reason=error.reason if isinstance(error,urllib.error.URLError) else error
+ if isinstance(reason,ssl.SSLCertVerificationError):return 'tls-certificate'
+ if isinstance(reason,ssl.SSLError):return 'tls'
+ if isinstance(reason,socket.gaierror):return 'dns-temporary' if reason.errno==socket.EAI_AGAIN else 'dns'
+ if isinstance(reason,TimeoutError):return 'timeout'
+ if isinstance(reason,ConnectionResetError):return 'connection-reset'
+ if isinstance(reason,ConnectionRefusedError):return 'connection-refused'
+ if isinstance(reason,OSError) and reason.errno==errno.ENETUNREACH:return 'network-unreachable'
+ if isinstance(error,urllib.error.URLError):return 'transport-error'
+ if isinstance(error,(ValueError,AssertionError)):return 'invalid-source-data'
+ return 'unexpected-error'
+
+def fetch_weekly_with_retry(download,url,body,pause=time.sleep):
+ # One bounded retry only for transient failures. No retries for access denial,
+ # rate limiting, TLS, invalid payloads, or unknown transport errors.
+ try:return download(url,body)
+ except Exception as error:
+  if failure_code(error) not in {'timeout','connection-reset','dns-temporary','http-502','http-503','http-504'}:raise
+  pause(2)
+  return download(url,body)
 
 def refresh(snapshot,checksums,asof,download=fetch,archive=None,download_post=None,bootstrap=None):
  snapshot=json.loads(json.dumps(snapshot));checksums=dict(checksums)
@@ -90,13 +114,13 @@ def refresh(snapshot,checksums,asof,download=fetch,archive=None,download_post=No
  if old:
   previous=statuses.get('mofcom',{})
   last_success=previous.get('lastSuccessAt')
-  # Public weekly series: at most one successful request cycle every seven days.
+  # Weekly observations are checked on each scheduled day, not just once a week.
   # A failed cycle remains eligible on the next scheduled run; no values are lost.
-  cached=previous.get('status')=='ok' and last_success and 0<=(datetime.date.fromisoformat(asof)-datetime.date.fromisoformat(last_success)).days<7
+  cached=previous.get('status')=='ok' and last_success and last_success==asof
   if not cached:
    source_hashes={}
    def post(url,body):
-    raw=(download_post or mofcom.fetch_post)(url,body)
+    raw=fetch_weekly_with_retry(download_post or mofcom.fetch_post,url,body)
     ids=urllib.parse.parse_qs(body.decode('ascii'))['indexIds'][0]
     source_hashes['mofcom/'+ids+'.json']=hashlib.sha256(raw).hexdigest()
     return raw
@@ -108,8 +132,9 @@ def refresh(snapshot,checksums,asof,download=fetch,archive=None,download_post=No
     checksums.update(source_hashes)
     statuses['mofcom']={'checkedAt':asof,'lastSuccessAt':asof,'status':'ok'}
    except Exception as error:
-    statuses['mofcom']={'checkedAt':asof,'lastSuccessAt':last_success or old[0].get('retrievedAt'),'status':'error'}
-    print(f'::warning::mofcom refresh failed ({type(error).__name__}); retained last good data')
+    code=failure_code(error)
+    statuses['mofcom']={'checkedAt':asof,'lastSuccessAt':last_success or old[0].get('retrievedAt'),'status':'error','errorCode':code,'latestObservationAt':max(i['points'][-1]['date'] for i in old)}
+    print(f'::warning::mofcom refresh failed ({code}); retained last good data; latest observation '+statuses['mofcom']['latestObservationAt'])
  snapshot['retrievedAt']=max((i.get('retrievedAt',snapshot['retrievedAt']) for i in snapshot['instruments']),default=snapshot['retrievedAt'])
  return snapshot,checksums
 
