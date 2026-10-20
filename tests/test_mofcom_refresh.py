@@ -1,3 +1,5 @@
+import socket, ssl, urllib.error
+from unittest.mock import patch
 import copy, importlib.util, json, pathlib, unittest
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('refresh',ROOT/'scripts/refresh-trends.py'); r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
@@ -16,12 +18,37 @@ class MofcomRefreshTests(unittest.TestCase):
   self.assertEqual(new['refreshStatus']['mofcom']['lastSuccessAt'],'2026-10-01')
   self.assertEqual(hashes['keep'],'same');self.assertEqual(len(hashes),2)
   self.assertEqual(new['instruments'],old['instruments'])
- def test_weekly_cache_skips_same_day_and_days_one_to_six(self):
-  for asof in ['2026-10-01','2026-10-02','2026-10-07']:
+ def test_weekly_cache_skips_only_same_day(self):
+  for asof in ['2026-10-01']:
    calls=[]
    def post(u,b):calls.append(u);raise AssertionError('Should use cached weekly series')
    old=snapshot();new,hashes=r.refresh(old,{'mofcom/existing':'same'},asof,offline,download_post=post)
    self.assertEqual(calls,[]);self.assertEqual(new['instruments'],old['instruments']);self.assertEqual(hashes,{'mofcom/existing':'same'});self.assertEqual(new['refreshStatus']['mofcom'],old['refreshStatus']['mofcom'])
+ def test_next_day_rechecks_even_when_previous_fetch_returned_unchanged_observations(self):
+  calls=[]
+  def post(u,b):calls.append(u);return RAW
+  result,_=r.refresh(snapshot(),{},'2026-10-02',offline,download_post=post)
+  self.assertEqual(len(calls),1)
+  self.assertEqual(result['instruments'][0]['points'][-1]['date'],'2026-09-25')
+  self.assertEqual(result['refreshStatus']['mofcom']['lastSuccessAt'],'2026-10-02')
+ def test_retry_only_known_transient_failures_and_never_access_restrictions(self):
+  for error in [TimeoutError(),ConnectionResetError(),urllib.error.HTTPError('https://example.com',503,'fixture',{},None),urllib.error.URLError(socket.gaierror(socket.EAI_AGAIN,'fixture'))]:
+   calls=[];sleeps=[]
+   def post(u,b):
+    calls.append(1)
+    if len(calls)==1:raise error
+    return b'fixture'
+   self.assertEqual(r.fetch_weekly_with_retry(post,'url',b'body',sleeps.append),b'fixture');self.assertEqual(len(calls),2);self.assertEqual(sleeps,[2])
+  for error in [urllib.error.HTTPError('https://example.com',403,'fixture',{},None),urllib.error.HTTPError('https://example.com',429,'fixture',{},None),urllib.error.URLError(ssl.SSLCertVerificationError('fixture')),urllib.error.URLError('private URL or secret'),ValueError('fixture')]:
+   calls=[]
+   def post(u,b):calls.append(1);raise error
+   with self.assertRaises(Exception):r.fetch_weekly_with_retry(post,'url',b'body',lambda _:self.fail('must not retry'))
+   self.assertEqual(len(calls),1);self.assertNotIn('private',r.failure_code(error))
+ def test_retry_stops_after_second_failure(self):
+  calls=[]
+  def post(u,b):calls.append(1);raise TimeoutError()
+  with self.assertRaises(TimeoutError):r.fetch_weekly_with_retry(post,'url',b'body',lambda _:None)
+  self.assertEqual(len(calls),2)
  def test_seventh_day_requests_new_series(self):
   calls=[]
   def post(u,b):calls.append(u);return RAW
@@ -32,7 +59,7 @@ class MofcomRefreshTests(unittest.TestCase):
   def post(u,b):raise TimeoutError('Official source timed out')
   new,hashes=r.refresh(old,{'mofcom/existing':'same'},'2026-10-08',offline,download_post=post)
   self.assertEqual(old,before);self.assertEqual(new['instruments'],old['instruments']);self.assertEqual(new['retrievedAt'],old['retrievedAt']);self.assertEqual(hashes,{'mofcom/existing':'same'})
-  self.assertEqual(new['refreshStatus']['mofcom'],{'checkedAt':'2026-10-08','lastSuccessAt':'2026-10-01','status':'error'})
+  self.assertEqual(new['refreshStatus']['mofcom'],{'checkedAt':'2026-10-08','lastSuccessAt':'2026-10-01','status':'error','errorCode':'timeout','latestObservationAt':'2026-09-25'})
  def test_recent_failure_and_unverified_pipeline_are_not_cached(self):
   for status in ['error','verified-snapshot']:
    calls=[]
