@@ -7,7 +7,7 @@ const { title = 'AI014 — 有意思的 AI', description = 'AI014：独立产品
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const imageUrl = image ? new URL(url(image), Astro.site).href : '';
 const fixedSocial = image.startsWith('/og/');
-const links = [['Home','/'],...(products.length ? [['Products','/products/']] : []),...(projects.length ? [['Projects','/projects/']] : []),['Trends','/trends/'],['Lab','/lab/'],['Releases','/releases/'],['About','/about/']];
+const links = [['Home','/'],...(products.length ? [['Products','/products/']] : []),...(projects.length ? [['Projects','/projects/']] : []),['Trends','/trends/'],['线索研判','/detective/'],['Lab','/lab/'],['Releases','/releases/'],['About','/about/']];
 ---
 <!doctype html>
 <html lang="zh-CN"><head>
