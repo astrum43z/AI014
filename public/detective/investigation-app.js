@@ -1,6 +1,7 @@
 import {createCase, updateCaseInfo, addEvidence, updateEvidence, removeEvidence, addHypothesis, removeHypothesis, linkEvidence, parseCase, exportCase, exportMarkdown, summarizeCase, createDemoCase} from './investigation-core.js';
 const $ = id => document.getElementById(id);
 const KEY = 'ai014.detective.investigation.v1';
+const BACKUP_KEY = `${KEY}.previous`;
 const kinds = {observation:'直接观察 · 内容仍待核验',statement:'他人陈述 / 转述',inference:'个人推测'};
 const states = {unverified:'待核验',corroborated:'已交叉核验（由你标记）',disputed:'存在争议或冲突'};
 const el = (tag,text,cls) => {const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(cls)node.className=cls;return node;};
@@ -79,9 +80,35 @@ $('evidence-cancel').addEventListener('click',()=>{resetEvidenceForm();invalidat
 $('hypothesis-form').addEventListener('submit',event=>{event.preventDefault();try{syncInfo();commit(addHypothesis(current,$('hypothesis-statement').value),'假设已加入，请分别关联支持记录和反证。');$('hypothesis-statement').value='';savedLabel();status('',false,'hypothesis-status');}catch(error){status(error.message,true,'hypothesis-status');}});
 $('case-demo').addEventListener('click',()=>offerReplace(createDemoCase(),'已载入虚构演示。商家、通知和网址仅作练习，不代表真实事件。'));
 $('case-new').addEventListener('click',()=>offerReplace(createCase(),'已新建空白研判。本机之前保存的副本仍保留。'));
-$('case-save').addEventListener('click',()=>{try{syncInfo();localStorage.setItem(KEY,exportCase(current));dirty=false;savedLabel();status(hasRecordDraft()?'已保存已加入的记录；尚未提交的证据或假设草稿没有保存，请先加入记录再保存。':'已保存在这台设备的浏览器中，不会自动同步，也不是加密存储。建议另导出备份。');}catch(error){status(`未能保存到本机：${error.message} 请改用导出备份。`,true);}});
+// Saving never silently replaces another browser copy. Read again at confirmation
+// time, since another tab can change storage while the prompt is open.
+function saveCase(expected,raw){
+ try{
+  if(localStorage.getItem(KEY)!==expected){status('本机副本已被其他页面改动，未覆盖。请先下载本机副本或重新读取，再保存。',true);return;}
+  if(expected!==null&&expected!==raw)localStorage.setItem(BACKUP_KEY,expected);
+  localStorage.setItem(KEY,raw);dirty=false;savedLabel();
+  status(hasRecordDraft()?'已保存已加入的记录；尚未提交的证据或假设草稿没有保存，请先加入记录再保存。':expected!==null&&expected!==raw?'已保存在这台设备的浏览器中。覆盖前的副本保留为上一版，可下载备份；只保留一版，不是云备份。':'已保存在这台设备的浏览器中，不会自动同步，也不是加密存储。建议另导出备份。');
+ }catch(error){status(`未能保存到本机：${error.message} 原副本未被覆盖，请改用导出备份。`,true);}
+}
+$('case-save').addEventListener('click',()=>{
+ try{
+  syncInfo();closePending();
+  if(!current.title&&!current.question&&!current.evidence.length&&!current.hypotheses.length){status('没有已加入的记录，未保存空白内容，本机旧副本保持不变。请先读取本机保存，或将表单草稿加入记录。',true);return;}
+  const raw=exportCase(current),existing=localStorage.getItem(KEY);
+  if(existing!==null&&existing!==raw){
+   requestAction('保存将覆盖这台设备已有的研判。建议先点击“下载本机副本 JSON”并确认文件已收到。确认后会先保留旧副本为上一版；若备份失败则不会覆盖。上一版也会被后续覆盖保存替换。',()=>saveCase(existing,raw),'备份旧副本并确认覆盖');
+   return;
+  }
+  saveCase(existing,raw);
+ }catch(error){status(`未能保存到本机：${error.message} 请改用导出备份。`,true);}
+});
+for(const [id,key,name] of [['case-stored-json',KEY,'ai014-investigation-saved.json'],['case-previous-json',BACKUP_KEY,'ai014-investigation-previous.json']])$(id).addEventListener('click',()=>{
+ try{const raw=localStorage.getItem(key);if(raw===null){status('没有可下载的这份本机副本。');return;}download(raw,name,'application/json;charset=utf-8');status('已发起本机副本下载，请确认文件已收到。当前页面和本机记录均未更改；可用“导入 JSON”恢复有效备份。');}
+ catch(error){status(`无法下载本机副本：${error.message}`,true);}
+});
+window.addEventListener('storage',event=>{if(event.key===KEY||event.key===null){closePending();status('本机副本已在其他页面变化。当前页面未替换，请先核对或下载本机副本再保存。',true);}});
 $('case-load').addEventListener('click',()=>{try{const raw=localStorage.getItem(KEY);if(!raw){status('这台设备没有此工具保存的研判。');return;}offerReplace(parseCase(raw),'已读取本机保存。没有上传或发送给服务器。',true);}catch(error){status(`无法读取本机保存：${error.message} 当前记录未被替换。`,true);}});
-$('case-forget').addEventListener('click',()=>requestAction('删除此工具在当前浏览器保存的副本？当前页面中的记录不会清空；已下载的文件也不会删除。',()=>{localStorage.removeItem(KEY);dirty=hasData();savedLabel();status('本机保存的副本已删除。当前页面和你导出的文件仍由你保管。');},'确认删除本机副本'));
+$('case-forget').addEventListener('click',()=>requestAction('删除此工具在当前浏览器保存的副本及上一版备份？当前页面中的记录不会清空；已下载的文件也不会删除。',()=>{localStorage.removeItem(BACKUP_KEY);localStorage.removeItem(KEY);dirty=hasData();savedLabel();status('本机保存的副本及上一版备份已删除。当前页面和你导出的文件仍由你保管。');},'确认删除本机副本'));
 $('case-import').addEventListener('change',async()=>{const file=$('case-import').files[0],generation=++importGeneration,atRevision=revision;if(!file)return;try{if(file.size>1024*1024)throw new Error('资料超过 1 MiB。');status('正在本地读取和校验备份…');const raw=await file.text();if(generation!==importGeneration||atRevision!==revision)return;const next=parseCase(raw);$('case-import').value='';offerReplace(next,'备份已导入本页，尚未保存到这台设备。');}catch(error){if(generation===importGeneration)status(`未导入：${error.message} 当前记录保留。`,true);}finally{if(generation===importGeneration)$('case-import').value='';}});
 function download(text,name,type){const url=URL.createObjectURL(new Blob([text],{type})),a=el('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);}
 for(const [id,formatter,name,type] of [['case-json',exportCase,'ai014-investigation.json','application/json;charset=utf-8'],['case-markdown',exportMarkdown,'ai014-investigation-report.md','text/markdown;charset=utf-8']])$(id).addEventListener('click',()=>{try{syncInfo();download(formatter(current),name,type);savedLabel();status(hasRecordDraft()?'已发起正式记录下载，但未提交的表单草稿未包含在内。请先加入记录后重新导出。':'已发起下载，请确认文件已保存再离开。导出包含你的记录与来源，请自行妥善保管。');}catch(error){status(`无法导出：${error.message}`,true);}});

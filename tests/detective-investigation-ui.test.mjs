@@ -110,3 +110,56 @@ test('successful import clears file chooser and storage denial never claims save
  const h=await setup();try{h.el('case-import').value='chosen.json';await h.importJSON(exportCase(createDemoCase()));assert.equal(h.el('case-import').value,'');globalThis.localStorage.setItem=()=>{throw Error('storage denied');};h.fire('case-save');assert.match(h.el('case-status').textContent,/未能保存/);assert.equal(h.beforeUnload(),true);
  }finally{h.restore();}
 });
+
+const BACKUP_KEY=`${KEY}.previous`;
+test('fresh blank page and whitespace/draft-only save never overwrite a prior copy',async()=>{
+ const saved=exportCase(createDemoCase()),h=await setup(saved);try{
+  for(const action of [()=>{},()=>h.input('case-title','  '),()=>h.input('evidence-observation','未提交草稿')]){
+   action();h.fire('case-save');assert.equal(h.store.get(KEY),saved);assert.equal(h.writes.length,0);assert.equal(h.el('case-confirm').hidden,true);assert.match(h.el('case-status').textContent,/空白/);
+  }
+ }finally{h.restore();}
+});
+test('different saved case requires confirmation; cancel and double confirmation preserve safety',async()=>{
+ const saved=exportCase(createDemoCase()),h=await setup(saved);try{
+  h.addRecord('新研判');h.fire('case-save');assert.equal(h.el('case-confirm').hidden,false);assert.equal(h.writes.length,0);
+  h.fire('case-confirm-no');assert.equal(h.store.get(KEY),saved);assert(h.beforeUnload());
+  h.fire('case-save');h.fire('case-confirm-yes');assert.equal(h.store.get(BACKUP_KEY),saved);assert.equal(JSON.parse(h.store.get(KEY)).evidence[0].observation,'新研判');assert.deepEqual(h.writes.map(x=>x[0]),[BACKUP_KEY,KEY]);assert(!h.beforeUnload());
+  h.fire('case-confirm-yes');assert.equal(h.writes.length,2);
+ }finally{h.restore();}
+});
+test('loaded edits also require overwrite confirmation; unchanged save preserves previous backup',async()=>{
+ const saved=exportCase(createDemoCase()),h=await setup(saved);try{
+  h.store.set(BACKUP_KEY,'older');h.fire('case-load');h.fire('case-save');assert.equal(h.el('case-confirm').hidden,true);assert.equal(h.store.get(BACKUP_KEY),'older');
+  h.input('case-title','已修改');h.fire('case-save');assert.equal(h.el('case-confirm').hidden,false);assert.equal(h.store.get(KEY),saved);
+  h.fire('case-confirm-yes');assert.equal(h.store.get(BACKUP_KEY),saved);assert.equal(JSON.parse(h.store.get(KEY)).title,'已修改');
+ }finally{h.restore();}
+});
+test('backup downloads use exact stored bytes, not current unsaved case, and can restore via import',async()=>{
+ const saved=exportCase(createDemoCase()),h=await setup(saved);try{
+  h.addRecord('新研判');h.fire('case-save');h.fire('case-stored-json');assert.equal(await h.downloads.at(-1).text(),saved);assert.equal(h.el('case-confirm').hidden,false);
+  h.fire('case-confirm-yes');h.fire('case-previous-json');assert.equal(await h.downloads.at(-1).text(),saved);
+  await h.importJSON(await h.downloads.at(-1).text());h.fire('case-confirm-yes');assert.deepEqual(await h.exportJSON(),JSON.parse(saved));
+  h.fire('case-save');h.fire('case-confirm-yes');assert.equal(h.store.get(KEY),saved);
+ }finally{h.restore();}
+});
+for(const failedKey of [BACKUP_KEY,KEY])test(`storage failure on ${failedKey} retains old primary and unsaved page`,async()=>{
+ const saved=exportCase(createDemoCase()),h=await setup(saved);try{
+  h.addRecord('尚未保存');h.fire('case-save');const set=globalThis.localStorage.setItem;globalThis.localStorage.setItem=(key,value)=>{if(key===failedKey)throw Error('QuotaExceededError');set(key,value);};
+  h.fire('case-confirm-yes');assert.equal(h.store.get(KEY),saved);assert(h.beforeUnload());assert.match(h.el('case-status').textContent,/未能保存/);assert.equal((await h.exportJSON()).evidence[0].observation,'尚未保存');
+ }finally{h.restore();}
+});
+test('storage read denial fails closed instead of overwriting',async()=>{
+ const saved=exportCase(createDemoCase()),h=await setup(saved);try{h.addRecord('新记录');globalThis.localStorage.getItem=()=>{throw Error('SecurityError');};h.fire('case-save');assert.equal(h.store.get(KEY),saved);assert.equal(h.writes.length,0);assert.match(h.el('case-status').textContent,/未能保存/);}finally{h.restore();}
+});
+test('other-tab write after prompt aborts confirmation without replacing primary or backup',async()=>{
+ const saved=exportCase(createDemoCase()),h=await setup(saved);try{h.addRecord('此页修改');h.fire('case-save');h.store.set(KEY,'changed elsewhere');h.fire('case-confirm-yes');assert.equal(h.store.get(KEY),'changed elsewhere');assert.equal(h.writes.length,0);assert.match(h.el('case-status').textContent,/其他页面/);assert(h.beforeUnload());}finally{h.restore();}
+});
+test('editing after save prompt cancels pending replacement',async()=>{
+ const saved=exportCase(createDemoCase()),h=await setup(saved);try{h.addRecord('此页修改');h.fire('case-save');h.input('case-title','更新');h.fire('case-confirm-yes');assert.equal(h.store.get(KEY),saved);assert.equal(h.writes.length,0);assert.equal(h.el('case-confirm').hidden,true);}finally{h.restore();}
+});
+test('malformed old saved data can be downloaded and is backed up verbatim before confirmed replacement',async()=>{
+ const h=await setup('{bad');try{h.fire('case-stored-json');assert.equal(await h.downloads.at(-1).text(),'{bad');h.addRecord('新记录');h.fire('case-save');assert.equal(h.store.get(KEY),'{bad');h.fire('case-confirm-yes');assert.equal(h.store.get(BACKUP_KEY),'{bad');}finally{h.restore();}
+});
+test('forget explicitly removes primary and previous backup, but retains active records',async()=>{
+ const saved=exportCase(createDemoCase()),h=await setup(saved);try{h.fire('case-load');h.store.set(BACKUP_KEY,'older');h.fire('case-forget');assert.match(h.el('case-confirm-text').textContent,/上一版/);h.fire('case-confirm-no');assert(h.store.has(BACKUP_KEY));h.fire('case-forget');h.fire('case-confirm-yes');assert(!h.store.has(KEY));assert(!h.store.has(BACKUP_KEY));assert.deepEqual(await h.exportJSON(),JSON.parse(saved));}finally{h.restore();}
+});
