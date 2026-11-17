@@ -163,3 +163,5 @@ test('malformed old saved data can be downloaded and is backed up verbatim befor
 test('forget explicitly removes primary and previous backup, but retains active records',async()=>{
  const saved=exportCase(createDemoCase()),h=await setup(saved);try{h.fire('case-load');h.store.set(BACKUP_KEY,'older');h.fire('case-forget');assert.match(h.el('case-confirm-text').textContent,/上一版/);h.fire('case-confirm-no');assert(h.store.has(BACKUP_KEY));h.fire('case-forget');h.fire('case-confirm-yes');assert(!h.store.has(KEY));assert(!h.store.has(BACKUP_KEY));assert.deepEqual(await h.exportJSON(),JSON.parse(saved));}finally{h.restore();}
 });
+
+test("save-protection release versions its module URL to avoid the previous handler cache",()=>{const html=fs.readFileSync(new URL("../src/pages/detective/index.astro",import.meta.url),"utf8");assert.ok(html.includes("/detective/investigation-app.js?v=2"));});
